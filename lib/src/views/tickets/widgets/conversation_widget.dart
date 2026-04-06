@@ -76,17 +76,17 @@ class ConversationWidget extends StatelessWidget {
                   message: msg,
                   onDelete: () {
                     context.read<TicketDetailBloc>().add(
-                          OnDeleteMessage(messageId: msg.id),
+                          TicketDetailEvent.onDeleteMessage(messageId: msg.id),
                         );
                   },
                   onLike: () {
                     context.read<TicketDetailBloc>().add(
-                          OnLikeMessage(messageId: msg.id),
+                          TicketDetailEvent.onLikeMessage(messageId: msg.id),
                         );
                   },
                   onDislike: () {
                     context.read<TicketDetailBloc>().add(
-                          OnDislikeMessage(messageId: msg.id),
+                          TicketDetailEvent.onDislikeMessage(messageId: msg.id),
                         );
                   },
                 ),

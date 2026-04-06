@@ -28,7 +28,7 @@ class _MessageInputWidgetState extends State<MessageInputWidget> {
     if (text.isEmpty) return;
     context
         .read<TicketDetailBloc>()
-        .add(OnSendMessage(message: text));
+        .add(TicketDetailEvent.onSendMessage(message: text));
     _controller.clear();
     _focusNode.requestFocus();
   }

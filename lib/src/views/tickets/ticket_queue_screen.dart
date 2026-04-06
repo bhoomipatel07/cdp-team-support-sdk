@@ -18,7 +18,7 @@ class TicketQueueScreen extends StatelessWidget {
   Widget build(final BuildContext context) {
     return BlocProvider<TicketBloc>(
       create: (final BuildContext context) =>
-          TicketBloc()..add(const OnLoadTickets()),
+          TicketBloc()..add(const TicketEvent.onLoadTickets()),
       child: const _TicketQueueBody(),
     );
   }
@@ -154,7 +154,7 @@ class _TicketQueueBody extends StatelessWidget {
                 onChanged: (final TicketStatus? value) {
                   context
                       .read<TicketBloc>()
-                      .add(OnFilterByStatus(status: value));
+                      .add(TicketEvent.onFilterByStatus(status: value));
                 },
               ),
             ),

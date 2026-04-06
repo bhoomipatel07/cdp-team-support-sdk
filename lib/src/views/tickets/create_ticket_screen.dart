@@ -26,7 +26,7 @@ class CreateTicketScreen extends StatelessWidget {
   Widget build(final BuildContext context) {
     return BlocProvider<TicketBloc>(
       create: (final BuildContext context) =>
-          TicketBloc()..add(const OnLoadTickets()),
+          TicketBloc()..add(const TicketEvent.onLoadTickets()),
       child: _CreateTicketBody(
         isEditMode: isEditMode,
         ticketData: ticketData,
@@ -420,7 +420,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                   const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             ),
             onChanged: (final String value) {
-              context.read<TicketBloc>().add(OnChangeTitle(title: value));
+              context.read<TicketBloc>().add(TicketEvent.onChangeTitle(title: value));
             },
             validator: (final String? value) {
               if (value == null || value.trim().isEmpty) {
@@ -474,7 +474,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
             onChanged: (final String value) {
               context
                   .read<TicketBloc>()
-                  .add(OnChangeDescription(description: value));
+                  .add(TicketEvent.onChangeDescription(description: value));
             },
             validator: (final String? value) {
               if (value == null || value.trim().isEmpty) {
@@ -522,7 +522,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                   setState(() => _selectedProject = value);
                   context
                       .read<TicketBloc>()
-                      .add(OnSelectProject(project: value));
+                      .add(TicketEvent.onSelectProject(project: value));
                 },
               ),
             ),
@@ -557,7 +557,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               contentPadding: const EdgeInsets.all(14),
             ),
             onChanged: (final String value) {
-              context.read<TicketBloc>().add(OnChangeNote(note: value));
+              context.read<TicketBloc>().add(TicketEvent.onChangeNote(note: value));
             },
           ),
           const SizedBox(height: 24),
@@ -616,7 +616,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     if (state.loadingState != CommonScreenState.loading) {
                       context
                           .read<TicketBloc>()
-                          .add(const OnSubmitTicket());
+                          .add(const TicketEvent.onSubmitTicket());
                     }
                   },
                   child: Container(

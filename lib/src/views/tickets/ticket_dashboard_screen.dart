@@ -21,7 +21,7 @@ class TicketDashboardScreen extends StatelessWidget {
   Widget build(final BuildContext context) {
     return BlocProvider<TicketBloc>(
       create: (final BuildContext context) =>
-          TicketBloc()..add(const OnLoadTickets()),
+          TicketBloc()..add(const TicketEvent.onLoadTickets()),
       child: const _TicketDashboardBody(),
     );
   }
@@ -48,7 +48,7 @@ class _TicketDashboardBody extends StatelessWidget {
             return RefreshIndicator(
               color: SdkColors.splashDeep,
               onRefresh: () async {
-                context.read<TicketBloc>().add(const OnLoadTickets());
+                context.read<TicketBloc>().add(const TicketEvent.onLoadTickets());
               },
               child: ListView(
                 padding: EdgeInsets.zero,
@@ -217,7 +217,7 @@ class _TicketDashboardBody extends StatelessWidget {
             ),
           ],
           onChanged: (final TicketStatus? value) {
-            context.read<TicketBloc>().add(OnFilterByStatus(status: value));
+            context.read<TicketBloc>().add(TicketEvent.onFilterByStatus(status: value));
           },
         ),
       ),

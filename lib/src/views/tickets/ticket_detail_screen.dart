@@ -26,7 +26,7 @@ class TicketDetailScreen extends StatelessWidget {
   Widget build(final BuildContext context) {
     return BlocProvider<TicketDetailBloc>(
       create: (final BuildContext context) => TicketDetailBloc()
-        ..add(OnLoadDetail(ticketId: ticketId)),
+        ..add(TicketDetailEvent.onLoadDetail(ticketId: ticketId)),
       child: const _TicketDetailBody(),
     );
   }
