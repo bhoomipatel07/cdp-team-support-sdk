@@ -1,0 +1,612 @@
+import 'dart:ui';
+
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:cdp_team_support_sdk/src/bloc/ticket_detail/ticket_detail_bloc.dart';
+import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
+import 'package:cdp_team_support_sdk/src/models/common_enums.dart';
+import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
+import 'package:cdp_team_support_sdk/src/theme/sdk_colors.dart';
+import 'package:cdp_team_support_sdk/src/theme/sdk_fonts.dart';
+import 'package:cdp_team_support_sdk/src/views/tickets/widgets/sdk_app_bar.dart';
+import 'package:cdp_team_support_sdk/src/views/tickets/widgets/conversation_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/tickets/widgets/message_input_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_attachment_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_info_header_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_timeline_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/tickets/create_ticket_screen.dart';
+
+class TicketDetailScreen extends StatelessWidget {
+  final int ticketId;
+
+  const TicketDetailScreen({super.key, required this.ticketId});
+
+  @override
+  Widget build(final BuildContext context) {
+    return BlocProvider<TicketDetailBloc>(
+      create: (final BuildContext context) => TicketDetailBloc()
+        ..add(OnLoadDetail(ticketId: ticketId)),
+      child: const _TicketDetailBody(),
+    );
+  }
+}
+
+class _TicketDetailBody extends StatelessWidget {
+  const _TicketDetailBody();
+
+  @override
+  Widget build(final BuildContext context) {
+    final bool isTab = SupportSdkConfig.instance.isTablet;
+    return AnnotatedRegion<SystemUiOverlayStyle>(
+      value: SystemUiOverlayStyle.dark,
+      child: BlocBuilder<TicketDetailBloc, TicketDetailState>(
+        builder: (final BuildContext context, final TicketDetailState state) {
+          if (state.loadingState == CommonScreenState.loading ||
+              state.loadingState == CommonScreenState.initial) {
+            return Scaffold(
+              backgroundColor: SdkColors.bgColor,
+              appBar: const SdkAppBar(title: 'Ticket Details'),
+              body: const Center(
+                child:
+                    CircularProgressIndicator(color: SdkColors.splashDeep),
+              ),
+            );
+          }
+          if (state.ticket == null) {
+            return Scaffold(
+              backgroundColor: SdkColors.bgColor,
+              appBar: const SdkAppBar(title: 'Ticket Details'),
+              body: Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: <Widget>[
+                    const Icon(Icons.error_outline_rounded,
+                        color: SdkColors.homeSubtext, size: 48),
+                    const SizedBox(height: 12),
+                    Text('Ticket not found',
+                        style: sdkRubikW600(isTablet: isTab).copyWith(
+                            fontSize: 16, color: SdkColors.splashDeep)),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          final TicketModel ticket = state.ticket!;
+          final bool canEdit = ticket.status == TicketStatus.open;
+
+          return Scaffold(
+            backgroundColor: SdkColors.bgColor,
+            appBar: SdkAppBar(
+              title: ticket.ticketNumber,
+              actionWidget: canEdit
+                  ? GestureDetector(
+                      onTap: () => _showActionsSheet(context, ticket),
+                      child: Container(
+                        width: isTab ? 40 : 34,
+                        height: isTab ? 40 : 34,
+                        decoration: BoxDecoration(
+                          color: SdkColors.splashDeep.withValues(alpha: 0.06),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: Icon(
+                          Icons.more_vert_rounded,
+                          size: isTab ? 22 : 18,
+                          color: SdkColors.splashDeep,
+                        ),
+                      ),
+                    )
+                  : SizedBox(width: isTab ? 48 : 42),
+            ),
+            body: Column(
+              children: <Widget>[
+                Expanded(
+                  child: isTab
+                      ? _buildTabletLayout(context, state)
+                      : _buildMobileLayout(context, state),
+                ),
+                const MessageInputWidget(),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  void _showActionsSheet(
+      final BuildContext context, final TicketModel ticket) {
+    final bool isTab = SupportSdkConfig.instance.isTablet;
+    showModalBottomSheet<void>(
+      context: context,
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
+      builder: (final BuildContext sheetContext) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
+          child: Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: isTab ? 120 : 16,
+              vertical: 16,
+            ),
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              border: Border.all(
+                color: SdkColors.splashDeep.withValues(alpha: 0.08),
+              ),
+              boxShadow: <BoxShadow>[
+                BoxShadow(
+                  color: SdkColors.splashDeep.withValues(alpha: 0.12),
+                  blurRadius: 30,
+                  offset: const Offset(0, -8),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const SizedBox(height: 12),
+                Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: SdkColors.homeBorder,
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Row(
+                    children: <Widget>[
+                      Container(
+                        width: 3,
+                        height: 16,
+                        decoration: BoxDecoration(
+                          color: SdkColors.splashGold,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'Ticket Actions',
+                        style: sdkRubikW700(isTablet: isTab).copyWith(
+                          fontSize: isTab ? 18 : 16,
+                          color: SdkColors.splashDeep,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 6),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 20),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      ticket.ticketNumber,
+                      style: sdkRubikW400(isTablet: isTab).copyWith(
+                        fontSize: 12,
+                        color: SdkColors.homeSubtext,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(height: 1, color: SdkColors.homeBorder),
+                _buildSheetOption(
+                  icon: Icons.edit_outlined,
+                  label: 'Edit Ticket',
+                  subtitle: 'Update title, description, or attachments',
+                  iconBgColor: SdkColors.splashGlow.withValues(alpha: 0.08),
+                  iconColor: SdkColors.splashGlow,
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute<void>(
+                        builder: (final BuildContext _) => CreateTicketScreen(
+                          isEditMode: true,
+                          ticketData: ticket,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+                Container(
+                  height: 1,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  color: SdkColors.homeBorder,
+                ),
+                _buildSheetOption(
+                  icon: Icons.delete_outline_rounded,
+                  label: 'Delete Ticket',
+                  subtitle: 'Permanently remove this ticket',
+                  iconBgColor:
+                      SdkColors.colorError500.withValues(alpha: 0.06),
+                  iconColor: SdkColors.colorError500,
+                  labelColor: SdkColors.colorError500,
+                  onTap: () {
+                    Navigator.pop(sheetContext);
+                    _showDeleteConfirmation(context, ticket);
+                  },
+                ),
+                SizedBox(
+                    height: MediaQuery.of(sheetContext).padding.bottom + 12),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildSheetOption({
+    required final IconData icon,
+    required final String label,
+    required final String subtitle,
+    required final Color iconBgColor,
+    required final Color iconColor,
+    final Color? labelColor,
+    required final VoidCallback onTap,
+  }) {
+    final bool isTab = SupportSdkConfig.instance.isTablet;
+    return InkWell(
+      onTap: onTap,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
+        child: Row(
+          children: <Widget>[
+            Container(
+              width: isTab ? 46 : 42,
+              height: isTab ? 46 : 42,
+              decoration: BoxDecoration(
+                color: iconBgColor,
+                borderRadius: BorderRadius.circular(12),
+              ),
+              child: Icon(icon, color: iconColor, size: 22),
+            ),
+            const SizedBox(width: 14),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: <Widget>[
+                  Text(
+                    label,
+                    style: sdkRubikW600(isTablet: isTab).copyWith(
+                      fontSize: isTab ? 16 : 15,
+                      color: labelColor ?? SdkColors.splashDeep,
+                    ),
+                  ),
+                  const SizedBox(height: 2),
+                  Text(
+                    subtitle,
+                    style: sdkRubikW400(isTablet: isTab).copyWith(
+                      fontSize: 12,
+                      color: SdkColors.homeSubtext,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const Icon(Icons.chevron_right_rounded,
+                size: 20, color: SdkColors.homeSubtext),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showDeleteConfirmation(
+      final BuildContext context, final TicketModel ticket) {
+    final bool isTab = SupportSdkConfig.instance.isTablet;
+    showDialog(
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.5),
+      builder: (final BuildContext dialogContext) {
+        return BackdropFilter(
+          filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
+          child: Dialog(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            child: Container(
+              padding: EdgeInsets.all(isTab ? 32 : 24),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(
+                  color: SdkColors.splashDeep.withValues(alpha: 0.1),
+                ),
+                boxShadow: <BoxShadow>[
+                  BoxShadow(
+                    color: SdkColors.splashDeep.withValues(alpha: 0.15),
+                    blurRadius: 40,
+                    offset: const Offset(0, 12),
+                  ),
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                children: <Widget>[
+                  Container(
+                    width: isTab ? 72 : 60,
+                    height: isTab ? 72 : 60,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color:
+                          SdkColors.colorError500.withValues(alpha: 0.06),
+                      border: Border.all(
+                        color: SdkColors.colorError500
+                            .withValues(alpha: 0.15),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.delete_outline_rounded,
+                      color: SdkColors.colorError500,
+                      size: isTab ? 36 : 28,
+                    ),
+                  ),
+                  SizedBox(height: isTab ? 18 : 14),
+                  Container(
+                    width: 40,
+                    height: 3,
+                    decoration: BoxDecoration(
+                      color: SdkColors.splashGold,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  SizedBox(height: isTab ? 16 : 12),
+                  Text(
+                    'Delete Ticket?',
+                    style: sdkRubikW700(isTablet: isTab).copyWith(
+                      fontSize: isTab ? 22 : 18,
+                      color: SdkColors.splashDeep,
+                    ),
+                  ),
+                  const SizedBox(height: 8),
+                  Text(
+                    'This action cannot be undone. The ticket and all its data will be permanently removed.',
+                    textAlign: TextAlign.center,
+                    style: sdkRubikW400(isTablet: isTab).copyWith(
+                      fontSize: isTab ? 14 : 12,
+                      color: SdkColors.homeSubtext,
+                      height: 1.4,
+                    ),
+                  ),
+                  SizedBox(height: isTab ? 28 : 22),
+                  Row(
+                    children: <Widget>[
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () => Navigator.pop(dialogContext),
+                          child: Container(
+                            height: isTab ? 48 : 44,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(12),
+                              border: Border.all(
+                                color: SdkColors.splashDeep
+                                    .withValues(alpha: 0.2),
+                              ),
+                            ),
+                            child: Center(
+                              child: Text('Cancel',
+                                  style: sdkRubikW600(isTablet: isTab)
+                                      .copyWith(
+                                          fontSize: isTab ? 15 : 13,
+                                          color: SdkColors.splashDeep)),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: isTab ? 14 : 10),
+                      Expanded(
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.pop(dialogContext);
+                            Navigator.pop(context);
+                          },
+                          child: Container(
+                            height: isTab ? 48 : 44,
+                            decoration: BoxDecoration(
+                              color: SdkColors.colorError500,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: <BoxShadow>[
+                                BoxShadow(
+                                  color: SdkColors.colorError500
+                                      .withValues(alpha: 0.3),
+                                  blurRadius: 12,
+                                  offset: const Offset(0, 4),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Text('Delete',
+                                  style: sdkRubikW600(isTablet: isTab)
+                                      .copyWith(
+                                          fontSize: isTab ? 15 : 13,
+                                          color: Colors.white)),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildMobileLayout(
+      final BuildContext context, final TicketDetailState state) {
+    final TicketModel ticket = state.ticket!;
+    return ListView(
+      padding: const EdgeInsets.all(16),
+      children: <Widget>[
+        TicketInfoHeader(ticket: ticket),
+        const SizedBox(height: 16),
+        _buildDescriptionCard(ticket),
+        if (ticket.clientNote != null &&
+            ticket.clientNote!.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 12),
+          _buildNoteCard(ticket),
+        ],
+        if (ticket.attachments.isNotEmpty) ...<Widget>[
+          const SizedBox(height: 16),
+          TicketAttachmentWidget(attachments: ticket.attachments),
+        ],
+        const SizedBox(height: 16),
+        TicketTimelineWidget(ticket: ticket),
+        const SizedBox(height: 20),
+        const ConversationWidget(),
+        const SizedBox(height: 16),
+      ],
+    );
+  }
+
+  Widget _buildTabletLayout(
+      final BuildContext context, final TicketDetailState state) {
+    final TicketModel ticket = state.ticket!;
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Expanded(
+          flex: 65,
+          child: ListView(
+            padding: const EdgeInsets.all(20),
+            children: <Widget>[
+              TicketInfoHeader(ticket: ticket),
+              const SizedBox(height: 16),
+              _buildDescriptionCard(ticket),
+              if (ticket.clientNote != null &&
+                  ticket.clientNote!.isNotEmpty) ...<Widget>[
+                const SizedBox(height: 12),
+                _buildNoteCard(ticket),
+              ],
+              if (ticket.attachments.isNotEmpty) ...<Widget>[
+                const SizedBox(height: 16),
+                TicketAttachmentWidget(attachments: ticket.attachments),
+              ],
+              const SizedBox(height: 20),
+              const ConversationWidget(),
+              const SizedBox(height: 16),
+            ],
+          ),
+        ),
+        Container(width: 1, color: SdkColors.homeBorder),
+        Expanded(
+          flex: 35,
+          child: ListView(
+            padding: const EdgeInsets.all(16),
+            children: <Widget>[TicketTimelineWidget(ticket: ticket)],
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildDescriptionCard(final TicketModel ticket) {
+    final bool isTab = SupportSdkConfig.instance.isTablet;
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(isTab ? 18 : 14),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: SdkColors.homeBorder, width: 1),
+        boxShadow: const <BoxShadow>[
+          BoxShadow(
+            color: SdkColors.homeShadow,
+            blurRadius: 8,
+            spreadRadius: -2,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Text('DESCRIPTION',
+              style: sdkRubikW600(isTablet: isTab).copyWith(
+                  fontSize: 11,
+                  color: SdkColors.homeSubtext,
+                  letterSpacing: 0.6)),
+          const SizedBox(height: 10),
+          Text(
+            ticket.description,
+            style: sdkRubikW400(isTablet: isTab).copyWith(
+              fontSize: isTab ? 14 : 13,
+              color: SdkColors.splashDeep.withValues(alpha: 0.8),
+              height: 1.5,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildNoteCard(final TicketModel ticket) {
+    final bool isTab = SupportSdkConfig.instance.isTablet;
+    return Container(
+      width: double.infinity,
+      padding: EdgeInsets.all(isTab ? 18 : 14),
+      decoration: BoxDecoration(
+        color: SdkColors.splashGold.withValues(alpha: 0.04),
+        borderRadius: BorderRadius.circular(12),
+        border: Border.all(
+          color: SdkColors.splashGold.withValues(alpha: 0.2),
+          width: 1,
+        ),
+      ),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: 3,
+            height: 40,
+            decoration: BoxDecoration(
+              color: SdkColors.splashGold,
+              borderRadius: BorderRadius.circular(2),
+            ),
+          ),
+          const SizedBox(width: 12),
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Row(
+                  children: <Widget>[
+                    const Icon(Icons.sticky_note_2_outlined,
+                        size: 16, color: SdkColors.splashGold),
+                    const SizedBox(width: 6),
+                    Text('NOTE',
+                        style: sdkRubikW700(isTablet: isTab).copyWith(
+                            fontSize: 12,
+                            color: SdkColors.splashGold,
+                            letterSpacing: 0.5)),
+                  ],
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  ticket.clientNote!,
+                  style: sdkRubikW400(isTablet: isTab).copyWith(
+                    fontSize: isTab ? 14 : 13,
+                    color: SdkColors.splashDeep.withValues(alpha: 0.8),
+                    height: 1.4,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
