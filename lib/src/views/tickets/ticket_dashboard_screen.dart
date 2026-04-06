@@ -15,35 +15,10 @@ import 'package:cdp_team_support_sdk/src/views/tickets/ticket_queue_screen.dart'
 import 'package:cdp_team_support_sdk/src/views/tickets/create_ticket_screen.dart';
 
 class TicketDashboardScreen extends StatelessWidget {
-  /// Current user's display name (shown in conversation bubbles).
-  final String? userName;
-
-  /// Current user's initials (shown in avatar circle).
-  final String? userInitials;
-
-  /// Whether the device is a tablet — controls responsive layout.
-  final bool? isTablet;
-
-  const TicketDashboardScreen({
-    super.key,
-    this.userName,
-    this.userInitials,
-    this.isTablet,
-  });
+  const TicketDashboardScreen({super.key});
 
   @override
   Widget build(final BuildContext context) {
-    // Auto-detect tablet if not provided
-    final bool tablet =
-        isTablet ?? MediaQuery.of(context).size.shortestSide >= 600;
-
-    // Auto-init config from constructor params
-    SupportSdkConfig.init(SupportSdkConfig(
-      isTablet: tablet,
-      currentUserName: userName ?? 'User',
-      currentUserInitials: userInitials ?? 'U',
-    ));
-
     return BlocProvider<TicketBloc>(
       create: (final BuildContext context) =>
           TicketBloc()..add(const TicketEvent.onLoadTickets()),
