@@ -1,5 +1,5 @@
-// coverage:ignore-file
 // GENERATED CODE - DO NOT MODIFY BY HAND
+// coverage:ignore-file
 // ignore_for_file: type=lint
 // ignore_for_file: unused_element, deprecated_member_use, deprecated_member_use_from_same_package, use_function_type_syntax_for_parameters, unnecessary_const, avoid_init_to_null, invalid_override_different_default_values_named, prefer_expression_function_bodies, annotate_overrides, invalid_annotation_target, unnecessary_question_mark
 
@@ -9,1479 +9,867 @@ part of 'ticket_detail_bloc.dart';
 // FreezedGenerator
 // **************************************************************************
 
+// dart format off
 T _$identity<T>(T value) => value;
-
-final _privateConstructorUsedError = UnsupportedError(
-  'It seems like you constructed your class using `MyClass._()`. This constructor is only meant to be used by freezed and you are not supposed to need it nor use it.\nPlease check the documentation here for more information: https://github.com/rrousselGit/freezed#adding-getters-and-methods-to-our-models',
-);
-
 /// @nodoc
 mixin _$TicketDetailEvent {
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int ticketId) onLoadDetail,
-    required TResult Function(String message) onSendMessage,
-    required TResult Function(int messageId) onDeleteMessage,
-    required TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )
-    onUpdateTicket,
-    required TResult Function(int messageId) onLikeMessage,
-    required TResult Function(int messageId) onDislikeMessage,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int ticketId)? onLoadDetail,
-    TResult? Function(String message)? onSendMessage,
-    TResult? Function(int messageId)? onDeleteMessage,
-    TResult? Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult? Function(int messageId)? onLikeMessage,
-    TResult? Function(int messageId)? onDislikeMessage,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int ticketId)? onLoadDetail,
-    TResult Function(String message)? onSendMessage,
-    TResult Function(int messageId)? onDeleteMessage,
-    TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult Function(int messageId)? onLikeMessage,
-    TResult Function(int messageId)? onDislikeMessage,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadDetail value) onLoadDetail,
-    required TResult Function(OnSendMessage value) onSendMessage,
-    required TResult Function(OnDeleteMessage value) onDeleteMessage,
-    required TResult Function(OnUpdateTicket value) onUpdateTicket,
-    required TResult Function(OnLikeMessage value) onLikeMessage,
-    required TResult Function(OnDislikeMessage value) onDislikeMessage,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadDetail value)? onLoadDetail,
-    TResult? Function(OnSendMessage value)? onSendMessage,
-    TResult? Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult? Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult? Function(OnLikeMessage value)? onLikeMessage,
-    TResult? Function(OnDislikeMessage value)? onDislikeMessage,
-  }) => throw _privateConstructorUsedError;
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadDetail value)? onLoadDetail,
-    TResult Function(OnSendMessage value)? onSendMessage,
-    TResult Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult Function(OnLikeMessage value)? onLikeMessage,
-    TResult Function(OnDislikeMessage value)? onDislikeMessage,
-    required TResult orElse(),
-  }) => throw _privateConstructorUsedError;
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketDetailEvent);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TicketDetailEvent()';
+}
+
+
 }
 
 /// @nodoc
-abstract class $TicketDetailEventCopyWith<$Res> {
-  factory $TicketDetailEventCopyWith(
-    TicketDetailEvent value,
-    $Res Function(TicketDetailEvent) then,
-  ) = _$TicketDetailEventCopyWithImpl<$Res, TicketDetailEvent>;
+class $TicketDetailEventCopyWith<$Res>  {
+$TicketDetailEventCopyWith(TicketDetailEvent _, $Res Function(TicketDetailEvent) __);
 }
 
-/// @nodoc
-class _$TicketDetailEventCopyWithImpl<$Res, $Val extends TicketDetailEvent>
-    implements $TicketDetailEventCopyWith<$Res> {
-  _$TicketDetailEventCopyWithImpl(this._value, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+/// Adds pattern-matching-related methods to [TicketDetailEvent].
+extension TicketDetailEventPatterns on TicketDetailEvent {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( OnLoadDetail value)?  onLoadDetail,TResult Function( OnSendMessage value)?  onSendMessage,TResult Function( OnDeleteMessage value)?  onDeleteMessage,TResult Function( OnUpdateTicket value)?  onUpdateTicket,TResult Function( OnLikeMessage value)?  onLikeMessage,TResult Function( OnDislikeMessage value)?  onDislikeMessage,required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case OnLoadDetail() when onLoadDetail != null:
+return onLoadDetail(_that);case OnSendMessage() when onSendMessage != null:
+return onSendMessage(_that);case OnDeleteMessage() when onDeleteMessage != null:
+return onDeleteMessage(_that);case OnUpdateTicket() when onUpdateTicket != null:
+return onUpdateTicket(_that);case OnLikeMessage() when onLikeMessage != null:
+return onLikeMessage(_that);case OnDislikeMessage() when onDislikeMessage != null:
+return onDislikeMessage(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( OnLoadDetail value)  onLoadDetail,required TResult Function( OnSendMessage value)  onSendMessage,required TResult Function( OnDeleteMessage value)  onDeleteMessage,required TResult Function( OnUpdateTicket value)  onUpdateTicket,required TResult Function( OnLikeMessage value)  onLikeMessage,required TResult Function( OnDislikeMessage value)  onDislikeMessage,}){
+final _that = this;
+switch (_that) {
+case OnLoadDetail():
+return onLoadDetail(_that);case OnSendMessage():
+return onSendMessage(_that);case OnDeleteMessage():
+return onDeleteMessage(_that);case OnUpdateTicket():
+return onUpdateTicket(_that);case OnLikeMessage():
+return onLikeMessage(_that);case OnDislikeMessage():
+return onDislikeMessage(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( OnLoadDetail value)?  onLoadDetail,TResult? Function( OnSendMessage value)?  onSendMessage,TResult? Function( OnDeleteMessage value)?  onDeleteMessage,TResult? Function( OnUpdateTicket value)?  onUpdateTicket,TResult? Function( OnLikeMessage value)?  onLikeMessage,TResult? Function( OnDislikeMessage value)?  onDislikeMessage,}){
+final _that = this;
+switch (_that) {
+case OnLoadDetail() when onLoadDetail != null:
+return onLoadDetail(_that);case OnSendMessage() when onSendMessage != null:
+return onSendMessage(_that);case OnDeleteMessage() when onDeleteMessage != null:
+return onDeleteMessage(_that);case OnUpdateTicket() when onUpdateTicket != null:
+return onUpdateTicket(_that);case OnLikeMessage() when onLikeMessage != null:
+return onLikeMessage(_that);case OnDislikeMessage() when onDislikeMessage != null:
+return onDislikeMessage(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int ticketId)?  onLoadDetail,TResult Function( String message)?  onSendMessage,TResult Function( int messageId)?  onDeleteMessage,TResult Function( String title,  String description,  String? clientNote,  ProjectModel? project)?  onUpdateTicket,TResult Function( int messageId)?  onLikeMessage,TResult Function( int messageId)?  onDislikeMessage,required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case OnLoadDetail() when onLoadDetail != null:
+return onLoadDetail(_that.ticketId);case OnSendMessage() when onSendMessage != null:
+return onSendMessage(_that.message);case OnDeleteMessage() when onDeleteMessage != null:
+return onDeleteMessage(_that.messageId);case OnUpdateTicket() when onUpdateTicket != null:
+return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnLikeMessage() when onLikeMessage != null:
+return onLikeMessage(_that.messageId);case OnDislikeMessage() when onDislikeMessage != null:
+return onDislikeMessage(_that.messageId);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int ticketId)  onLoadDetail,required TResult Function( String message)  onSendMessage,required TResult Function( int messageId)  onDeleteMessage,required TResult Function( String title,  String description,  String? clientNote,  ProjectModel? project)  onUpdateTicket,required TResult Function( int messageId)  onLikeMessage,required TResult Function( int messageId)  onDislikeMessage,}) {final _that = this;
+switch (_that) {
+case OnLoadDetail():
+return onLoadDetail(_that.ticketId);case OnSendMessage():
+return onSendMessage(_that.message);case OnDeleteMessage():
+return onDeleteMessage(_that.messageId);case OnUpdateTicket():
+return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnLikeMessage():
+return onLikeMessage(_that.messageId);case OnDislikeMessage():
+return onDislikeMessage(_that.messageId);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int ticketId)?  onLoadDetail,TResult? Function( String message)?  onSendMessage,TResult? Function( int messageId)?  onDeleteMessage,TResult? Function( String title,  String description,  String? clientNote,  ProjectModel? project)?  onUpdateTicket,TResult? Function( int messageId)?  onLikeMessage,TResult? Function( int messageId)?  onDislikeMessage,}) {final _that = this;
+switch (_that) {
+case OnLoadDetail() when onLoadDetail != null:
+return onLoadDetail(_that.ticketId);case OnSendMessage() when onSendMessage != null:
+return onSendMessage(_that.message);case OnDeleteMessage() when onDeleteMessage != null:
+return onDeleteMessage(_that.messageId);case OnUpdateTicket() when onUpdateTicket != null:
+return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnLikeMessage() when onLikeMessage != null:
+return onLikeMessage(_that.messageId);case OnDislikeMessage() when onDislikeMessage != null:
+return onDislikeMessage(_that.messageId);case _:
+  return null;
+
+}
 }
 
-/// @nodoc
-abstract class _$$OnLoadDetailImplCopyWith<$Res> {
-  factory _$$OnLoadDetailImplCopyWith(
-    _$OnLoadDetailImpl value,
-    $Res Function(_$OnLoadDetailImpl) then,
-  ) = __$$OnLoadDetailImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int ticketId});
-}
-
-/// @nodoc
-class __$$OnLoadDetailImplCopyWithImpl<$Res>
-    extends _$TicketDetailEventCopyWithImpl<$Res, _$OnLoadDetailImpl>
-    implements _$$OnLoadDetailImplCopyWith<$Res> {
-  __$$OnLoadDetailImplCopyWithImpl(
-    _$OnLoadDetailImpl _value,
-    $Res Function(_$OnLoadDetailImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? ticketId = null}) {
-    return _then(
-      _$OnLoadDetailImpl(
-        ticketId: null == ticketId
-            ? _value.ticketId
-            : ticketId // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
-  }
-}
-
-/// @nodoc
-
-class _$OnLoadDetailImpl implements OnLoadDetail {
-  const _$OnLoadDetailImpl({required this.ticketId});
-
-  @override
-  final int ticketId;
-
-  @override
-  String toString() {
-    return 'TicketDetailEvent.onLoadDetail(ticketId: $ticketId)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$OnLoadDetailImpl &&
-            (identical(other.ticketId, ticketId) ||
-                other.ticketId == ticketId));
-  }
-
-  @override
-  int get hashCode => Object.hash(runtimeType, ticketId);
-
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$OnLoadDetailImplCopyWith<_$OnLoadDetailImpl> get copyWith =>
-      __$$OnLoadDetailImplCopyWithImpl<_$OnLoadDetailImpl>(this, _$identity);
-
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int ticketId) onLoadDetail,
-    required TResult Function(String message) onSendMessage,
-    required TResult Function(int messageId) onDeleteMessage,
-    required TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )
-    onUpdateTicket,
-    required TResult Function(int messageId) onLikeMessage,
-    required TResult Function(int messageId) onDislikeMessage,
-  }) {
-    return onLoadDetail(ticketId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int ticketId)? onLoadDetail,
-    TResult? Function(String message)? onSendMessage,
-    TResult? Function(int messageId)? onDeleteMessage,
-    TResult? Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult? Function(int messageId)? onLikeMessage,
-    TResult? Function(int messageId)? onDislikeMessage,
-  }) {
-    return onLoadDetail?.call(ticketId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int ticketId)? onLoadDetail,
-    TResult Function(String message)? onSendMessage,
-    TResult Function(int messageId)? onDeleteMessage,
-    TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult Function(int messageId)? onLikeMessage,
-    TResult Function(int messageId)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onLoadDetail != null) {
-      return onLoadDetail(ticketId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadDetail value) onLoadDetail,
-    required TResult Function(OnSendMessage value) onSendMessage,
-    required TResult Function(OnDeleteMessage value) onDeleteMessage,
-    required TResult Function(OnUpdateTicket value) onUpdateTicket,
-    required TResult Function(OnLikeMessage value) onLikeMessage,
-    required TResult Function(OnDislikeMessage value) onDislikeMessage,
-  }) {
-    return onLoadDetail(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadDetail value)? onLoadDetail,
-    TResult? Function(OnSendMessage value)? onSendMessage,
-    TResult? Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult? Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult? Function(OnLikeMessage value)? onLikeMessage,
-    TResult? Function(OnDislikeMessage value)? onDislikeMessage,
-  }) {
-    return onLoadDetail?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadDetail value)? onLoadDetail,
-    TResult Function(OnSendMessage value)? onSendMessage,
-    TResult Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult Function(OnLikeMessage value)? onLikeMessage,
-    TResult Function(OnDislikeMessage value)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onLoadDetail != null) {
-      return onLoadDetail(this);
-    }
-    return orElse();
-  }
-}
-
-abstract class OnLoadDetail implements TicketDetailEvent {
-  const factory OnLoadDetail({required final int ticketId}) =
-      _$OnLoadDetailImpl;
-
-  int get ticketId;
-
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OnLoadDetailImplCopyWith<_$OnLoadDetailImpl> get copyWith =>
-      throw _privateConstructorUsedError;
-}
-
-/// @nodoc
-abstract class _$$OnSendMessageImplCopyWith<$Res> {
-  factory _$$OnSendMessageImplCopyWith(
-    _$OnSendMessageImpl value,
-    $Res Function(_$OnSendMessageImpl) then,
-  ) = __$$OnSendMessageImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({String message});
-}
-
-/// @nodoc
-class __$$OnSendMessageImplCopyWithImpl<$Res>
-    extends _$TicketDetailEventCopyWithImpl<$Res, _$OnSendMessageImpl>
-    implements _$$OnSendMessageImplCopyWith<$Res> {
-  __$$OnSendMessageImplCopyWithImpl(
-    _$OnSendMessageImpl _value,
-    $Res Function(_$OnSendMessageImpl) _then,
-  ) : super(_value, _then);
-
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? message = null}) {
-    return _then(
-      _$OnSendMessageImpl(
-        message: null == message
-            ? _value.message
-            : message // ignore: cast_nullable_to_non_nullable
-                  as String,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$OnSendMessageImpl implements OnSendMessage {
-  const _$OnSendMessageImpl({required this.message});
 
-  @override
-  final String message;
+class OnLoadDetail implements TicketDetailEvent {
+  const OnLoadDetail({required this.ticketId});
+  
 
-  @override
-  String toString() {
-    return 'TicketDetailEvent.onSendMessage(message: $message)';
-  }
+ final  int ticketId;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$OnSendMessageImpl &&
-            (identical(other.message, message) || other.message == message));
-  }
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnLoadDetailCopyWith<OnLoadDetail> get copyWith => _$OnLoadDetailCopyWithImpl<OnLoadDetail>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, message);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$OnSendMessageImplCopyWith<_$OnSendMessageImpl> get copyWith =>
-      __$$OnSendMessageImplCopyWithImpl<_$OnSendMessageImpl>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int ticketId) onLoadDetail,
-    required TResult Function(String message) onSendMessage,
-    required TResult Function(int messageId) onDeleteMessage,
-    required TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )
-    onUpdateTicket,
-    required TResult Function(int messageId) onLikeMessage,
-    required TResult Function(int messageId) onDislikeMessage,
-  }) {
-    return onSendMessage(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int ticketId)? onLoadDetail,
-    TResult? Function(String message)? onSendMessage,
-    TResult? Function(int messageId)? onDeleteMessage,
-    TResult? Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult? Function(int messageId)? onLikeMessage,
-    TResult? Function(int messageId)? onDislikeMessage,
-  }) {
-    return onSendMessage?.call(message);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int ticketId)? onLoadDetail,
-    TResult Function(String message)? onSendMessage,
-    TResult Function(int messageId)? onDeleteMessage,
-    TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult Function(int messageId)? onLikeMessage,
-    TResult Function(int messageId)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onSendMessage != null) {
-      return onSendMessage(message);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadDetail value) onLoadDetail,
-    required TResult Function(OnSendMessage value) onSendMessage,
-    required TResult Function(OnDeleteMessage value) onDeleteMessage,
-    required TResult Function(OnUpdateTicket value) onUpdateTicket,
-    required TResult Function(OnLikeMessage value) onLikeMessage,
-    required TResult Function(OnDislikeMessage value) onDislikeMessage,
-  }) {
-    return onSendMessage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadDetail value)? onLoadDetail,
-    TResult? Function(OnSendMessage value)? onSendMessage,
-    TResult? Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult? Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult? Function(OnLikeMessage value)? onLikeMessage,
-    TResult? Function(OnDislikeMessage value)? onDislikeMessage,
-  }) {
-    return onSendMessage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadDetail value)? onLoadDetail,
-    TResult Function(OnSendMessage value)? onSendMessage,
-    TResult Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult Function(OnLikeMessage value)? onLikeMessage,
-    TResult Function(OnDislikeMessage value)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onSendMessage != null) {
-      return onSendMessage(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnLoadDetail&&(identical(other.ticketId, ticketId) || other.ticketId == ticketId));
 }
 
-abstract class OnSendMessage implements TicketDetailEvent {
-  const factory OnSendMessage({required final String message}) =
-      _$OnSendMessageImpl;
 
-  String get message;
+@override
+int get hashCode => Object.hash(runtimeType,ticketId);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OnSendMessageImplCopyWith<_$OnSendMessageImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'TicketDetailEvent.onLoadDetail(ticketId: $ticketId)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$OnDeleteMessageImplCopyWith<$Res> {
-  factory _$$OnDeleteMessageImplCopyWith(
-    _$OnDeleteMessageImpl value,
-    $Res Function(_$OnDeleteMessageImpl) then,
-  ) = __$$OnDeleteMessageImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int messageId});
+abstract mixin class $OnLoadDetailCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
+  factory $OnLoadDetailCopyWith(OnLoadDetail value, $Res Function(OnLoadDetail) _then) = _$OnLoadDetailCopyWithImpl;
+@useResult
+$Res call({
+ int ticketId
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnLoadDetailCopyWithImpl<$Res>
+    implements $OnLoadDetailCopyWith<$Res> {
+  _$OnLoadDetailCopyWithImpl(this._self, this._then);
+
+  final OnLoadDetail _self;
+  final $Res Function(OnLoadDetail) _then;
+
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? ticketId = null,}) {
+  return _then(OnLoadDetail(
+ticketId: null == ticketId ? _self.ticketId : ticketId // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
 }
 
-/// @nodoc
-class __$$OnDeleteMessageImplCopyWithImpl<$Res>
-    extends _$TicketDetailEventCopyWithImpl<$Res, _$OnDeleteMessageImpl>
-    implements _$$OnDeleteMessageImplCopyWith<$Res> {
-  __$$OnDeleteMessageImplCopyWithImpl(
-    _$OnDeleteMessageImpl _value,
-    $Res Function(_$OnDeleteMessageImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? messageId = null}) {
-    return _then(
-      _$OnDeleteMessageImpl(
-        messageId: null == messageId
-            ? _value.messageId
-            : messageId // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$OnDeleteMessageImpl implements OnDeleteMessage {
-  const _$OnDeleteMessageImpl({required this.messageId});
 
-  @override
-  final int messageId;
+class OnSendMessage implements TicketDetailEvent {
+  const OnSendMessage({required this.message});
+  
 
-  @override
-  String toString() {
-    return 'TicketDetailEvent.onDeleteMessage(messageId: $messageId)';
-  }
+ final  String message;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$OnDeleteMessageImpl &&
-            (identical(other.messageId, messageId) ||
-                other.messageId == messageId));
-  }
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnSendMessageCopyWith<OnSendMessage> get copyWith => _$OnSendMessageCopyWithImpl<OnSendMessage>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, messageId);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$OnDeleteMessageImplCopyWith<_$OnDeleteMessageImpl> get copyWith =>
-      __$$OnDeleteMessageImplCopyWithImpl<_$OnDeleteMessageImpl>(
-        this,
-        _$identity,
-      );
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int ticketId) onLoadDetail,
-    required TResult Function(String message) onSendMessage,
-    required TResult Function(int messageId) onDeleteMessage,
-    required TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )
-    onUpdateTicket,
-    required TResult Function(int messageId) onLikeMessage,
-    required TResult Function(int messageId) onDislikeMessage,
-  }) {
-    return onDeleteMessage(messageId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int ticketId)? onLoadDetail,
-    TResult? Function(String message)? onSendMessage,
-    TResult? Function(int messageId)? onDeleteMessage,
-    TResult? Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult? Function(int messageId)? onLikeMessage,
-    TResult? Function(int messageId)? onDislikeMessage,
-  }) {
-    return onDeleteMessage?.call(messageId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int ticketId)? onLoadDetail,
-    TResult Function(String message)? onSendMessage,
-    TResult Function(int messageId)? onDeleteMessage,
-    TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult Function(int messageId)? onLikeMessage,
-    TResult Function(int messageId)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onDeleteMessage != null) {
-      return onDeleteMessage(messageId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadDetail value) onLoadDetail,
-    required TResult Function(OnSendMessage value) onSendMessage,
-    required TResult Function(OnDeleteMessage value) onDeleteMessage,
-    required TResult Function(OnUpdateTicket value) onUpdateTicket,
-    required TResult Function(OnLikeMessage value) onLikeMessage,
-    required TResult Function(OnDislikeMessage value) onDislikeMessage,
-  }) {
-    return onDeleteMessage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadDetail value)? onLoadDetail,
-    TResult? Function(OnSendMessage value)? onSendMessage,
-    TResult? Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult? Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult? Function(OnLikeMessage value)? onLikeMessage,
-    TResult? Function(OnDislikeMessage value)? onDislikeMessage,
-  }) {
-    return onDeleteMessage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadDetail value)? onLoadDetail,
-    TResult Function(OnSendMessage value)? onSendMessage,
-    TResult Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult Function(OnLikeMessage value)? onLikeMessage,
-    TResult Function(OnDislikeMessage value)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onDeleteMessage != null) {
-      return onDeleteMessage(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnSendMessage&&(identical(other.message, message) || other.message == message));
 }
 
-abstract class OnDeleteMessage implements TicketDetailEvent {
-  const factory OnDeleteMessage({required final int messageId}) =
-      _$OnDeleteMessageImpl;
 
-  int get messageId;
+@override
+int get hashCode => Object.hash(runtimeType,message);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OnDeleteMessageImplCopyWith<_$OnDeleteMessageImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'TicketDetailEvent.onSendMessage(message: $message)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$OnUpdateTicketImplCopyWith<$Res> {
-  factory _$$OnUpdateTicketImplCopyWith(
-    _$OnUpdateTicketImpl value,
-    $Res Function(_$OnUpdateTicketImpl) then,
-  ) = __$$OnUpdateTicketImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({
-    String title,
-    String description,
-    String? clientNote,
-    ProjectModel? project,
-  });
+abstract mixin class $OnSendMessageCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
+  factory $OnSendMessageCopyWith(OnSendMessage value, $Res Function(OnSendMessage) _then) = _$OnSendMessageCopyWithImpl;
+@useResult
+$Res call({
+ String message
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnSendMessageCopyWithImpl<$Res>
+    implements $OnSendMessageCopyWith<$Res> {
+  _$OnSendMessageCopyWithImpl(this._self, this._then);
+
+  final OnSendMessage _self;
+  final $Res Function(OnSendMessage) _then;
+
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? message = null,}) {
+  return _then(OnSendMessage(
+message: null == message ? _self.message : message // ignore: cast_nullable_to_non_nullable
+as String,
+  ));
 }
 
-/// @nodoc
-class __$$OnUpdateTicketImplCopyWithImpl<$Res>
-    extends _$TicketDetailEventCopyWithImpl<$Res, _$OnUpdateTicketImpl>
-    implements _$$OnUpdateTicketImplCopyWith<$Res> {
-  __$$OnUpdateTicketImplCopyWithImpl(
-    _$OnUpdateTicketImpl _value,
-    $Res Function(_$OnUpdateTicketImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? title = null,
-    Object? description = null,
-    Object? clientNote = freezed,
-    Object? project = freezed,
-  }) {
-    return _then(
-      _$OnUpdateTicketImpl(
-        title: null == title
-            ? _value.title
-            : title // ignore: cast_nullable_to_non_nullable
-                  as String,
-        description: null == description
-            ? _value.description
-            : description // ignore: cast_nullable_to_non_nullable
-                  as String,
-        clientNote: freezed == clientNote
-            ? _value.clientNote
-            : clientNote // ignore: cast_nullable_to_non_nullable
-                  as String?,
-        project: freezed == project
-            ? _value.project
-            : project // ignore: cast_nullable_to_non_nullable
-                  as ProjectModel?,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$OnUpdateTicketImpl implements OnUpdateTicket {
-  const _$OnUpdateTicketImpl({
-    required this.title,
-    required this.description,
-    required this.clientNote,
-    required this.project,
-  });
 
-  @override
-  final String title;
-  @override
-  final String description;
-  @override
-  final String? clientNote;
-  @override
-  final ProjectModel? project;
+class OnDeleteMessage implements TicketDetailEvent {
+  const OnDeleteMessage({required this.messageId});
+  
 
-  @override
-  String toString() {
-    return 'TicketDetailEvent.onUpdateTicket(title: $title, description: $description, clientNote: $clientNote, project: $project)';
-  }
+ final  int messageId;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$OnUpdateTicketImpl &&
-            (identical(other.title, title) || other.title == title) &&
-            (identical(other.description, description) ||
-                other.description == description) &&
-            (identical(other.clientNote, clientNote) ||
-                other.clientNote == clientNote) &&
-            (identical(other.project, project) || other.project == project));
-  }
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnDeleteMessageCopyWith<OnDeleteMessage> get copyWith => _$OnDeleteMessageCopyWithImpl<OnDeleteMessage>(this, _$identity);
 
-  @override
-  int get hashCode =>
-      Object.hash(runtimeType, title, description, clientNote, project);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$OnUpdateTicketImplCopyWith<_$OnUpdateTicketImpl> get copyWith =>
-      __$$OnUpdateTicketImplCopyWithImpl<_$OnUpdateTicketImpl>(
-        this,
-        _$identity,
-      );
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int ticketId) onLoadDetail,
-    required TResult Function(String message) onSendMessage,
-    required TResult Function(int messageId) onDeleteMessage,
-    required TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )
-    onUpdateTicket,
-    required TResult Function(int messageId) onLikeMessage,
-    required TResult Function(int messageId) onDislikeMessage,
-  }) {
-    return onUpdateTicket(title, description, clientNote, project);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int ticketId)? onLoadDetail,
-    TResult? Function(String message)? onSendMessage,
-    TResult? Function(int messageId)? onDeleteMessage,
-    TResult? Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult? Function(int messageId)? onLikeMessage,
-    TResult? Function(int messageId)? onDislikeMessage,
-  }) {
-    return onUpdateTicket?.call(title, description, clientNote, project);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int ticketId)? onLoadDetail,
-    TResult Function(String message)? onSendMessage,
-    TResult Function(int messageId)? onDeleteMessage,
-    TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult Function(int messageId)? onLikeMessage,
-    TResult Function(int messageId)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onUpdateTicket != null) {
-      return onUpdateTicket(title, description, clientNote, project);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadDetail value) onLoadDetail,
-    required TResult Function(OnSendMessage value) onSendMessage,
-    required TResult Function(OnDeleteMessage value) onDeleteMessage,
-    required TResult Function(OnUpdateTicket value) onUpdateTicket,
-    required TResult Function(OnLikeMessage value) onLikeMessage,
-    required TResult Function(OnDislikeMessage value) onDislikeMessage,
-  }) {
-    return onUpdateTicket(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadDetail value)? onLoadDetail,
-    TResult? Function(OnSendMessage value)? onSendMessage,
-    TResult? Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult? Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult? Function(OnLikeMessage value)? onLikeMessage,
-    TResult? Function(OnDislikeMessage value)? onDislikeMessage,
-  }) {
-    return onUpdateTicket?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadDetail value)? onLoadDetail,
-    TResult Function(OnSendMessage value)? onSendMessage,
-    TResult Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult Function(OnLikeMessage value)? onLikeMessage,
-    TResult Function(OnDislikeMessage value)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onUpdateTicket != null) {
-      return onUpdateTicket(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnDeleteMessage&&(identical(other.messageId, messageId) || other.messageId == messageId));
 }
 
-abstract class OnUpdateTicket implements TicketDetailEvent {
-  const factory OnUpdateTicket({
-    required final String title,
-    required final String description,
-    required final String? clientNote,
-    required final ProjectModel? project,
-  }) = _$OnUpdateTicketImpl;
 
-  String get title;
-  String get description;
-  String? get clientNote;
-  ProjectModel? get project;
+@override
+int get hashCode => Object.hash(runtimeType,messageId);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OnUpdateTicketImplCopyWith<_$OnUpdateTicketImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'TicketDetailEvent.onDeleteMessage(messageId: $messageId)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$OnLikeMessageImplCopyWith<$Res> {
-  factory _$$OnLikeMessageImplCopyWith(
-    _$OnLikeMessageImpl value,
-    $Res Function(_$OnLikeMessageImpl) then,
-  ) = __$$OnLikeMessageImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int messageId});
+abstract mixin class $OnDeleteMessageCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
+  factory $OnDeleteMessageCopyWith(OnDeleteMessage value, $Res Function(OnDeleteMessage) _then) = _$OnDeleteMessageCopyWithImpl;
+@useResult
+$Res call({
+ int messageId
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnDeleteMessageCopyWithImpl<$Res>
+    implements $OnDeleteMessageCopyWith<$Res> {
+  _$OnDeleteMessageCopyWithImpl(this._self, this._then);
+
+  final OnDeleteMessage _self;
+  final $Res Function(OnDeleteMessage) _then;
+
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? messageId = null,}) {
+  return _then(OnDeleteMessage(
+messageId: null == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
 }
 
-/// @nodoc
-class __$$OnLikeMessageImplCopyWithImpl<$Res>
-    extends _$TicketDetailEventCopyWithImpl<$Res, _$OnLikeMessageImpl>
-    implements _$$OnLikeMessageImplCopyWith<$Res> {
-  __$$OnLikeMessageImplCopyWithImpl(
-    _$OnLikeMessageImpl _value,
-    $Res Function(_$OnLikeMessageImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? messageId = null}) {
-    return _then(
-      _$OnLikeMessageImpl(
-        messageId: null == messageId
-            ? _value.messageId
-            : messageId // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$OnLikeMessageImpl implements OnLikeMessage {
-  const _$OnLikeMessageImpl({required this.messageId});
 
-  @override
-  final int messageId;
+class OnUpdateTicket implements TicketDetailEvent {
+  const OnUpdateTicket({required this.title, required this.description, required this.clientNote, required this.project});
+  
 
-  @override
-  String toString() {
-    return 'TicketDetailEvent.onLikeMessage(messageId: $messageId)';
-  }
+ final  String title;
+ final  String description;
+ final  String? clientNote;
+ final  ProjectModel? project;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$OnLikeMessageImpl &&
-            (identical(other.messageId, messageId) ||
-                other.messageId == messageId));
-  }
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnUpdateTicketCopyWith<OnUpdateTicket> get copyWith => _$OnUpdateTicketCopyWithImpl<OnUpdateTicket>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, messageId);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$OnLikeMessageImplCopyWith<_$OnLikeMessageImpl> get copyWith =>
-      __$$OnLikeMessageImplCopyWithImpl<_$OnLikeMessageImpl>(this, _$identity);
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int ticketId) onLoadDetail,
-    required TResult Function(String message) onSendMessage,
-    required TResult Function(int messageId) onDeleteMessage,
-    required TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )
-    onUpdateTicket,
-    required TResult Function(int messageId) onLikeMessage,
-    required TResult Function(int messageId) onDislikeMessage,
-  }) {
-    return onLikeMessage(messageId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int ticketId)? onLoadDetail,
-    TResult? Function(String message)? onSendMessage,
-    TResult? Function(int messageId)? onDeleteMessage,
-    TResult? Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult? Function(int messageId)? onLikeMessage,
-    TResult? Function(int messageId)? onDislikeMessage,
-  }) {
-    return onLikeMessage?.call(messageId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int ticketId)? onLoadDetail,
-    TResult Function(String message)? onSendMessage,
-    TResult Function(int messageId)? onDeleteMessage,
-    TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult Function(int messageId)? onLikeMessage,
-    TResult Function(int messageId)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onLikeMessage != null) {
-      return onLikeMessage(messageId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadDetail value) onLoadDetail,
-    required TResult Function(OnSendMessage value) onSendMessage,
-    required TResult Function(OnDeleteMessage value) onDeleteMessage,
-    required TResult Function(OnUpdateTicket value) onUpdateTicket,
-    required TResult Function(OnLikeMessage value) onLikeMessage,
-    required TResult Function(OnDislikeMessage value) onDislikeMessage,
-  }) {
-    return onLikeMessage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadDetail value)? onLoadDetail,
-    TResult? Function(OnSendMessage value)? onSendMessage,
-    TResult? Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult? Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult? Function(OnLikeMessage value)? onLikeMessage,
-    TResult? Function(OnDislikeMessage value)? onDislikeMessage,
-  }) {
-    return onLikeMessage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadDetail value)? onLoadDetail,
-    TResult Function(OnSendMessage value)? onSendMessage,
-    TResult Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult Function(OnLikeMessage value)? onLikeMessage,
-    TResult Function(OnDislikeMessage value)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onLikeMessage != null) {
-      return onLikeMessage(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnUpdateTicket&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.clientNote, clientNote) || other.clientNote == clientNote)&&(identical(other.project, project) || other.project == project));
 }
 
-abstract class OnLikeMessage implements TicketDetailEvent {
-  const factory OnLikeMessage({required final int messageId}) =
-      _$OnLikeMessageImpl;
 
-  int get messageId;
+@override
+int get hashCode => Object.hash(runtimeType,title,description,clientNote,project);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OnLikeMessageImplCopyWith<_$OnLikeMessageImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'TicketDetailEvent.onUpdateTicket(title: $title, description: $description, clientNote: $clientNote, project: $project)';
+}
+
+
 }
 
 /// @nodoc
-abstract class _$$OnDislikeMessageImplCopyWith<$Res> {
-  factory _$$OnDislikeMessageImplCopyWith(
-    _$OnDislikeMessageImpl value,
-    $Res Function(_$OnDislikeMessageImpl) then,
-  ) = __$$OnDislikeMessageImplCopyWithImpl<$Res>;
-  @useResult
-  $Res call({int messageId});
+abstract mixin class $OnUpdateTicketCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
+  factory $OnUpdateTicketCopyWith(OnUpdateTicket value, $Res Function(OnUpdateTicket) _then) = _$OnUpdateTicketCopyWithImpl;
+@useResult
+$Res call({
+ String title, String description, String? clientNote, ProjectModel? project
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnUpdateTicketCopyWithImpl<$Res>
+    implements $OnUpdateTicketCopyWith<$Res> {
+  _$OnUpdateTicketCopyWithImpl(this._self, this._then);
+
+  final OnUpdateTicket _self;
+  final $Res Function(OnUpdateTicket) _then;
+
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? title = null,Object? description = null,Object? clientNote = freezed,Object? project = freezed,}) {
+  return _then(OnUpdateTicket(
+title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
+as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
+as String,clientNote: freezed == clientNote ? _self.clientNote : clientNote // ignore: cast_nullable_to_non_nullable
+as String?,project: freezed == project ? _self.project : project // ignore: cast_nullable_to_non_nullable
+as ProjectModel?,
+  ));
 }
 
-/// @nodoc
-class __$$OnDislikeMessageImplCopyWithImpl<$Res>
-    extends _$TicketDetailEventCopyWithImpl<$Res, _$OnDislikeMessageImpl>
-    implements _$$OnDislikeMessageImplCopyWith<$Res> {
-  __$$OnDislikeMessageImplCopyWithImpl(
-    _$OnDislikeMessageImpl _value,
-    $Res Function(_$OnDislikeMessageImpl) _then,
-  ) : super(_value, _then);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({Object? messageId = null}) {
-    return _then(
-      _$OnDislikeMessageImpl(
-        messageId: null == messageId
-            ? _value.messageId
-            : messageId // ignore: cast_nullable_to_non_nullable
-                  as int,
-      ),
-    );
-  }
 }
 
 /// @nodoc
 
-class _$OnDislikeMessageImpl implements OnDislikeMessage {
-  const _$OnDislikeMessageImpl({required this.messageId});
 
-  @override
-  final int messageId;
+class OnLikeMessage implements TicketDetailEvent {
+  const OnLikeMessage({required this.messageId});
+  
 
-  @override
-  String toString() {
-    return 'TicketDetailEvent.onDislikeMessage(messageId: $messageId)';
-  }
+ final  int messageId;
 
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$OnDislikeMessageImpl &&
-            (identical(other.messageId, messageId) ||
-                other.messageId == messageId));
-  }
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnLikeMessageCopyWith<OnLikeMessage> get copyWith => _$OnLikeMessageCopyWithImpl<OnLikeMessage>(this, _$identity);
 
-  @override
-  int get hashCode => Object.hash(runtimeType, messageId);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$OnDislikeMessageImplCopyWith<_$OnDislikeMessageImpl> get copyWith =>
-      __$$OnDislikeMessageImplCopyWithImpl<_$OnDislikeMessageImpl>(
-        this,
-        _$identity,
-      );
 
-  @override
-  @optionalTypeArgs
-  TResult when<TResult extends Object?>({
-    required TResult Function(int ticketId) onLoadDetail,
-    required TResult Function(String message) onSendMessage,
-    required TResult Function(int messageId) onDeleteMessage,
-    required TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )
-    onUpdateTicket,
-    required TResult Function(int messageId) onLikeMessage,
-    required TResult Function(int messageId) onDislikeMessage,
-  }) {
-    return onDislikeMessage(messageId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? whenOrNull<TResult extends Object?>({
-    TResult? Function(int ticketId)? onLoadDetail,
-    TResult? Function(String message)? onSendMessage,
-    TResult? Function(int messageId)? onDeleteMessage,
-    TResult? Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult? Function(int messageId)? onLikeMessage,
-    TResult? Function(int messageId)? onDislikeMessage,
-  }) {
-    return onDislikeMessage?.call(messageId);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeWhen<TResult extends Object?>({
-    TResult Function(int ticketId)? onLoadDetail,
-    TResult Function(String message)? onSendMessage,
-    TResult Function(int messageId)? onDeleteMessage,
-    TResult Function(
-      String title,
-      String description,
-      String? clientNote,
-      ProjectModel? project,
-    )?
-    onUpdateTicket,
-    TResult Function(int messageId)? onLikeMessage,
-    TResult Function(int messageId)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onDislikeMessage != null) {
-      return onDislikeMessage(messageId);
-    }
-    return orElse();
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult map<TResult extends Object?>({
-    required TResult Function(OnLoadDetail value) onLoadDetail,
-    required TResult Function(OnSendMessage value) onSendMessage,
-    required TResult Function(OnDeleteMessage value) onDeleteMessage,
-    required TResult Function(OnUpdateTicket value) onUpdateTicket,
-    required TResult Function(OnLikeMessage value) onLikeMessage,
-    required TResult Function(OnDislikeMessage value) onDislikeMessage,
-  }) {
-    return onDislikeMessage(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult? mapOrNull<TResult extends Object?>({
-    TResult? Function(OnLoadDetail value)? onLoadDetail,
-    TResult? Function(OnSendMessage value)? onSendMessage,
-    TResult? Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult? Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult? Function(OnLikeMessage value)? onLikeMessage,
-    TResult? Function(OnDislikeMessage value)? onDislikeMessage,
-  }) {
-    return onDislikeMessage?.call(this);
-  }
-
-  @override
-  @optionalTypeArgs
-  TResult maybeMap<TResult extends Object?>({
-    TResult Function(OnLoadDetail value)? onLoadDetail,
-    TResult Function(OnSendMessage value)? onSendMessage,
-    TResult Function(OnDeleteMessage value)? onDeleteMessage,
-    TResult Function(OnUpdateTicket value)? onUpdateTicket,
-    TResult Function(OnLikeMessage value)? onLikeMessage,
-    TResult Function(OnDislikeMessage value)? onDislikeMessage,
-    required TResult orElse(),
-  }) {
-    if (onDislikeMessage != null) {
-      return onDislikeMessage(this);
-    }
-    return orElse();
-  }
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnLikeMessage&&(identical(other.messageId, messageId) || other.messageId == messageId));
 }
 
-abstract class OnDislikeMessage implements TicketDetailEvent {
-  const factory OnDislikeMessage({required final int messageId}) =
-      _$OnDislikeMessageImpl;
 
-  int get messageId;
+@override
+int get hashCode => Object.hash(runtimeType,messageId);
 
-  /// Create a copy of TicketDetailEvent
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$OnDislikeMessageImplCopyWith<_$OnDislikeMessageImpl> get copyWith =>
-      throw _privateConstructorUsedError;
+@override
+String toString() {
+  return 'TicketDetailEvent.onLikeMessage(messageId: $messageId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OnLikeMessageCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
+  factory $OnLikeMessageCopyWith(OnLikeMessage value, $Res Function(OnLikeMessage) _then) = _$OnLikeMessageCopyWithImpl;
+@useResult
+$Res call({
+ int messageId
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnLikeMessageCopyWithImpl<$Res>
+    implements $OnLikeMessageCopyWith<$Res> {
+  _$OnLikeMessageCopyWithImpl(this._self, this._then);
+
+  final OnLikeMessage _self;
+  final $Res Function(OnLikeMessage) _then;
+
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? messageId = null,}) {
+  return _then(OnLikeMessage(
+messageId: null == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
+}
+
+/// @nodoc
+
+
+class OnDislikeMessage implements TicketDetailEvent {
+  const OnDislikeMessage({required this.messageId});
+  
+
+ final  int messageId;
+
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnDislikeMessageCopyWith<OnDislikeMessage> get copyWith => _$OnDislikeMessageCopyWithImpl<OnDislikeMessage>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnDislikeMessage&&(identical(other.messageId, messageId) || other.messageId == messageId));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,messageId);
+
+@override
+String toString() {
+  return 'TicketDetailEvent.onDislikeMessage(messageId: $messageId)';
+}
+
+
+}
+
+/// @nodoc
+abstract mixin class $OnDislikeMessageCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
+  factory $OnDislikeMessageCopyWith(OnDislikeMessage value, $Res Function(OnDislikeMessage) _then) = _$OnDislikeMessageCopyWithImpl;
+@useResult
+$Res call({
+ int messageId
+});
+
+
+
+
+}
+/// @nodoc
+class _$OnDislikeMessageCopyWithImpl<$Res>
+    implements $OnDislikeMessageCopyWith<$Res> {
+  _$OnDislikeMessageCopyWithImpl(this._self, this._then);
+
+  final OnDislikeMessage _self;
+  final $Res Function(OnDislikeMessage) _then;
+
+/// Create a copy of TicketDetailEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? messageId = null,}) {
+  return _then(OnDislikeMessage(
+messageId: null == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
+as int,
+  ));
+}
+
+
 }
 
 /// @nodoc
 mixin _$TicketDetailState {
-  CommonScreenState get loadingState => throw _privateConstructorUsedError;
-  TicketModel? get ticket => throw _privateConstructorUsedError;
-  List<ConversationMessage> get conversations =>
-      throw _privateConstructorUsedError;
 
-  /// Create a copy of TicketDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  $TicketDetailStateCopyWith<TicketDetailState> get copyWith =>
-      throw _privateConstructorUsedError;
+ CommonScreenState get loadingState; TicketModel? get ticket; List<ConversationMessage> get conversations;
+/// Create a copy of TicketDetailState
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$TicketDetailStateCopyWith<TicketDetailState> get copyWith => _$TicketDetailStateCopyWithImpl<TicketDetailState>(this as TicketDetailState, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketDetailState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.conversations, conversations));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,loadingState,ticket,const DeepCollectionEquality().hash(conversations));
+
+@override
+String toString() {
+  return 'TicketDetailState(loadingState: $loadingState, ticket: $ticket, conversations: $conversations)';
+}
+
+
 }
 
 /// @nodoc
-abstract class $TicketDetailStateCopyWith<$Res> {
-  factory $TicketDetailStateCopyWith(
-    TicketDetailState value,
-    $Res Function(TicketDetailState) then,
-  ) = _$TicketDetailStateCopyWithImpl<$Res, TicketDetailState>;
-  @useResult
-  $Res call({
-    CommonScreenState loadingState,
-    TicketModel? ticket,
-    List<ConversationMessage> conversations,
-  });
-}
+abstract mixin class $TicketDetailStateCopyWith<$Res>  {
+  factory $TicketDetailStateCopyWith(TicketDetailState value, $Res Function(TicketDetailState) _then) = _$TicketDetailStateCopyWithImpl;
+@useResult
+$Res call({
+ CommonScreenState loadingState, TicketModel? ticket, List<ConversationMessage> conversations
+});
 
+
+
+
+}
 /// @nodoc
-class _$TicketDetailStateCopyWithImpl<$Res, $Val extends TicketDetailState>
+class _$TicketDetailStateCopyWithImpl<$Res>
     implements $TicketDetailStateCopyWith<$Res> {
-  _$TicketDetailStateCopyWithImpl(this._value, this._then);
+  _$TicketDetailStateCopyWithImpl(this._self, this._then);
 
-  // ignore: unused_field
-  final $Val _value;
-  // ignore: unused_field
-  final $Res Function($Val) _then;
+  final TicketDetailState _self;
+  final $Res Function(TicketDetailState) _then;
 
-  /// Create a copy of TicketDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? loadingState = null,
-    Object? ticket = freezed,
-    Object? conversations = null,
-  }) {
-    return _then(
-      _value.copyWith(
-            loadingState: null == loadingState
-                ? _value.loadingState
-                : loadingState // ignore: cast_nullable_to_non_nullable
-                      as CommonScreenState,
-            ticket: freezed == ticket
-                ? _value.ticket
-                : ticket // ignore: cast_nullable_to_non_nullable
-                      as TicketModel?,
-            conversations: null == conversations
-                ? _value.conversations
-                : conversations // ignore: cast_nullable_to_non_nullable
-                      as List<ConversationMessage>,
-          )
-          as $Val,
-    );
-  }
+/// Create a copy of TicketDetailState
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') @override $Res call({Object? loadingState = null,Object? ticket = freezed,Object? conversations = null,}) {
+  return _then(_self.copyWith(
+loadingState: null == loadingState ? _self.loadingState : loadingState // ignore: cast_nullable_to_non_nullable
+as CommonScreenState,ticket: freezed == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
+as TicketModel?,conversations: null == conversations ? _self.conversations : conversations // ignore: cast_nullable_to_non_nullable
+as List<ConversationMessage>,
+  ));
+}
+
+}
+
+
+/// Adds pattern-matching-related methods to [TicketDetailState].
+extension TicketDetailStatePatterns on TicketDetailState {
+/// A variant of `map` that fallback to returning `orElse`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>(TResult Function( _TicketDetailState value)?  $default,{required TResult orElse(),}){
+final _that = this;
+switch (_that) {
+case _TicketDetailState() when $default != null:
+return $default(_that);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// Callbacks receives the raw object, upcasted.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case final Subclass2 value:
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult map<TResult extends Object?>(TResult Function( _TicketDetailState value)  $default,){
+final _that = this;
+switch (_that) {
+case _TicketDetailState():
+return $default(_that);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `map` that fallback to returning `null`.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case final Subclass value:
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>(TResult? Function( _TicketDetailState value)?  $default,){
+final _that = this;
+switch (_that) {
+case _TicketDetailState() when $default != null:
+return $default(_that);case _:
+  return null;
+
+}
+}
+/// A variant of `when` that fallback to an `orElse` callback.
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return orElse();
+/// }
+/// ```
+
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  TicketModel? ticket,  List<ConversationMessage> conversations)?  $default,{required TResult orElse(),}) {final _that = this;
+switch (_that) {
+case _TicketDetailState() when $default != null:
+return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
+  return orElse();
+
+}
+}
+/// A `switch`-like method, using callbacks.
+///
+/// As opposed to `map`, this offers destructuring.
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case Subclass2(:final field2):
+///     return ...;
+/// }
+/// ```
+
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  TicketModel? ticket,  List<ConversationMessage> conversations)  $default,) {final _that = this;
+switch (_that) {
+case _TicketDetailState():
+return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
+  throw StateError('Unexpected subclass');
+
+}
+}
+/// A variant of `when` that fallback to returning `null`
+///
+/// It is equivalent to doing:
+/// ```dart
+/// switch (sealedClass) {
+///   case Subclass(:final field):
+///     return ...;
+///   case _:
+///     return null;
+/// }
+/// ```
+
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( CommonScreenState loadingState,  TicketModel? ticket,  List<ConversationMessage> conversations)?  $default,) {final _that = this;
+switch (_that) {
+case _TicketDetailState() when $default != null:
+return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
+  return null;
+
+}
+}
+
 }
 
 /// @nodoc
-abstract class _$$TicketDetailStateImplCopyWith<$Res>
-    implements $TicketDetailStateCopyWith<$Res> {
-  factory _$$TicketDetailStateImplCopyWith(
-    _$TicketDetailStateImpl value,
-    $Res Function(_$TicketDetailStateImpl) then,
-  ) = __$$TicketDetailStateImplCopyWithImpl<$Res>;
-  @override
-  @useResult
-  $Res call({
-    CommonScreenState loadingState,
-    TicketModel? ticket,
-    List<ConversationMessage> conversations,
-  });
+
+
+class _TicketDetailState implements TicketDetailState {
+  const _TicketDetailState({required this.loadingState, required this.ticket, required final  List<ConversationMessage> conversations}): _conversations = conversations;
+  
+
+@override final  CommonScreenState loadingState;
+@override final  TicketModel? ticket;
+ final  List<ConversationMessage> _conversations;
+@override List<ConversationMessage> get conversations {
+  if (_conversations is EqualUnmodifiableListView) return _conversations;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_conversations);
+}
+
+
+/// Create a copy of TicketDetailState
+/// with the given fields replaced by the non-null parameter values.
+@override @JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+_$TicketDetailStateCopyWith<_TicketDetailState> get copyWith => __$TicketDetailStateCopyWithImpl<_TicketDetailState>(this, _$identity);
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TicketDetailState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other._conversations, _conversations));
+}
+
+
+@override
+int get hashCode => Object.hash(runtimeType,loadingState,ticket,const DeepCollectionEquality().hash(_conversations));
+
+@override
+String toString() {
+  return 'TicketDetailState(loadingState: $loadingState, ticket: $ticket, conversations: $conversations)';
+}
+
+
 }
 
 /// @nodoc
-class __$$TicketDetailStateImplCopyWithImpl<$Res>
-    extends _$TicketDetailStateCopyWithImpl<$Res, _$TicketDetailStateImpl>
-    implements _$$TicketDetailStateImplCopyWith<$Res> {
-  __$$TicketDetailStateImplCopyWithImpl(
-    _$TicketDetailStateImpl _value,
-    $Res Function(_$TicketDetailStateImpl) _then,
-  ) : super(_value, _then);
+abstract mixin class _$TicketDetailStateCopyWith<$Res> implements $TicketDetailStateCopyWith<$Res> {
+  factory _$TicketDetailStateCopyWith(_TicketDetailState value, $Res Function(_TicketDetailState) _then) = __$TicketDetailStateCopyWithImpl;
+@override @useResult
+$Res call({
+ CommonScreenState loadingState, TicketModel? ticket, List<ConversationMessage> conversations
+});
 
-  /// Create a copy of TicketDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @pragma('vm:prefer-inline')
-  @override
-  $Res call({
-    Object? loadingState = null,
-    Object? ticket = freezed,
-    Object? conversations = null,
-  }) {
-    return _then(
-      _$TicketDetailStateImpl(
-        loadingState: null == loadingState
-            ? _value.loadingState
-            : loadingState // ignore: cast_nullable_to_non_nullable
-                  as CommonScreenState,
-        ticket: freezed == ticket
-            ? _value.ticket
-            : ticket // ignore: cast_nullable_to_non_nullable
-                  as TicketModel?,
-        conversations: null == conversations
-            ? _value._conversations
-            : conversations // ignore: cast_nullable_to_non_nullable
-                  as List<ConversationMessage>,
-      ),
-    );
-  }
+
+
+
 }
-
 /// @nodoc
+class __$TicketDetailStateCopyWithImpl<$Res>
+    implements _$TicketDetailStateCopyWith<$Res> {
+  __$TicketDetailStateCopyWithImpl(this._self, this._then);
 
-class _$TicketDetailStateImpl implements _TicketDetailState {
-  const _$TicketDetailStateImpl({
-    required this.loadingState,
-    required this.ticket,
-    required final List<ConversationMessage> conversations,
-  }) : _conversations = conversations;
+  final _TicketDetailState _self;
+  final $Res Function(_TicketDetailState) _then;
 
-  @override
-  final CommonScreenState loadingState;
-  @override
-  final TicketModel? ticket;
-  final List<ConversationMessage> _conversations;
-  @override
-  List<ConversationMessage> get conversations {
-    if (_conversations is EqualUnmodifiableListView) return _conversations;
-    // ignore: implicit_dynamic_type
-    return EqualUnmodifiableListView(_conversations);
-  }
-
-  @override
-  String toString() {
-    return 'TicketDetailState(loadingState: $loadingState, ticket: $ticket, conversations: $conversations)';
-  }
-
-  @override
-  bool operator ==(Object other) {
-    return identical(this, other) ||
-        (other.runtimeType == runtimeType &&
-            other is _$TicketDetailStateImpl &&
-            (identical(other.loadingState, loadingState) ||
-                other.loadingState == loadingState) &&
-            (identical(other.ticket, ticket) || other.ticket == ticket) &&
-            const DeepCollectionEquality().equals(
-              other._conversations,
-              _conversations,
-            ));
-  }
-
-  @override
-  int get hashCode => Object.hash(
-    runtimeType,
-    loadingState,
-    ticket,
-    const DeepCollectionEquality().hash(_conversations),
-  );
-
-  /// Create a copy of TicketDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  @override
-  @pragma('vm:prefer-inline')
-  _$$TicketDetailStateImplCopyWith<_$TicketDetailStateImpl> get copyWith =>
-      __$$TicketDetailStateImplCopyWithImpl<_$TicketDetailStateImpl>(
-        this,
-        _$identity,
-      );
+/// Create a copy of TicketDetailState
+/// with the given fields replaced by the non-null parameter values.
+@override @pragma('vm:prefer-inline') $Res call({Object? loadingState = null,Object? ticket = freezed,Object? conversations = null,}) {
+  return _then(_TicketDetailState(
+loadingState: null == loadingState ? _self.loadingState : loadingState // ignore: cast_nullable_to_non_nullable
+as CommonScreenState,ticket: freezed == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
+as TicketModel?,conversations: null == conversations ? _self._conversations : conversations // ignore: cast_nullable_to_non_nullable
+as List<ConversationMessage>,
+  ));
 }
 
-abstract class _TicketDetailState implements TicketDetailState {
-  const factory _TicketDetailState({
-    required final CommonScreenState loadingState,
-    required final TicketModel? ticket,
-    required final List<ConversationMessage> conversations,
-  }) = _$TicketDetailStateImpl;
 
-  @override
-  CommonScreenState get loadingState;
-  @override
-  TicketModel? get ticket;
-  @override
-  List<ConversationMessage> get conversations;
-
-  /// Create a copy of TicketDetailState
-  /// with the given fields replaced by the non-null parameter values.
-  @override
-  @JsonKey(includeFromJson: false, includeToJson: false)
-  _$$TicketDetailStateImplCopyWith<_$TicketDetailStateImpl> get copyWith =>
-      throw _privateConstructorUsedError;
 }
+
+// dart format on
