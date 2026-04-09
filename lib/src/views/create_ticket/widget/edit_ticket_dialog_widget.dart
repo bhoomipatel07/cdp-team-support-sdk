@@ -11,7 +11,7 @@ class EditTicketDialog extends StatefulWidget {
   final List<ProjectModel> projects;
   final void Function(
       String title, String description, String? note, ProjectModel? project)
-      onSave;
+  onSave;
 
   const EditTicketDialog({
     super.key,
@@ -132,9 +132,11 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
                           controller: _titleController,
                           hintText: 'Brief description',
                           validator: (final String? v) =>
-                              (v == null || v.trim().isEmpty)
-                                  ? 'Title is required'
-                                  : null,
+                          (v == null || v
+                              .trim()
+                              .isEmpty)
+                              ? 'Title is required'
+                              : null,
                         ),
                         const SizedBox(height: 18),
                         _buildLabel('PROJECT', isRequired: true),
@@ -148,9 +150,11 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
                           hintText: 'Detailed description',
                           maxLines: 4,
                           validator: (final String? v) =>
-                              (v == null || v.trim().isEmpty)
-                                  ? 'Description is required'
-                                  : null,
+                          (v == null || v
+                              .trim()
+                              .isEmpty)
+                              ? 'Description is required'
+                              : null,
                         ),
                         const SizedBox(height: 18),
                         _buildLabel('NOTE'),
@@ -171,7 +175,7 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
                         const SizedBox(height: 8),
                         if (widget.ticket.attachments.isNotEmpty)
                           ...widget.ticket.attachments.map(
-                              (final TicketAttachment a) =>
+                                  (final TicketAttachment a) =>
                                   _buildAttachmentRow(a)),
                         _buildAddFilesButton(),
                         const SizedBox(height: 24),
@@ -193,8 +197,8 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
                                     child: Text(
                                       'Cancel',
                                       style:
-                                          sdkRubikW600(isTablet: isTab)
-                                              .copyWith(
+                                      sdkRubikW600(isTablet: isTab)
+                                          .copyWith(
                                         fontSize: 14,
                                         color: SdkColors.splashDeep,
                                       ),
@@ -225,10 +229,10 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
                                     child: Text(
                                       'Save Changes',
                                       style:
-                                          sdkRubikW600(isTablet: isTab)
-                                              .copyWith(
-                                                  fontSize: 14,
-                                                  color: Colors.white),
+                                      sdkRubikW600(isTablet: isTab)
+                                          .copyWith(
+                                          fontSize: 14,
+                                          color: Colors.white),
                                     ),
                                   ),
                                 ),
@@ -297,20 +301,20 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide:
-              const BorderSide(color: SdkColors.splashDeep, width: 1.5),
+          const BorderSide(color: SdkColors.splashDeep, width: 1.5),
         ),
         errorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide:
-              const BorderSide(color: SdkColors.colorError500, width: 1),
+          const BorderSide(color: SdkColors.colorError500, width: 1),
         ),
         focusedErrorBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide:
-              const BorderSide(color: SdkColors.colorError500, width: 1.5),
+          const BorderSide(color: SdkColors.colorError500, width: 1.5),
         ),
         contentPadding:
-            const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
       ),
     );
   }
@@ -332,12 +336,13 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
           icon: const Icon(Icons.keyboard_arrow_down_rounded,
               color: SdkColors.homeSubtext),
           items: widget.projects
-              .map((final ProjectModel p) => DropdownMenuItem<ProjectModel>(
-                    value: p,
-                    child: Text(p.name,
-                        style: sdkRubikW500(isTablet: isTab).copyWith(
-                            fontSize: 14, color: SdkColors.splashDeep)),
-                  ))
+              .map((final ProjectModel p) =>
+              DropdownMenuItem<ProjectModel>(
+                value: p,
+                child: Text(p.name,
+                    style: sdkRubikW500(isTablet: isTab).copyWith(
+                        fontSize: 14, color: SdkColors.splashDeep)),
+              ))
               .toList(),
           onChanged: (final ProjectModel? value) {
             setState(() => _selectedProject = value);
@@ -364,7 +369,8 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
           const SizedBox(width: 10),
           Expanded(
             child: Text(
-              '${attachment.fileName}.${attachment.fileExtension.toLowerCase()}',
+              '${attachment.fileName}.${attachment.fileExtension
+                  .toLowerCase()}',
               style: sdkRubikW400(isTablet: isTab)
                   .copyWith(fontSize: 13, color: SdkColors.splashDeep),
               maxLines: 1,
@@ -395,7 +401,7 @@ class _EditTicketDialogState extends State<EditTicketDialog> {
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(8),
         border:
-            Border.all(color: SdkColors.splashGlow.withValues(alpha: 0.4)),
+        Border.all(color: SdkColors.splashGlow.withValues(alpha: 0.4)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,

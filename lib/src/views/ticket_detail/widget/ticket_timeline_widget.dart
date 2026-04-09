@@ -70,66 +70,9 @@ class TicketTimelineWidget extends StatelessWidget {
               );
             },
           ),
-          const SizedBox(height: 16),
-          _buildCurrentStatusCard(),
         ],
       ),
     );
-  }
-
-  Widget _buildCurrentStatusCard() {
-    final bool isTab = SupportSdkConfig.instance.isTablet;
-    return Container(
-      width: double.infinity,
-      padding: const EdgeInsets.symmetric(vertical: 20),
-      decoration: BoxDecoration(
-        color: ticket.status.color.withValues(alpha: 0.06),
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(
-          color: ticket.status.color.withValues(alpha: 0.2),
-          width: 1,
-        ),
-      ),
-      child: Column(
-        children: <Widget>[
-          Container(
-            width: 48,
-            height: 48,
-            decoration: BoxDecoration(
-              color: ticket.status.color.withValues(alpha: 0.1),
-              shape: BoxShape.circle,
-            ),
-            child:
-                Icon(ticket.status.icon, color: ticket.status.color, size: 24),
-          ),
-          const SizedBox(height: 10),
-          Text(
-            ticket.status.label,
-            style: sdkRubikW700(isTablet: isTab)
-                .copyWith(fontSize: 15, color: ticket.status.color),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            _statusSubtext(ticket.status),
-            style: sdkRubikW400(isTablet: isTab)
-                .copyWith(fontSize: 11, color: SdkColors.homeSubtext),
-          ),
-        ],
-      ),
-    );
-  }
-
-  String _statusSubtext(final TicketStatus status) {
-    switch (status) {
-      case TicketStatus.open:
-        return 'Waiting for an agent to pick up your ticket';
-      case TicketStatus.inProgress:
-        return 'Agent is working on your ticket';
-      case TicketStatus.resolved:
-        return 'Your ticket has been resolved';
-      case TicketStatus.closed:
-        return 'This ticket has been closed';
-    }
   }
 }
 

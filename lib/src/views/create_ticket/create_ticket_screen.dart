@@ -6,11 +6,16 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cdp_team_support_sdk/src/bloc/ticket/ticket_bloc.dart';
 import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
+import 'package:cdp_team_support_sdk/src/data/api/either.dart';
+import 'package:cdp_team_support_sdk/src/data/errors/failure.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/common_response_model.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/attachment_repo.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/ticket_repo.dart';
 import 'package:cdp_team_support_sdk/src/models/common_enums.dart';
 import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_colors.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_fonts.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/sdk_app_bar.dart';
+import 'package:cdp_team_support_sdk/src/components/sdk_app_bar.dart';
 
 class CreateTicketScreen extends StatelessWidget {
   final bool isEditMode;
@@ -26,7 +31,11 @@ class CreateTicketScreen extends StatelessWidget {
   Widget build(final BuildContext context) {
     return BlocProvider<TicketBloc>(
       create: (final BuildContext context) =>
-          TicketBloc()..add(const TicketEvent.onLoadTickets()),
+      TicketBloc(
+        ticketRepo: TicketRepoImp(),
+        attachmentRepo: AttachmentRepoImp(),
+      )
+        ..add(const TicketEvent.onLoadTickets()),
       child: _CreateTicketBody(
         isEditMode: isEditMode,
         ticketData: ticketData,
@@ -53,7 +62,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
   late TextEditingController _descController;
   late TextEditingController _noteController;
   final List<PlatformFile> _pickedFiles = <PlatformFile>[];
-  ProjectModel? _selectedProject;
+  late List<TicketAttachment> _existingAttachments;
+  final Set<int> _deletingAttachmentIds = <int>{};
 
   @override
   void initState() {
@@ -64,7 +74,25 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
         TextEditingController(text: widget.ticketData?.description ?? '');
     _noteController =
         TextEditingController(text: widget.ticketData?.clientNote ?? '');
-    _selectedProject = widget.ticketData?.project;
+    _existingAttachments = <TicketAttachment>[
+      ...?widget.ticketData?.attachments,
+    ];
+
+    // In edit mode the controllers are prefilled, but the TicketBloc
+    // state is still blank — submit reads from state so we must seed it
+    // here after the first frame (BlocProvider isn't ready synchronously
+    // in initState).
+    if (widget.isEditMode && widget.ticketData != null) {
+      WidgetsBinding.instance.addPostFrameCallback((final _) {
+        if (!mounted) return;
+        final TicketModel t = widget.ticketData!;
+        final TicketBloc bloc = context.read<TicketBloc>();
+        bloc
+          ..add(TicketEvent.onChangeTitle(title: t.title))
+          ..add(TicketEvent.onChangeDescription(description: t.description))
+          ..add(TicketEvent.onChangeNote(note: t.clientNote ?? ''));
+      });
+    }
   }
 
   @override
@@ -168,7 +196,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     padding: const EdgeInsets.all(16),
                     itemCount: files.length,
                     separatorBuilder: (final BuildContext _, final int __) =>
-                        const SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     itemBuilder:
                         (final BuildContext context, final int index) {
                       final PlatformFile file = files[index];
@@ -198,26 +226,26 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                                 borderRadius: BorderRadius.circular(10),
                                 child: isImage && file.path != null
                                     ? Image.file(File(file.path!),
-                                        fit: BoxFit.cover)
+                                    fit: BoxFit.cover)
                                     : Icon(
-                                        _getFileIcon(
-                                            file.extension ?? 'file'),
-                                        color: SdkColors.splashGlow,
-                                        size: 28),
+                                    _getFileIcon(
+                                        file.extension ?? 'file'),
+                                    color: SdkColors.splashGlow,
+                                    size: 28),
                               ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     file.name,
                                     style: sdkRubikW500(isTablet: isTab)
                                         .copyWith(
-                                            fontSize: 13,
-                                            color: SdkColors.splashDeep),
+                                        fontSize: 13,
+                                        color: SdkColors.splashDeep),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -226,8 +254,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                                     _formatSize(file.size),
                                     style: sdkRubikW400(isTablet: isTab)
                                         .copyWith(
-                                            fontSize: 11,
-                                            color: SdkColors.homeSubtext),
+                                        fontSize: 11,
+                                        color: SdkColors.homeSubtext),
                                   ),
                                 ],
                               ),
@@ -260,8 +288,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                               child: Text('Cancel',
                                   style: sdkRubikW600(isTablet: isTab)
                                       .copyWith(
-                                          fontSize: 14,
-                                          color: SdkColors.splashDeep)),
+                                      fontSize: 14,
+                                      color: SdkColors.splashDeep)),
                             ),
                           ),
                         ),
@@ -281,8 +309,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                               child: Text('Confirm',
                                   style: sdkRubikW600(isTablet: isTab)
                                       .copyWith(
-                                          fontSize: 14,
-                                          color: Colors.white)),
+                                      fontSize: 14,
+                                      color: Colors.white)),
                             ),
                           ),
                         ),
@@ -323,27 +351,35 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: BlocConsumer<TicketBloc, TicketState>(
+        // Only fire on the false → true transition so the listener
+        // doesn't pop the screen multiple times as follow-up state
+        // updates (e.g. the post-submit OnLoadTickets refresh) come in.
+        listenWhen: (final TicketState prev, final TicketState curr) =>
+            !prev.isTicketCreated && curr.isTicketCreated,
         listener: (final BuildContext context, final TicketState state) {
-          if (state.isTicketCreated) {
-            Navigator.pop(context, true);
-          }
+          Navigator.pop(context, true);
         },
         builder: (final BuildContext context, final TicketState state) {
           return Scaffold(
             backgroundColor: SdkColors.bgColor,
             appBar: SdkAppBar(
               title:
-                  widget.isEditMode ? 'Edit Ticket' : 'Create New Ticket',
+              widget.isEditMode ? 'Edit Ticket' : 'Create New Ticket',
             ),
             body: SingleChildScrollView(
               padding: EdgeInsets.symmetric(
                 horizontal: isTab
-                    ? MediaQuery.of(context).size.width / 6
+                    ? MediaQuery
+                    .of(context)
+                    .size
+                    .width / 6
                     : 16,
                 vertical: 20,
               ),
               child: Form(
-                key: context.read<TicketBloc>().formKey,
+                key: context
+                    .read<TicketBloc>()
+                    .formKey,
                 child: _buildFormCard(context, state),
               ),
             ),
@@ -399,17 +435,17 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.homeBorder, width: 1),
+                const BorderSide(color: SdkColors.homeBorder, width: 1),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.splashDeep, width: 1.5),
+                const BorderSide(color: SdkColors.splashDeep, width: 1.5),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.colorError500, width: 1),
+                const BorderSide(color: SdkColors.colorError500, width: 1),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -417,13 +453,16 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     color: SdkColors.colorError500, width: 1.5),
               ),
               contentPadding:
-                  const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
             ),
             onChanged: (final String value) {
-              context.read<TicketBloc>().add(TicketEvent.onChangeTitle(title: value));
+              context.read<TicketBloc>().add(
+                  TicketEvent.onChangeTitle(title: value));
             },
             validator: (final String? value) {
-              if (value == null || value.trim().isEmpty) {
+              if (value == null || value
+                  .trim()
+                  .isEmpty) {
                 return 'Title is required';
               }
               return null;
@@ -452,17 +491,17 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.homeBorder, width: 1),
+                const BorderSide(color: SdkColors.homeBorder, width: 1),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.splashDeep, width: 1.5),
+                const BorderSide(color: SdkColors.splashDeep, width: 1.5),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.colorError500, width: 1),
+                const BorderSide(color: SdkColors.colorError500, width: 1),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
@@ -477,7 +516,9 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                   .add(TicketEvent.onChangeDescription(description: value));
             },
             validator: (final String? value) {
-              if (value == null || value.trim().isEmpty) {
+              if (value == null || value
+                  .trim()
+                  .isEmpty) {
                 return 'Description is required';
               }
               return null;
@@ -485,46 +526,40 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
           ),
           const SizedBox(height: 20),
 
-          // Project dropdown
+          // Project is fixed per host app (SupportSdkConfig.project);
+          // shown read-only so the user knows which project they are
+          // filing against but cannot change it.
           _buildLabel('PROJECT'),
           const SizedBox(height: 8),
           Container(
+            width: double.infinity,
+            padding:
+                const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
             decoration: BoxDecoration(
               color: SdkColors.bgColor,
               borderRadius: BorderRadius.circular(10),
               border: Border.all(color: SdkColors.homeBorder, width: 1),
             ),
-            padding: const EdgeInsets.symmetric(horizontal: 14),
-            child: DropdownButtonHideUnderline(
-              child: DropdownButton<ProjectModel?>(
-                value: _selectedProject ?? state.selectedProject,
-                isExpanded: true,
-                dropdownColor: Colors.white,
-                icon: const Icon(Icons.keyboard_arrow_down_rounded,
-                    color: SdkColors.homeSubtext),
-                hint: Text(
-                  'Select a project (optional)',
-                  style: sdkRubikW400(isTablet: isTab).copyWith(
-                      fontSize: 14, color: SdkColors.homeSubtext),
+            child: Row(
+              children: <Widget>[
+                const Icon(Icons.folder_outlined,
+                    size: 18, color: SdkColors.splashGlow),
+                const SizedBox(width: 10),
+                Expanded(
+                  child: Text(
+                    SupportSdkConfig.instance.project.displayName,
+                    style: sdkRubikW600(isTablet: isTab).copyWith(
+                      fontSize: 14,
+                      color: SdkColors.splashDeep,
+                    ),
+                  ),
                 ),
-                items: state.projects
-                    .map((final ProjectModel p) =>
-                        DropdownMenuItem<ProjectModel>(
-                          value: p,
-                          child: Text(p.name,
-                              style: sdkRubikW500(isTablet: isTab)
-                                  .copyWith(
-                                      fontSize: 14,
-                                      color: SdkColors.splashDeep)),
-                        ))
-                    .toList(),
-                onChanged: (final ProjectModel? value) {
-                  setState(() => _selectedProject = value);
-                  context
-                      .read<TicketBloc>()
-                      .add(TicketEvent.onSelectProject(project: value));
-                },
-              ),
+                Icon(
+                  Icons.lock_outline_rounded,
+                  size: 14,
+                  color: SdkColors.homeSubtext.withValues(alpha: 0.6),
+                ),
+              ],
             ),
           ),
           const SizedBox(height: 20),
@@ -547,17 +582,18 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.homeBorder, width: 1),
+                const BorderSide(color: SdkColors.homeBorder, width: 1),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide:
-                    const BorderSide(color: SdkColors.splashDeep, width: 1.5),
+                const BorderSide(color: SdkColors.splashDeep, width: 1.5),
               ),
               contentPadding: const EdgeInsets.all(14),
             ),
             onChanged: (final String value) {
-              context.read<TicketBloc>().add(TicketEvent.onChangeNote(note: value));
+              context.read<TicketBloc>().add(
+                  TicketEvent.onChangeNote(note: value));
             },
           ),
           const SizedBox(height: 24),
@@ -568,9 +604,9 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
 
           if (widget.isEditMode &&
               widget.ticketData != null &&
-              widget.ticketData!.attachments.isNotEmpty) ...<Widget>[
-            ...widget.ticketData!.attachments.map(
-                (final TicketAttachment a) => _buildExistingAttachment(a)),
+              _existingAttachments.isNotEmpty) ...<Widget>[
+            ..._existingAttachments.map(
+                    (final TicketAttachment a) => _buildExistingAttachment(a)),
             const SizedBox(height: 8),
           ],
 
@@ -578,10 +614,13 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
 
           if (_pickedFiles.isNotEmpty) ...<Widget>[
             const SizedBox(height: 12),
-            ..._pickedFiles.asMap().entries.map(
+            ..._pickedFiles
+                .asMap()
+                .entries
+                .map(
                   (final MapEntry<int, PlatformFile> entry) =>
-                      _buildPickedFileChip(entry.key, entry.value),
-                ),
+                  _buildPickedFileChip(entry.key, entry.value),
+            ),
           ],
           const SizedBox(height: 32),
 
@@ -597,7 +636,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                           color:
-                              SdkColors.splashDeep.withValues(alpha: 0.25)),
+                          SdkColors.splashDeep.withValues(alpha: 0.25)),
                     ),
                     child: Center(
                       child: Text('Cancel',
@@ -614,9 +653,20 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                 child: GestureDetector(
                   onTap: () {
                     if (state.loadingState != CommonScreenState.loading) {
-                      context
-                          .read<TicketBloc>()
-                          .add(const TicketEvent.onSubmitTicket());
+                      final List<String> paths = _pickedFiles
+                          .where(
+                            (final PlatformFile f) => f.path != null,
+                      )
+                          .map((final PlatformFile f) => f.path!)
+                          .toList();
+                      context.read<TicketBloc>().add(
+                        TicketEvent.onSubmitTicket(
+                          helpdeskTicketId: widget.isEditMode
+                              ? widget.ticketData?.id
+                              : null,
+                          attachmentPaths: paths,
+                        ),
+                      );
                     }
                   },
                   child: Container(
@@ -627,7 +677,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                       boxShadow: <BoxShadow>[
                         BoxShadow(
                           color:
-                              SdkColors.splashDeep.withValues(alpha: 0.25),
+                          SdkColors.splashDeep.withValues(alpha: 0.25),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -636,35 +686,35 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     child: Center(
                       child: state.loadingState == CommonScreenState.loading
                           ? const SizedBox(
-                              width: 22,
-                              height: 22,
-                              child: CircularProgressIndicator(
-                                strokeWidth: 2,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                    Colors.white),
-                              ),
-                            )
+                        width: 22,
+                        height: 22,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          valueColor: AlwaysStoppedAnimation<Color>(
+                              Colors.white),
+                        ),
+                      )
                           : Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: <Widget>[
-                                Icon(
-                                    widget.isEditMode
-                                        ? Icons.save_rounded
-                                        : Icons.check_rounded,
-                                    color: Colors.white,
-                                    size: 20),
-                                const SizedBox(width: 6),
-                                Text(
-                                  widget.isEditMode
-                                      ? 'Save Changes'
-                                      : 'Create Ticket',
-                                  style: sdkRubikW600(isTablet: isTab)
-                                      .copyWith(
-                                          fontSize: isTab ? 15 : 14,
-                                          color: Colors.white),
-                                ),
-                              ],
-                            ),
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: <Widget>[
+                          Icon(
+                              widget.isEditMode
+                                  ? Icons.save_rounded
+                                  : Icons.check_rounded,
+                              color: Colors.white,
+                              size: 20),
+                          const SizedBox(width: 6),
+                          Text(
+                            widget.isEditMode
+                                ? 'Save Changes'
+                                : 'Create Ticket',
+                            style: sdkRubikW600(isTablet: isTab)
+                                .copyWith(
+                                fontSize: isTab ? 15 : 14,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
                     ),
                   ),
                 ),
@@ -726,11 +776,11 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
             const SizedBox(height: 8),
             Container(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
                 border:
-                    Border.all(color: SdkColors.splashDeep, width: 1),
+                Border.all(color: SdkColors.splashDeep, width: 1),
               ),
               child: Text('Browse Files',
                   style: sdkRubikW500(isTablet: isTab)
@@ -750,6 +800,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
 
   Widget _buildExistingAttachment(final TicketAttachment attachment) {
     final bool isTab = SupportSdkConfig.instance.isTablet;
+    final bool isDeleting = _deletingAttachmentIds.contains(attachment.id);
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(10),
@@ -768,7 +819,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  '${attachment.fileName}.${attachment.fileExtension.toLowerCase()}',
+                  '${attachment.fileName}.${attachment.fileExtension
+                      .toLowerCase()}',
                   style: sdkRubikW500(isTablet: isTab)
                       .copyWith(fontSize: 12, color: SdkColors.splashDeep),
                   maxLines: 1,
@@ -780,10 +832,58 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               ],
             ),
           ),
-          const Icon(Icons.check_circle_rounded,
-              size: 18, color: Color(0xFF22C55E)),
+          if (isDeleting)
+            const SizedBox(
+              width: 18,
+              height: 18,
+              child: CircularProgressIndicator(
+                strokeWidth: 2,
+                color: SdkColors.colorError500,
+              ),
+            )
+          else
+            GestureDetector(
+              onTap: () => _deleteExistingAttachment(attachment),
+              child: const Icon(
+                Icons.delete_outline_rounded,
+                size: 20,
+                color: SdkColors.colorError500,
+              ),
+            ),
         ],
       ),
+    );
+  }
+
+  Future<void> _deleteExistingAttachment(
+    final TicketAttachment attachment,
+  ) async {
+    setState(() => _deletingAttachmentIds.add(attachment.id));
+
+    final Either<Failure, CommonResponseModel> result =
+        await AttachmentRepoImp()
+            .deleteAttachment(attachmentId: attachment.id);
+
+    if (!mounted) return;
+
+    result.fold(
+      (final Failure error) {
+        setState(() => _deletingAttachmentIds.remove(attachment.id));
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Failed to delete attachment: ${error.message}'),
+            backgroundColor: SdkColors.colorError500,
+          ),
+        );
+      },
+      (final CommonResponseModel _) {
+        setState(() {
+          _existingAttachments.removeWhere(
+            (final TicketAttachment a) => a.id == attachment.id,
+          );
+          _deletingAttachmentIds.remove(attachment.id);
+        });
+      },
     );
   }
 
@@ -808,14 +908,14 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
               border:
-                  Border.all(color: SdkColors.homeBorder, width: 0.5),
+              Border.all(color: SdkColors.homeBorder, width: 0.5),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: isImage && file.path != null
                   ? Image.file(File(file.path!), fit: BoxFit.cover)
                   : Icon(_getFileIcon(file.extension ?? 'file'),
-                      color: SdkColors.splashGlow, size: 20),
+                  color: SdkColors.splashGlow, size: 20),
             ),
           ),
           const SizedBox(width: 10),

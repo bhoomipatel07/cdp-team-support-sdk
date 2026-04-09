@@ -5,17 +5,22 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cdp_team_support_sdk/src/bloc/ticket_detail/ticket_detail_bloc.dart';
 import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
+import 'package:cdp_team_support_sdk/src/data/api/endpoints.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/helpdesk_attachment_model.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/helpdesk_ticket_detail_model.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/comment_repo.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/ticket_repo.dart';
 import 'package:cdp_team_support_sdk/src/models/common_enums.dart';
 import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_colors.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_fonts.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/sdk_app_bar.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/conversation_widget.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/message_input_widget.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_attachment_widget.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_info_header_widget.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_timeline_widget.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/create_ticket_screen.dart';
+import 'package:cdp_team_support_sdk/src/components/sdk_app_bar.dart';
+import 'package:cdp_team_support_sdk/src/views/create_ticket/create_ticket_screen.dart';
+import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/conversation_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/message_input_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/ticket_attachment_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/ticket_info_header_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/ticket_timeline_widget.dart';
 
 class TicketDetailScreen extends StatelessWidget {
   final int ticketId;
@@ -25,11 +30,56 @@ class TicketDetailScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return BlocProvider<TicketDetailBloc>(
-      create: (final BuildContext context) => TicketDetailBloc()
-        ..add(TicketDetailEvent.onLoadDetail(ticketId: ticketId)),
+      create: (final BuildContext context) => TicketDetailBloc(
+        ticketRepo: TicketRepoImp(),
+        commentRepo: CommentRepoImp(),
+      )..add(TicketDetailEvent.onLoadDetail(ticketId: ticketId)),
       child: const _TicketDetailBody(),
     );
   }
+}
+
+/// Converts the rich [HelpdeskTicketDetailModel] into the simpler
+/// [TicketModel] shape that the downstream render widgets (header,
+/// attachments, timeline) still consume.
+TicketModel _detailToTicketModel(final HelpdeskTicketDetailModel d) {
+  return TicketModel(
+    id: d.id,
+    ticketNumber: d.ticketNumber,
+    title: d.title,
+    description: d.description,
+    status: TicketStatus.fromName(d.statusName),
+    project: d.projectName != null
+        ? ProjectModel(id: d.projectId ?? 0, name: d.projectName!)
+        : null,
+    clientNote: d.clientNote,
+    createdAt: d.createdOn,
+    updatedAt: d.updatedOn ?? d.createdOn,
+    attachments: d.attachments
+        .map(
+          (final HelpdeskAttachmentModel a) => TicketAttachment(
+            id: a.id,
+            fileName: a.fileName,
+            fileExtension: a.fileExtension,
+            fileSizeBytes: a.fileSizeBytes,
+            // Prefer a URL returned inline by the API; otherwise build
+            // one against the preview endpoint so the UI can stream it.
+            remoteUrl: a.url ??
+                '${SupportSdkConfig.instance.baseUrl}'
+                    '${SupportEndpoints.previewHelpdeskAttachment(attachmentId: a.id)}',
+          ),
+        )
+        .toList(),
+    timeline: d.timeline
+        .map(
+          (final HelpdeskActivityLogModel e) => TicketTimelineEntry(
+            title: e.description,
+            timestamp: e.createdOn,
+            dotColor: const Color(0xFF3B82F6),
+          ),
+        )
+        .toList(),
+  );
 }
 
 class _TicketDetailBody extends StatelessWidget {
@@ -40,7 +90,13 @@ class _TicketDetailBody extends StatelessWidget {
     final bool isTab = SupportSdkConfig.instance.isTablet;
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
-      child: BlocBuilder<TicketDetailBloc, TicketDetailState>(
+      child: BlocConsumer<TicketDetailBloc, TicketDetailState>(
+        listenWhen: (final TicketDetailState prev,
+                final TicketDetailState curr) =>
+            !prev.isDeleted && curr.isDeleted,
+        listener: (final BuildContext context, final TicketDetailState state) {
+          Navigator.of(context).pop(true);
+        },
         builder: (final BuildContext context, final TicketDetailState state) {
           if (state.loadingState == CommonScreenState.loading ||
               state.loadingState == CommonScreenState.initial) {
@@ -53,7 +109,7 @@ class _TicketDetailBody extends StatelessWidget {
               ),
             );
           }
-          if (state.ticket == null) {
+          if (state.detail == null) {
             return Scaffold(
               backgroundColor: SdkColors.bgColor,
               appBar: const SdkAppBar(title: 'Ticket Details'),
@@ -73,7 +129,7 @@ class _TicketDetailBody extends StatelessWidget {
             );
           }
 
-          final TicketModel ticket = state.ticket!;
+          final TicketModel ticket = _detailToTicketModel(state.detail!);
           final bool canEdit = ticket.status == TicketStatus.open;
 
           return Scaffold(
@@ -126,13 +182,12 @@ class _TicketDetailBody extends StatelessWidget {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 3, sigmaY: 3),
           child: Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: isTab ? 120 : 16,
-              vertical: 16,
-            ),
             decoration: BoxDecoration(
               color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: const BorderRadius.only(
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+              ),
               border: Border.all(
                 color: SdkColors.splashDeep.withValues(alpha: 0.08),
               ),
@@ -235,7 +290,7 @@ class _TicketDetailBody extends StatelessWidget {
                   },
                 ),
                 SizedBox(
-                    height: MediaQuery.of(sheetContext).padding.bottom + 12),
+                    height: MediaQuery.of(sheetContext).padding.bottom),
               ],
             ),
           ),
@@ -303,16 +358,31 @@ class _TicketDetailBody extends StatelessWidget {
   void _showDeleteConfirmation(
       final BuildContext context, final TicketModel ticket) {
     final bool isTab = SupportSdkConfig.instance.isTablet;
+    // Grab the bloc from the outer context so the dialog (which is
+    // built outside the BlocProvider subtree) can still read it.
+    final TicketDetailBloc bloc = context.read<TicketDetailBloc>();
     showDialog(
       context: context,
       barrierColor: Colors.black.withValues(alpha: 0.5),
+      barrierDismissible: false,
       builder: (final BuildContext dialogContext) {
         return BackdropFilter(
           filter: ImageFilter.blur(sigmaX: 5, sigmaY: 5),
-          child: Dialog(
-            backgroundColor: Colors.transparent,
-            elevation: 0,
-            child: Container(
+          child: BlocProvider<TicketDetailBloc>.value(
+            value: bloc,
+            child: BlocConsumer<TicketDetailBloc, TicketDetailState>(
+              listenWhen: (final TicketDetailState prev,
+                      final TicketDetailState curr) =>
+                  !prev.isDeleted && curr.isDeleted,
+              listener: (final BuildContext ctx, final TicketDetailState _) {
+                Navigator.pop(dialogContext);
+              },
+              builder: (final BuildContext ctx, final TicketDetailState state) {
+                final bool isDeleting = state.isDeleting;
+                return Dialog(
+                  backgroundColor: Colors.transparent,
+                  elevation: 0,
+                  child: Container(
               padding: EdgeInsets.all(isTab ? 32 : 24),
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -382,22 +452,27 @@ class _TicketDetailBody extends StatelessWidget {
                     children: <Widget>[
                       Expanded(
                         child: GestureDetector(
-                          onTap: () => Navigator.pop(dialogContext),
-                          child: Container(
-                            height: isTab ? 48 : 44,
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: SdkColors.splashDeep
-                                    .withValues(alpha: 0.2),
+                          onTap: isDeleting
+                              ? null
+                              : () => Navigator.pop(dialogContext),
+                          child: Opacity(
+                            opacity: isDeleting ? 0.5 : 1,
+                            child: Container(
+                              height: isTab ? 48 : 44,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                border: Border.all(
+                                  color: SdkColors.splashDeep
+                                      .withValues(alpha: 0.2),
+                                ),
                               ),
-                            ),
-                            child: Center(
-                              child: Text('Cancel',
-                                  style: sdkRubikW600(isTablet: isTab)
-                                      .copyWith(
-                                          fontSize: isTab ? 15 : 13,
-                                          color: SdkColors.splashDeep)),
+                              child: Center(
+                                child: Text('Cancel',
+                                    style: sdkRubikW600(isTablet: isTab)
+                                        .copyWith(
+                                            fontSize: isTab ? 15 : 13,
+                                            color: SdkColors.splashDeep)),
+                              ),
                             ),
                           ),
                         ),
@@ -405,10 +480,13 @@ class _TicketDetailBody extends StatelessWidget {
                       SizedBox(width: isTab ? 14 : 10),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () {
-                            Navigator.pop(dialogContext);
-                            Navigator.pop(context);
-                          },
+                          onTap: isDeleting
+                              ? null
+                              : () {
+                                  ctx.read<TicketDetailBloc>().add(
+                                        const TicketDetailEvent.onDeleteTicket(),
+                                      );
+                                },
                           child: Container(
                             height: isTab ? 48 : 44,
                             decoration: BoxDecoration(
@@ -424,11 +502,23 @@ class _TicketDetailBody extends StatelessWidget {
                               ],
                             ),
                             child: Center(
-                              child: Text('Delete',
-                                  style: sdkRubikW600(isTablet: isTab)
-                                      .copyWith(
-                                          fontSize: isTab ? 15 : 13,
-                                          color: Colors.white)),
+                              child: isDeleting
+                                  ? const SizedBox(
+                                      width: 18,
+                                      height: 18,
+                                      child: CircularProgressIndicator(
+                                        strokeWidth: 2,
+                                        color: Colors.white,
+                                      ),
+                                    )
+                                  : Text(
+                                      'Delete',
+                                      style: sdkRubikW600(isTablet: isTab)
+                                          .copyWith(
+                                        fontSize: isTab ? 15 : 13,
+                                        color: Colors.white,
+                                      ),
+                                    ),
                             ),
                           ),
                         ),
@@ -438,6 +528,9 @@ class _TicketDetailBody extends StatelessWidget {
                 ],
               ),
             ),
+                );
+              },
+            ),
           ),
         );
       },
@@ -446,7 +539,7 @@ class _TicketDetailBody extends StatelessWidget {
 
   Widget _buildMobileLayout(
       final BuildContext context, final TicketDetailState state) {
-    final TicketModel ticket = state.ticket!;
+    final TicketModel ticket = _detailToTicketModel(state.detail!);
     return ListView(
       padding: const EdgeInsets.all(16),
       children: <Widget>[
@@ -473,7 +566,7 @@ class _TicketDetailBody extends StatelessWidget {
 
   Widget _buildTabletLayout(
       final BuildContext context, final TicketDetailState state) {
-    final TicketModel ticket = state.ticket!;
+    final TicketModel ticket = _detailToTicketModel(state.detail!);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[

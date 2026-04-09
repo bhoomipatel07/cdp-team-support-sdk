@@ -3,13 +3,15 @@ import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cdp_team_support_sdk/src/bloc/ticket/ticket_bloc.dart';
 import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/helpdesk_ticket_status_model.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/attachment_repo.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/ticket_repo.dart';
 import 'package:cdp_team_support_sdk/src/models/common_enums.dart';
-import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_colors.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_fonts.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/sdk_app_bar.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_list_item_widget.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_shimmer_widget.dart';
+import 'package:cdp_team_support_sdk/src/components/sdk_app_bar.dart';
+import 'package:cdp_team_support_sdk/src/components/ticket_list_item_widget.dart';
+import 'package:cdp_team_support_sdk/src/components/ticket_shimmer_widget.dart';
 
 class TicketQueueScreen extends StatelessWidget {
   const TicketQueueScreen({super.key});
@@ -17,8 +19,10 @@ class TicketQueueScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return BlocProvider<TicketBloc>(
-      create: (final BuildContext context) =>
-          TicketBloc()..add(const TicketEvent.onLoadTickets()),
+      create: (final BuildContext context) => TicketBloc(
+        ticketRepo: TicketRepoImp(),
+        attachmentRepo: AttachmentRepoImp(),
+      )..add(const TicketEvent.onLoadTickets()),
       child: const _TicketQueueBody(),
     );
   }
@@ -126,7 +130,7 @@ class _TicketQueueBody extends StatelessWidget {
               border: Border.all(color: SdkColors.homeBorder, width: 1),
             ),
             child: DropdownButtonHideUnderline(
-              child: DropdownButton<TicketStatus?>(
+              child: DropdownButton<HelpdeskTicketStatusModel?>(
                 value: state.selectedFilter,
                 isDense: true,
                 dropdownColor: Colors.white,
@@ -134,24 +138,24 @@ class _TicketQueueBody extends StatelessWidget {
                     size: 18, color: SdkColors.homeSubtext),
                 style: sdkRubikW500(isTablet: isTab)
                     .copyWith(fontSize: 12, color: SdkColors.splashDeep),
-                items: <DropdownMenuItem<TicketStatus?>>[
-                  DropdownMenuItem<TicketStatus?>(
+                items: <DropdownMenuItem<HelpdeskTicketStatusModel?>>[
+                  DropdownMenuItem<HelpdeskTicketStatusModel?>(
                     value: null,
                     child: Text('All Status',
                         style: sdkRubikW500(isTablet: isTab).copyWith(
                             fontSize: 12, color: SdkColors.splashDeep)),
                   ),
-                  ...TicketStatus.values.map(
-                    (final TicketStatus status) =>
-                        DropdownMenuItem<TicketStatus?>(
-                      value: status,
-                      child: Text(status.label,
+                  ...state.statuses.map(
+                    (final HelpdeskTicketStatusModel s) =>
+                        DropdownMenuItem<HelpdeskTicketStatusModel?>(
+                      value: s,
+                      child: Text(s.statusName,
                           style: sdkRubikW500(isTablet: isTab).copyWith(
-                              fontSize: 12, color: status.color)),
+                              fontSize: 12, color: SdkColors.splashDeep)),
                     ),
                   ),
                 ],
-                onChanged: (final TicketStatus? value) {
+                onChanged: (final HelpdeskTicketStatusModel? value) {
                   context
                       .read<TicketBloc>()
                       .add(TicketEvent.onFilterByStatus(status: value));

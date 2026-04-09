@@ -1,7 +1,18 @@
+import 'dart:io';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:cdp_team_support_sdk/src/models/ticket_dummy_data.dart';
+import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
+import 'package:cdp_team_support_sdk/src/data/api/either.dart';
+import 'package:cdp_team_support_sdk/src/data/errors/failure.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/common_response_model.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/helpdesk_attachment_model.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/helpdesk_ticket_list_response_model.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/helpdesk_ticket_status_model.dart';
+import 'package:cdp_team_support_sdk/src/data/models/response/ticket_dashboard_counts_model.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/attachment_repo.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/ticket_repo.dart';
 import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
 import 'package:cdp_team_support_sdk/src/models/common_enums.dart';
 
@@ -13,13 +24,18 @@ part 'ticket_bloc.freezed.dart';
 
 class TicketBloc extends Bloc<TicketEvent, TicketState> {
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
+  final TicketRepo ticketRepo;
+  final AttachmentRepo attachmentRepo;
 
-  TicketBloc() : super(TicketState.initial()) {
+  TicketBloc({
+    required this.ticketRepo,
+    required this.attachmentRepo,
+  }) : super(TicketState.initial()) {
     on<OnLoadTickets>(_onLoadTickets);
+    on<OnLoadMoreTickets>(_onLoadMoreTickets);
     on<OnFilterByStatus>(_onFilterByStatus);
     on<OnChangeTitle>(_onChangeTitle);
     on<OnChangeDescription>(_onChangeDescription);
-    on<OnSelectProject>(_onSelectProject);
     on<OnChangeNote>(_onChangeNote);
     on<OnSubmitTicket>(_onSubmitTicket);
     on<OnDeleteTicket>(_onDeleteTicket);
@@ -31,47 +47,158 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
     final Emitter<TicketState> emit,
   ) async {
     emit(state.copyWith(loadingState: CommonScreenState.loading));
-    await Future<void>.delayed(const Duration(milliseconds: 800));
 
-    final List<TicketModel> tickets = TicketDummyData.tickets;
-    final List<ProjectModel> projects = TicketDummyData.projects;
+    // Fetch counts + statuses + first page of tickets in parallel.
+    // Counts feed the stat cards. Statuses are a separate dynamic list
+    // (NOT used by the count UI). Tickets populate the paginated list,
+    // optionally filtered server-side by the currently-selected status.
+    final List<dynamic> results = await Future.wait<dynamic>(<Future<dynamic>>[
+      ticketRepo.getDashboardCounts(),
+      ticketRepo.getTicketStatuses(),
+      ticketRepo.getMyTickets(
+        pageNumber: 1,
+        pageSize: state.pageSize,
+        statusCode: state.selectedFilter?.statusCode,
+      ),
+    ]);
+
+    final Either<Failure, TicketDashboardCountsModel> countsResult =
+        results[0] as Either<Failure, TicketDashboardCountsModel>;
+    final Either<Failure, List<HelpdeskTicketStatusModel>> statusesResult =
+        results[1] as Either<Failure, List<HelpdeskTicketStatusModel>>;
+    final Either<Failure, HelpdeskTicketListResponseModel> ticketsResult =
+        results[2] as Either<Failure, HelpdeskTicketListResponseModel>;
+
+    final TicketDashboardCountsModel counts = countsResult.fold(
+      (final Failure error) {
+        debugPrint('[TicketBloc] getDashboardCounts failed: ${error.message}');
+        return TicketDashboardCountsModel.empty;
+      },
+      (final TicketDashboardCountsModel data) => data,
+    );
+
+    final List<HelpdeskTicketStatusModel> statuses = statusesResult.fold(
+      (final Failure error) {
+        debugPrint('[TicketBloc] getTicketStatuses failed: ${error.message}');
+        return const <HelpdeskTicketStatusModel>[];
+      },
+      (final List<HelpdeskTicketStatusModel> data) => data,
+    );
+
+    final HelpdeskTicketListResponseModel ticketPage = ticketsResult.fold(
+      (final Failure error) {
+        debugPrint('[TicketBloc] getMyTickets failed: ${error.message}');
+        return const HelpdeskTicketListResponseModel(
+          items: <TicketModel>[],
+          totalCount: 0,
+          pageNumber: 1,
+          pageSize: 0,
+        );
+      },
+      (final HelpdeskTicketListResponseModel data) => data,
+    );
+
+    // Server already applied the status filter — list is authoritative.
+    final List<TicketModel> tickets = ticketPage.items;
 
     emit(state.copyWith(
       loadingState: CommonScreenState.loaded,
       allTickets: tickets,
       filteredTickets: tickets,
-      projects: projects,
-      totalCount: tickets.length,
-      openCount: tickets
-          .where((final TicketModel t) => t.status == TicketStatus.open)
-          .length,
-      inProgressCount: tickets
-          .where((final TicketModel t) => t.status == TicketStatus.inProgress)
-          .length,
-      resolvedCount: tickets
-          .where((final TicketModel t) => t.status == TicketStatus.resolved)
-          .length,
-      closedCount: tickets
-          .where((final TicketModel t) => t.status == TicketStatus.closed)
-          .length,
+      statuses: statuses,
+      totalCount: counts.totalCount,
+      openCount: counts.openCount,
+      inProgressCount: counts.inProgressCount,
+      resolvedCount: counts.resolvedCount,
+      closedCount: counts.closedCount,
+      currentPage: 1,
+      totalTickets: ticketPage.totalCount,
+      hasMore: ticketPage.hasMore,
+      isLoadingMore: false,
     ));
   }
 
-  void _onFilterByStatus(
+  Future<void> _onLoadMoreTickets(
+    final OnLoadMoreTickets event,
+    final Emitter<TicketState> emit,
+  ) async {
+    // Guard: no more pages, or already fetching the next page.
+    if (!state.hasMore || state.isLoadingMore) return;
+
+    emit(state.copyWith(isLoadingMore: true));
+
+    final int nextPage = state.currentPage + 1;
+    final Either<Failure, HelpdeskTicketListResponseModel> result =
+        await ticketRepo.getMyTickets(
+      pageNumber: nextPage,
+      pageSize: state.pageSize,
+      statusCode: state.selectedFilter?.statusCode,
+    );
+
+    result.fold(
+      (final Failure error) {
+        debugPrint('[TicketBloc] loadMore failed: ${error.message}');
+        emit(state.copyWith(isLoadingMore: false));
+      },
+      (final HelpdeskTicketListResponseModel page) {
+        final List<TicketModel> merged = <TicketModel>[
+          ...state.allTickets,
+          ...page.items,
+        ];
+        emit(state.copyWith(
+          allTickets: merged,
+          filteredTickets: merged,
+          currentPage: nextPage,
+          totalTickets: page.totalCount,
+          hasMore: merged.length < page.totalCount,
+          isLoadingMore: false,
+        ));
+      },
+    );
+  }
+
+  Future<void> _onFilterByStatus(
     final OnFilterByStatus event,
     final Emitter<TicketState> emit,
-  ) {
-    final TicketStatus? filter = event.status;
-    final List<TicketModel> filtered = filter == null
-        ? state.allTickets
-        : state.allTickets
-            .where((final TicketModel t) => t.status == filter)
-            .toList();
-
+  ) async {
+    // Changing the status filter re-fetches page 1 from the server but
+    // only the list section should show a loading indicator — leave
+    // `loadingState` alone so the stat cards / header stay rendered.
     emit(state.copyWith(
-      selectedFilter: filter,
-      filteredTickets: filtered,
+      selectedFilter: event.status,
+      isRefreshingList: true,
+      currentPage: 1,
     ));
+
+    final Either<Failure, HelpdeskTicketListResponseModel> result =
+        await ticketRepo.getMyTickets(
+      pageNumber: 1,
+      pageSize: state.pageSize,
+      statusCode: event.status?.statusCode,
+    );
+
+    result.fold(
+      (final Failure error) {
+        debugPrint('[TicketBloc] filter load failed: ${error.message}');
+        emit(state.copyWith(
+          allTickets: const <TicketModel>[],
+          filteredTickets: const <TicketModel>[],
+          totalTickets: 0,
+          hasMore: false,
+          isRefreshingList: false,
+        ));
+      },
+      (final HelpdeskTicketListResponseModel page) {
+        emit(state.copyWith(
+          allTickets: page.items,
+          filteredTickets: page.items,
+          currentPage: 1,
+          totalTickets: page.totalCount,
+          hasMore: page.hasMore,
+          isRefreshingList: false,
+        ));
+      },
+    );
   }
 
   void _onChangeTitle(
@@ -88,13 +215,6 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
     emit(state.copyWith(description: event.description));
   }
 
-  void _onSelectProject(
-    final OnSelectProject event,
-    final Emitter<TicketState> emit,
-  ) {
-    emit(state.copyWith(selectedProject: event.project));
-  }
-
   void _onChangeNote(
     final OnChangeNote event,
     final Emitter<TicketState> emit,
@@ -109,90 +229,118 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
     if (!(formKey.currentState?.validate() ?? false)) return;
 
     emit(state.copyWith(loadingState: CommonScreenState.loading));
-    await Future<void>.delayed(const Duration(milliseconds: 600));
 
-    final int newId = state.allTickets.length + 1;
-    final String ticketNumber = 'TKT-${newId.toString().padLeft(4, '0')}';
-    final TicketModel newTicket = TicketModel(
-      id: newId,
-      ticketNumber: ticketNumber,
+    // 1. Create or update the ticket itself.
+    // The project is fixed by the host app via SupportSdkConfig.project,
+    // so we inject it here and never expose a picker to the user.
+    final SupportProject configuredProject = SupportSdkConfig.instance.project;
+
+    final Either<Failure, CommonResponseModel> result =
+        await ticketRepo.addOrUpdateTicket(
+      helpdeskTicketId: event.helpdeskTicketId,
+      helpdeskProjectId: configuredProject.id,
       title: state.title,
       description: state.description,
-      status: TicketStatus.open,
-      project: state.selectedProject,
-      clientNote: state.clientNote.isEmpty ? null : state.clientNote,
-      createdAt: DateTime.now(),
-      updatedAt: DateTime.now(),
-      timeline: <TicketTimelineEntry>[
-        TicketTimelineEntry(
-          title: 'Ticket $ticketNumber created',
-          timestamp: DateTime.now(),
-          dotColor: const Color(0xFF3B82F6),
-        ),
-      ],
+      projectName: configuredProject.displayName,
+      clientNote: state.clientNote,
     );
 
-    final List<TicketModel> updatedAll = <TicketModel>[
-      newTicket,
-      ...state.allTickets
-    ];
-    final List<TicketModel> updatedFiltered = state.selectedFilter == null
-        ? updatedAll
-        : updatedAll
-            .where((final TicketModel t) => t.status == state.selectedFilter)
+    final CommonResponseModel? response = result.fold(
+      (final Failure error) {
+        debugPrint('[TicketBloc] addOrUpdateTicket failed: ${error.message}');
+        return null;
+      },
+      (final CommonResponseModel data) => data,
+    );
+
+    if (response == null || !response.success) {
+      if (response != null) {
+        debugPrint('[TicketBloc] addOrUpdateTicket non-success: '
+            '${response.message}');
+      }
+      emit(state.copyWith(loadingState: CommonScreenState.error));
+      return;
+    }
+
+    // 2. Resolve the ticket id: for edit we already have it; for create
+    //    we rely on the server returning it in the response envelope.
+    final int? ticketId = event.helpdeskTicketId ?? response.id;
+
+    // 3. Upload attachments if any were picked AND we know the ticket id.
+    if (event.attachmentPaths.isNotEmpty) {
+      if (ticketId == null || ticketId == 0) {
+        debugPrint('[TicketBloc] skipping attachment upload: server did '
+            'not return a ticket id on create');
+      } else {
+        emit(state.copyWith(isUploadingAttachments: true));
+
+        final List<File> files = event.attachmentPaths
+            .map((final String p) => File(p))
+            .where((final File f) => f.existsSync())
             .toList();
+
+        if (files.isNotEmpty) {
+          final Either<Failure, List<HelpdeskAttachmentModel>> uploadResult =
+              await attachmentRepo.uploadAttachments(
+            ticketId: ticketId,
+            files: files,
+          );
+
+          uploadResult.fold(
+            (final Failure error) {
+              debugPrint('[TicketBloc] uploadAttachments failed: '
+                  '${error.message}');
+              // Ticket was saved OK — don't flip back to error for
+              // attachment failure. The user will see the ticket and
+              // can retry uploads from edit mode.
+            },
+            (final List<HelpdeskAttachmentModel> _) {},
+          );
+        }
+
+        emit(state.copyWith(isUploadingAttachments: false));
+      }
+    }
 
     emit(state.copyWith(
       loadingState: CommonScreenState.success,
-      allTickets: updatedAll,
-      filteredTickets: updatedFiltered,
-      totalCount: updatedAll.length,
-      openCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.open)
-          .length,
-      inProgressCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.inProgress)
-          .length,
-      resolvedCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.resolved)
-          .length,
-      closedCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.closed)
-          .length,
       isTicketCreated: true,
     ));
+
+    // 4. Refresh counts + list.
+    add(const TicketEvent.onLoadTickets());
   }
 
-  void _onDeleteTicket(
+  Future<void> _onDeleteTicket(
     final OnDeleteTicket event,
     final Emitter<TicketState> emit,
-  ) {
-    final List<TicketModel> updatedAll = state.allTickets
+  ) async {
+    // Optimistic removal so the UI reacts immediately.
+    final List<TicketModel> optimistic = state.allTickets
         .where((final TicketModel t) => t.id != event.ticketId)
         .toList();
-    final List<TicketModel> updatedFiltered = state.selectedFilter == null
-        ? updatedAll
-        : updatedAll
-            .where((final TicketModel t) => t.status == state.selectedFilter)
-            .toList();
-
     emit(state.copyWith(
-      allTickets: updatedAll,
-      filteredTickets: updatedFiltered,
-      totalCount: updatedAll.length,
-      openCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.open)
-          .length,
-      inProgressCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.inProgress)
-          .length,
-      resolvedCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.resolved)
-          .length,
-      closedCount: updatedAll
-          .where((final TicketModel t) => t.status == TicketStatus.closed)
-          .length,
+      allTickets: optimistic,
+      filteredTickets: optimistic,
     ));
+
+    final Either<Failure, CommonResponseModel> result =
+        await ticketRepo.deleteTicket(ticketId: event.ticketId);
+
+    result.fold(
+      (final Failure error) {
+        debugPrint('[TicketBloc] deleteTicket failed: ${error.message}');
+        // Server rejected — reload from source of truth.
+        add(const TicketEvent.onLoadTickets());
+      },
+      (final CommonResponseModel data) {
+        if (!data.success) {
+          debugPrint('[TicketBloc] deleteTicket non-success: ${data.message}');
+        }
+        // Always refresh counts + list after a delete to stay in sync.
+        add(const TicketEvent.onLoadTickets());
+      },
+    );
   }
 
   void _onResetForm(
@@ -202,7 +350,6 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
     emit(state.copyWith(
       title: '',
       description: '',
-      selectedProject: null,
       clientNote: '',
       isTicketCreated: false,
     ));

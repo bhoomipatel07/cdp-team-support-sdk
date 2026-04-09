@@ -21,11 +21,11 @@ abstract class TicketDetailEvent with _$TicketDetailEvent {
     required final ProjectModel? project,
   }) = OnUpdateTicket;
 
-  const factory TicketDetailEvent.onLikeMessage({
-    required final int messageId,
-  }) = OnLikeMessage;
+  const factory TicketDetailEvent.onDeleteTicket() = OnDeleteTicket;
 
-  const factory TicketDetailEvent.onDislikeMessage({
-    required final int messageId,
-  }) = OnDislikeMessage;
+  const factory TicketDetailEvent.onStartReply({
+    required final HelpdeskCommentModel comment,
+  }) = OnStartReply;
+
+  const factory TicketDetailEvent.onCancelReply() = OnCancelReply;
 }

@@ -55,15 +55,15 @@ extension TicketEventPatterns on TicketEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( OnLoadTickets value)?  onLoadTickets,TResult Function( OnFilterByStatus value)?  onFilterByStatus,TResult Function( OnChangeTitle value)?  onChangeTitle,TResult Function( OnChangeDescription value)?  onChangeDescription,TResult Function( OnSelectProject value)?  onSelectProject,TResult Function( OnChangeNote value)?  onChangeNote,TResult Function( OnSubmitTicket value)?  onSubmitTicket,TResult Function( OnDeleteTicket value)?  onDeleteTicket,TResult Function( OnResetForm value)?  onResetForm,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( OnLoadTickets value)?  onLoadTickets,TResult Function( OnLoadMoreTickets value)?  onLoadMoreTickets,TResult Function( OnFilterByStatus value)?  onFilterByStatus,TResult Function( OnChangeTitle value)?  onChangeTitle,TResult Function( OnChangeDescription value)?  onChangeDescription,TResult Function( OnChangeNote value)?  onChangeNote,TResult Function( OnSubmitTicket value)?  onSubmitTicket,TResult Function( OnDeleteTicket value)?  onDeleteTicket,TResult Function( OnResetForm value)?  onResetForm,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case OnLoadTickets() when onLoadTickets != null:
-return onLoadTickets(_that);case OnFilterByStatus() when onFilterByStatus != null:
+return onLoadTickets(_that);case OnLoadMoreTickets() when onLoadMoreTickets != null:
+return onLoadMoreTickets(_that);case OnFilterByStatus() when onFilterByStatus != null:
 return onFilterByStatus(_that);case OnChangeTitle() when onChangeTitle != null:
 return onChangeTitle(_that);case OnChangeDescription() when onChangeDescription != null:
-return onChangeDescription(_that);case OnSelectProject() when onSelectProject != null:
-return onSelectProject(_that);case OnChangeNote() when onChangeNote != null:
+return onChangeDescription(_that);case OnChangeNote() when onChangeNote != null:
 return onChangeNote(_that);case OnSubmitTicket() when onSubmitTicket != null:
 return onSubmitTicket(_that);case OnDeleteTicket() when onDeleteTicket != null:
 return onDeleteTicket(_that);case OnResetForm() when onResetForm != null:
@@ -85,15 +85,15 @@ return onResetForm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( OnLoadTickets value)  onLoadTickets,required TResult Function( OnFilterByStatus value)  onFilterByStatus,required TResult Function( OnChangeTitle value)  onChangeTitle,required TResult Function( OnChangeDescription value)  onChangeDescription,required TResult Function( OnSelectProject value)  onSelectProject,required TResult Function( OnChangeNote value)  onChangeNote,required TResult Function( OnSubmitTicket value)  onSubmitTicket,required TResult Function( OnDeleteTicket value)  onDeleteTicket,required TResult Function( OnResetForm value)  onResetForm,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( OnLoadTickets value)  onLoadTickets,required TResult Function( OnLoadMoreTickets value)  onLoadMoreTickets,required TResult Function( OnFilterByStatus value)  onFilterByStatus,required TResult Function( OnChangeTitle value)  onChangeTitle,required TResult Function( OnChangeDescription value)  onChangeDescription,required TResult Function( OnChangeNote value)  onChangeNote,required TResult Function( OnSubmitTicket value)  onSubmitTicket,required TResult Function( OnDeleteTicket value)  onDeleteTicket,required TResult Function( OnResetForm value)  onResetForm,}){
 final _that = this;
 switch (_that) {
 case OnLoadTickets():
-return onLoadTickets(_that);case OnFilterByStatus():
+return onLoadTickets(_that);case OnLoadMoreTickets():
+return onLoadMoreTickets(_that);case OnFilterByStatus():
 return onFilterByStatus(_that);case OnChangeTitle():
 return onChangeTitle(_that);case OnChangeDescription():
-return onChangeDescription(_that);case OnSelectProject():
-return onSelectProject(_that);case OnChangeNote():
+return onChangeDescription(_that);case OnChangeNote():
 return onChangeNote(_that);case OnSubmitTicket():
 return onSubmitTicket(_that);case OnDeleteTicket():
 return onDeleteTicket(_that);case OnResetForm():
@@ -114,15 +114,15 @@ return onResetForm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( OnLoadTickets value)?  onLoadTickets,TResult? Function( OnFilterByStatus value)?  onFilterByStatus,TResult? Function( OnChangeTitle value)?  onChangeTitle,TResult? Function( OnChangeDescription value)?  onChangeDescription,TResult? Function( OnSelectProject value)?  onSelectProject,TResult? Function( OnChangeNote value)?  onChangeNote,TResult? Function( OnSubmitTicket value)?  onSubmitTicket,TResult? Function( OnDeleteTicket value)?  onDeleteTicket,TResult? Function( OnResetForm value)?  onResetForm,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( OnLoadTickets value)?  onLoadTickets,TResult? Function( OnLoadMoreTickets value)?  onLoadMoreTickets,TResult? Function( OnFilterByStatus value)?  onFilterByStatus,TResult? Function( OnChangeTitle value)?  onChangeTitle,TResult? Function( OnChangeDescription value)?  onChangeDescription,TResult? Function( OnChangeNote value)?  onChangeNote,TResult? Function( OnSubmitTicket value)?  onSubmitTicket,TResult? Function( OnDeleteTicket value)?  onDeleteTicket,TResult? Function( OnResetForm value)?  onResetForm,}){
 final _that = this;
 switch (_that) {
 case OnLoadTickets() when onLoadTickets != null:
-return onLoadTickets(_that);case OnFilterByStatus() when onFilterByStatus != null:
+return onLoadTickets(_that);case OnLoadMoreTickets() when onLoadMoreTickets != null:
+return onLoadMoreTickets(_that);case OnFilterByStatus() when onFilterByStatus != null:
 return onFilterByStatus(_that);case OnChangeTitle() when onChangeTitle != null:
 return onChangeTitle(_that);case OnChangeDescription() when onChangeDescription != null:
-return onChangeDescription(_that);case OnSelectProject() when onSelectProject != null:
-return onSelectProject(_that);case OnChangeNote() when onChangeNote != null:
+return onChangeDescription(_that);case OnChangeNote() when onChangeNote != null:
 return onChangeNote(_that);case OnSubmitTicket() when onSubmitTicket != null:
 return onSubmitTicket(_that);case OnDeleteTicket() when onDeleteTicket != null:
 return onDeleteTicket(_that);case OnResetForm() when onResetForm != null:
@@ -143,16 +143,16 @@ return onResetForm(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onLoadTickets,TResult Function( TicketStatus? status)?  onFilterByStatus,TResult Function( String title)?  onChangeTitle,TResult Function( String description)?  onChangeDescription,TResult Function( ProjectModel? project)?  onSelectProject,TResult Function( String note)?  onChangeNote,TResult Function()?  onSubmitTicket,TResult Function( int ticketId)?  onDeleteTicket,TResult Function()?  onResetForm,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function()?  onLoadTickets,TResult Function()?  onLoadMoreTickets,TResult Function( HelpdeskTicketStatusModel? status)?  onFilterByStatus,TResult Function( String title)?  onChangeTitle,TResult Function( String description)?  onChangeDescription,TResult Function( String note)?  onChangeNote,TResult Function( int? helpdeskTicketId,  List<String> attachmentPaths)?  onSubmitTicket,TResult Function( int ticketId)?  onDeleteTicket,TResult Function()?  onResetForm,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case OnLoadTickets() when onLoadTickets != null:
-return onLoadTickets();case OnFilterByStatus() when onFilterByStatus != null:
+return onLoadTickets();case OnLoadMoreTickets() when onLoadMoreTickets != null:
+return onLoadMoreTickets();case OnFilterByStatus() when onFilterByStatus != null:
 return onFilterByStatus(_that.status);case OnChangeTitle() when onChangeTitle != null:
 return onChangeTitle(_that.title);case OnChangeDescription() when onChangeDescription != null:
-return onChangeDescription(_that.description);case OnSelectProject() when onSelectProject != null:
-return onSelectProject(_that.project);case OnChangeNote() when onChangeNote != null:
+return onChangeDescription(_that.description);case OnChangeNote() when onChangeNote != null:
 return onChangeNote(_that.note);case OnSubmitTicket() when onSubmitTicket != null:
-return onSubmitTicket();case OnDeleteTicket() when onDeleteTicket != null:
+return onSubmitTicket(_that.helpdeskTicketId,_that.attachmentPaths);case OnDeleteTicket() when onDeleteTicket != null:
 return onDeleteTicket(_that.ticketId);case OnResetForm() when onResetForm != null:
 return onResetForm();case _:
   return orElse();
@@ -172,16 +172,16 @@ return onResetForm();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onLoadTickets,required TResult Function( TicketStatus? status)  onFilterByStatus,required TResult Function( String title)  onChangeTitle,required TResult Function( String description)  onChangeDescription,required TResult Function( ProjectModel? project)  onSelectProject,required TResult Function( String note)  onChangeNote,required TResult Function()  onSubmitTicket,required TResult Function( int ticketId)  onDeleteTicket,required TResult Function()  onResetForm,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function()  onLoadTickets,required TResult Function()  onLoadMoreTickets,required TResult Function( HelpdeskTicketStatusModel? status)  onFilterByStatus,required TResult Function( String title)  onChangeTitle,required TResult Function( String description)  onChangeDescription,required TResult Function( String note)  onChangeNote,required TResult Function( int? helpdeskTicketId,  List<String> attachmentPaths)  onSubmitTicket,required TResult Function( int ticketId)  onDeleteTicket,required TResult Function()  onResetForm,}) {final _that = this;
 switch (_that) {
 case OnLoadTickets():
-return onLoadTickets();case OnFilterByStatus():
+return onLoadTickets();case OnLoadMoreTickets():
+return onLoadMoreTickets();case OnFilterByStatus():
 return onFilterByStatus(_that.status);case OnChangeTitle():
 return onChangeTitle(_that.title);case OnChangeDescription():
-return onChangeDescription(_that.description);case OnSelectProject():
-return onSelectProject(_that.project);case OnChangeNote():
+return onChangeDescription(_that.description);case OnChangeNote():
 return onChangeNote(_that.note);case OnSubmitTicket():
-return onSubmitTicket();case OnDeleteTicket():
+return onSubmitTicket(_that.helpdeskTicketId,_that.attachmentPaths);case OnDeleteTicket():
 return onDeleteTicket(_that.ticketId);case OnResetForm():
 return onResetForm();case _:
   throw StateError('Unexpected subclass');
@@ -200,16 +200,16 @@ return onResetForm();case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onLoadTickets,TResult? Function( TicketStatus? status)?  onFilterByStatus,TResult? Function( String title)?  onChangeTitle,TResult? Function( String description)?  onChangeDescription,TResult? Function( ProjectModel? project)?  onSelectProject,TResult? Function( String note)?  onChangeNote,TResult? Function()?  onSubmitTicket,TResult? Function( int ticketId)?  onDeleteTicket,TResult? Function()?  onResetForm,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function()?  onLoadTickets,TResult? Function()?  onLoadMoreTickets,TResult? Function( HelpdeskTicketStatusModel? status)?  onFilterByStatus,TResult? Function( String title)?  onChangeTitle,TResult? Function( String description)?  onChangeDescription,TResult? Function( String note)?  onChangeNote,TResult? Function( int? helpdeskTicketId,  List<String> attachmentPaths)?  onSubmitTicket,TResult? Function( int ticketId)?  onDeleteTicket,TResult? Function()?  onResetForm,}) {final _that = this;
 switch (_that) {
 case OnLoadTickets() when onLoadTickets != null:
-return onLoadTickets();case OnFilterByStatus() when onFilterByStatus != null:
+return onLoadTickets();case OnLoadMoreTickets() when onLoadMoreTickets != null:
+return onLoadMoreTickets();case OnFilterByStatus() when onFilterByStatus != null:
 return onFilterByStatus(_that.status);case OnChangeTitle() when onChangeTitle != null:
 return onChangeTitle(_that.title);case OnChangeDescription() when onChangeDescription != null:
-return onChangeDescription(_that.description);case OnSelectProject() when onSelectProject != null:
-return onSelectProject(_that.project);case OnChangeNote() when onChangeNote != null:
+return onChangeDescription(_that.description);case OnChangeNote() when onChangeNote != null:
 return onChangeNote(_that.note);case OnSubmitTicket() when onSubmitTicket != null:
-return onSubmitTicket();case OnDeleteTicket() when onDeleteTicket != null:
+return onSubmitTicket(_that.helpdeskTicketId,_that.attachmentPaths);case OnDeleteTicket() when onDeleteTicket != null:
 return onDeleteTicket(_that.ticketId);case OnResetForm() when onResetForm != null:
 return onResetForm();case _:
   return null;
@@ -254,11 +254,43 @@ String toString() {
 /// @nodoc
 
 
+class OnLoadMoreTickets implements TicketEvent {
+  const OnLoadMoreTickets();
+  
+
+
+
+
+
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnLoadMoreTickets);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString() {
+  return 'TicketEvent.onLoadMoreTickets()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
 class OnFilterByStatus implements TicketEvent {
   const OnFilterByStatus({required this.status});
   
 
- final  TicketStatus? status;
+ final  HelpdeskTicketStatusModel? status;
 
 /// Create a copy of TicketEvent
 /// with the given fields replaced by the non-null parameter values.
@@ -290,7 +322,7 @@ abstract mixin class $OnFilterByStatusCopyWith<$Res> implements $TicketEventCopy
   factory $OnFilterByStatusCopyWith(OnFilterByStatus value, $Res Function(OnFilterByStatus) _then) = _$OnFilterByStatusCopyWithImpl;
 @useResult
 $Res call({
- TicketStatus? status
+ HelpdeskTicketStatusModel? status
 });
 
 
@@ -310,7 +342,7 @@ class _$OnFilterByStatusCopyWithImpl<$Res>
 @pragma('vm:prefer-inline') $Res call({Object? status = freezed,}) {
   return _then(OnFilterByStatus(
 status: freezed == status ? _self.status : status // ignore: cast_nullable_to_non_nullable
-as TicketStatus?,
+as HelpdeskTicketStatusModel?,
   ));
 }
 
@@ -452,72 +484,6 @@ as String,
 /// @nodoc
 
 
-class OnSelectProject implements TicketEvent {
-  const OnSelectProject({required this.project});
-  
-
- final  ProjectModel? project;
-
-/// Create a copy of TicketEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$OnSelectProjectCopyWith<OnSelectProject> get copyWith => _$OnSelectProjectCopyWithImpl<OnSelectProject>(this, _$identity);
-
-
-
-@override
-bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnSelectProject&&(identical(other.project, project) || other.project == project));
-}
-
-
-@override
-int get hashCode => Object.hash(runtimeType,project);
-
-@override
-String toString() {
-  return 'TicketEvent.onSelectProject(project: $project)';
-}
-
-
-}
-
-/// @nodoc
-abstract mixin class $OnSelectProjectCopyWith<$Res> implements $TicketEventCopyWith<$Res> {
-  factory $OnSelectProjectCopyWith(OnSelectProject value, $Res Function(OnSelectProject) _then) = _$OnSelectProjectCopyWithImpl;
-@useResult
-$Res call({
- ProjectModel? project
-});
-
-
-
-
-}
-/// @nodoc
-class _$OnSelectProjectCopyWithImpl<$Res>
-    implements $OnSelectProjectCopyWith<$Res> {
-  _$OnSelectProjectCopyWithImpl(this._self, this._then);
-
-  final OnSelectProject _self;
-  final $Res Function(OnSelectProject) _then;
-
-/// Create a copy of TicketEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? project = freezed,}) {
-  return _then(OnSelectProject(
-project: freezed == project ? _self.project : project // ignore: cast_nullable_to_non_nullable
-as ProjectModel?,
-  ));
-}
-
-
-}
-
-/// @nodoc
-
-
 class OnChangeNote implements TicketEvent {
   const OnChangeNote({required this.note});
   
@@ -585,33 +551,80 @@ as String,
 
 
 class OnSubmitTicket implements TicketEvent {
-  const OnSubmitTicket();
+  const OnSubmitTicket({this.helpdeskTicketId, final  List<String> attachmentPaths = const <String>[]}): _attachmentPaths = attachmentPaths;
   
 
+/// Non-null when editing an existing ticket.
+ final  int? helpdeskTicketId;
+/// Absolute paths of any newly-picked files to upload after the
+/// ticket is successfully created/updated.
+ final  List<String> _attachmentPaths;
+/// Absolute paths of any newly-picked files to upload after the
+/// ticket is successfully created/updated.
+@JsonKey() List<String> get attachmentPaths {
+  if (_attachmentPaths is EqualUnmodifiableListView) return _attachmentPaths;
+  // ignore: implicit_dynamic_type
+  return EqualUnmodifiableListView(_attachmentPaths);
+}
 
 
+/// Create a copy of TicketEvent
+/// with the given fields replaced by the non-null parameter values.
+@JsonKey(includeFromJson: false, includeToJson: false)
+@pragma('vm:prefer-inline')
+$OnSubmitTicketCopyWith<OnSubmitTicket> get copyWith => _$OnSubmitTicketCopyWithImpl<OnSubmitTicket>(this, _$identity);
 
 
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnSubmitTicket);
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnSubmitTicket&&(identical(other.helpdeskTicketId, helpdeskTicketId) || other.helpdeskTicketId == helpdeskTicketId)&&const DeepCollectionEquality().equals(other._attachmentPaths, _attachmentPaths));
 }
 
 
 @override
-int get hashCode => runtimeType.hashCode;
+int get hashCode => Object.hash(runtimeType,helpdeskTicketId,const DeepCollectionEquality().hash(_attachmentPaths));
 
 @override
 String toString() {
-  return 'TicketEvent.onSubmitTicket()';
+  return 'TicketEvent.onSubmitTicket(helpdeskTicketId: $helpdeskTicketId, attachmentPaths: $attachmentPaths)';
 }
 
 
 }
 
+/// @nodoc
+abstract mixin class $OnSubmitTicketCopyWith<$Res> implements $TicketEventCopyWith<$Res> {
+  factory $OnSubmitTicketCopyWith(OnSubmitTicket value, $Res Function(OnSubmitTicket) _then) = _$OnSubmitTicketCopyWithImpl;
+@useResult
+$Res call({
+ int? helpdeskTicketId, List<String> attachmentPaths
+});
 
 
+
+
+}
+/// @nodoc
+class _$OnSubmitTicketCopyWithImpl<$Res>
+    implements $OnSubmitTicketCopyWith<$Res> {
+  _$OnSubmitTicketCopyWithImpl(this._self, this._then);
+
+  final OnSubmitTicket _self;
+  final $Res Function(OnSubmitTicket) _then;
+
+/// Create a copy of TicketEvent
+/// with the given fields replaced by the non-null parameter values.
+@pragma('vm:prefer-inline') $Res call({Object? helpdeskTicketId = freezed,Object? attachmentPaths = null,}) {
+  return _then(OnSubmitTicket(
+helpdeskTicketId: freezed == helpdeskTicketId ? _self.helpdeskTicketId : helpdeskTicketId // ignore: cast_nullable_to_non_nullable
+as int?,attachmentPaths: null == attachmentPaths ? _self._attachmentPaths : attachmentPaths // ignore: cast_nullable_to_non_nullable
+as List<String>,
+  ));
+}
+
+
+}
 
 /// @nodoc
 
@@ -714,7 +727,13 @@ String toString() {
 /// @nodoc
 mixin _$TicketState {
 
- CommonScreenState get loadingState; List<TicketModel> get allTickets; List<TicketModel> get filteredTickets; TicketStatus? get selectedFilter; int get totalCount; int get openCount; int get inProgressCount; int get resolvedCount; int get closedCount; String get title; String get description; ProjectModel? get selectedProject; String get clientNote; List<ProjectModel> get projects; bool get isTicketCreated;
+ CommonScreenState get loadingState; List<TicketModel> get allTickets; List<TicketModel> get filteredTickets; HelpdeskTicketStatusModel? get selectedFilter; int get totalCount; int get openCount; int get inProgressCount; int get resolvedCount; int get closedCount; String get title; String get description; String get clientNote;/// Dynamic ticket statuses fetched from the API. Used for filter
+/// dropdowns / create forms — NOT for the dashboard count cards.
+ List<HelpdeskTicketStatusModel> get statuses; bool get isTicketCreated; bool get isUploadingAttachments;// ── Pagination (GetMyHelpdeskTickets) ──────────────────────────
+ int get currentPage; int get pageSize; int get totalTickets; bool get hasMore; bool get isLoadingMore;/// True while the list-only refresh (filter change / inline reload)
+/// is running — drives a small spinner inside the list without
+/// replacing the whole dashboard with the shimmer.
+ bool get isRefreshingList;
 /// Create a copy of TicketState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -725,16 +744,16 @@ $TicketStateCopyWith<TicketState> get copyWith => _$TicketStateCopyWithImpl<Tick
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&const DeepCollectionEquality().equals(other.allTickets, allTickets)&&const DeepCollectionEquality().equals(other.filteredTickets, filteredTickets)&&(identical(other.selectedFilter, selectedFilter) || other.selectedFilter == selectedFilter)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.openCount, openCount) || other.openCount == openCount)&&(identical(other.inProgressCount, inProgressCount) || other.inProgressCount == inProgressCount)&&(identical(other.resolvedCount, resolvedCount) || other.resolvedCount == resolvedCount)&&(identical(other.closedCount, closedCount) || other.closedCount == closedCount)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.selectedProject, selectedProject) || other.selectedProject == selectedProject)&&(identical(other.clientNote, clientNote) || other.clientNote == clientNote)&&const DeepCollectionEquality().equals(other.projects, projects)&&(identical(other.isTicketCreated, isTicketCreated) || other.isTicketCreated == isTicketCreated));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&const DeepCollectionEquality().equals(other.allTickets, allTickets)&&const DeepCollectionEquality().equals(other.filteredTickets, filteredTickets)&&(identical(other.selectedFilter, selectedFilter) || other.selectedFilter == selectedFilter)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.openCount, openCount) || other.openCount == openCount)&&(identical(other.inProgressCount, inProgressCount) || other.inProgressCount == inProgressCount)&&(identical(other.resolvedCount, resolvedCount) || other.resolvedCount == resolvedCount)&&(identical(other.closedCount, closedCount) || other.closedCount == closedCount)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.clientNote, clientNote) || other.clientNote == clientNote)&&const DeepCollectionEquality().equals(other.statuses, statuses)&&(identical(other.isTicketCreated, isTicketCreated) || other.isTicketCreated == isTicketCreated)&&(identical(other.isUploadingAttachments, isUploadingAttachments) || other.isUploadingAttachments == isUploadingAttachments)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize)&&(identical(other.totalTickets, totalTickets) || other.totalTickets == totalTickets)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.isRefreshingList, isRefreshingList) || other.isRefreshingList == isRefreshingList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,loadingState,const DeepCollectionEquality().hash(allTickets),const DeepCollectionEquality().hash(filteredTickets),selectedFilter,totalCount,openCount,inProgressCount,resolvedCount,closedCount,title,description,selectedProject,clientNote,const DeepCollectionEquality().hash(projects),isTicketCreated);
+int get hashCode => Object.hashAll([runtimeType,loadingState,const DeepCollectionEquality().hash(allTickets),const DeepCollectionEquality().hash(filteredTickets),selectedFilter,totalCount,openCount,inProgressCount,resolvedCount,closedCount,title,description,clientNote,const DeepCollectionEquality().hash(statuses),isTicketCreated,isUploadingAttachments,currentPage,pageSize,totalTickets,hasMore,isLoadingMore,isRefreshingList]);
 
 @override
 String toString() {
-  return 'TicketState(loadingState: $loadingState, allTickets: $allTickets, filteredTickets: $filteredTickets, selectedFilter: $selectedFilter, totalCount: $totalCount, openCount: $openCount, inProgressCount: $inProgressCount, resolvedCount: $resolvedCount, closedCount: $closedCount, title: $title, description: $description, selectedProject: $selectedProject, clientNote: $clientNote, projects: $projects, isTicketCreated: $isTicketCreated)';
+  return 'TicketState(loadingState: $loadingState, allTickets: $allTickets, filteredTickets: $filteredTickets, selectedFilter: $selectedFilter, totalCount: $totalCount, openCount: $openCount, inProgressCount: $inProgressCount, resolvedCount: $resolvedCount, closedCount: $closedCount, title: $title, description: $description, clientNote: $clientNote, statuses: $statuses, isTicketCreated: $isTicketCreated, isUploadingAttachments: $isUploadingAttachments, currentPage: $currentPage, pageSize: $pageSize, totalTickets: $totalTickets, hasMore: $hasMore, isLoadingMore: $isLoadingMore, isRefreshingList: $isRefreshingList)';
 }
 
 
@@ -745,7 +764,7 @@ abstract mixin class $TicketStateCopyWith<$Res>  {
   factory $TicketStateCopyWith(TicketState value, $Res Function(TicketState) _then) = _$TicketStateCopyWithImpl;
 @useResult
 $Res call({
- CommonScreenState loadingState, List<TicketModel> allTickets, List<TicketModel> filteredTickets, TicketStatus? selectedFilter, int totalCount, int openCount, int inProgressCount, int resolvedCount, int closedCount, String title, String description, ProjectModel? selectedProject, String clientNote, List<ProjectModel> projects, bool isTicketCreated
+ CommonScreenState loadingState, List<TicketModel> allTickets, List<TicketModel> filteredTickets, HelpdeskTicketStatusModel? selectedFilter, int totalCount, int openCount, int inProgressCount, int resolvedCount, int closedCount, String title, String description, String clientNote, List<HelpdeskTicketStatusModel> statuses, bool isTicketCreated, bool isUploadingAttachments, int currentPage, int pageSize, int totalTickets, bool hasMore, bool isLoadingMore, bool isRefreshingList
 });
 
 
@@ -762,23 +781,29 @@ class _$TicketStateCopyWithImpl<$Res>
 
 /// Create a copy of TicketState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? loadingState = null,Object? allTickets = null,Object? filteredTickets = null,Object? selectedFilter = freezed,Object? totalCount = null,Object? openCount = null,Object? inProgressCount = null,Object? resolvedCount = null,Object? closedCount = null,Object? title = null,Object? description = null,Object? selectedProject = freezed,Object? clientNote = null,Object? projects = null,Object? isTicketCreated = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? loadingState = null,Object? allTickets = null,Object? filteredTickets = null,Object? selectedFilter = freezed,Object? totalCount = null,Object? openCount = null,Object? inProgressCount = null,Object? resolvedCount = null,Object? closedCount = null,Object? title = null,Object? description = null,Object? clientNote = null,Object? statuses = null,Object? isTicketCreated = null,Object? isUploadingAttachments = null,Object? currentPage = null,Object? pageSize = null,Object? totalTickets = null,Object? hasMore = null,Object? isLoadingMore = null,Object? isRefreshingList = null,}) {
   return _then(_self.copyWith(
 loadingState: null == loadingState ? _self.loadingState : loadingState // ignore: cast_nullable_to_non_nullable
 as CommonScreenState,allTickets: null == allTickets ? _self.allTickets : allTickets // ignore: cast_nullable_to_non_nullable
 as List<TicketModel>,filteredTickets: null == filteredTickets ? _self.filteredTickets : filteredTickets // ignore: cast_nullable_to_non_nullable
 as List<TicketModel>,selectedFilter: freezed == selectedFilter ? _self.selectedFilter : selectedFilter // ignore: cast_nullable_to_non_nullable
-as TicketStatus?,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as HelpdeskTicketStatusModel?,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
 as int,openCount: null == openCount ? _self.openCount : openCount // ignore: cast_nullable_to_non_nullable
 as int,inProgressCount: null == inProgressCount ? _self.inProgressCount : inProgressCount // ignore: cast_nullable_to_non_nullable
 as int,resolvedCount: null == resolvedCount ? _self.resolvedCount : resolvedCount // ignore: cast_nullable_to_non_nullable
 as int,closedCount: null == closedCount ? _self.closedCount : closedCount // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,selectedProject: freezed == selectedProject ? _self.selectedProject : selectedProject // ignore: cast_nullable_to_non_nullable
-as ProjectModel?,clientNote: null == clientNote ? _self.clientNote : clientNote // ignore: cast_nullable_to_non_nullable
-as String,projects: null == projects ? _self.projects : projects // ignore: cast_nullable_to_non_nullable
-as List<ProjectModel>,isTicketCreated: null == isTicketCreated ? _self.isTicketCreated : isTicketCreated // ignore: cast_nullable_to_non_nullable
+as String,clientNote: null == clientNote ? _self.clientNote : clientNote // ignore: cast_nullable_to_non_nullable
+as String,statuses: null == statuses ? _self.statuses : statuses // ignore: cast_nullable_to_non_nullable
+as List<HelpdeskTicketStatusModel>,isTicketCreated: null == isTicketCreated ? _self.isTicketCreated : isTicketCreated // ignore: cast_nullable_to_non_nullable
+as bool,isUploadingAttachments: null == isUploadingAttachments ? _self.isUploadingAttachments : isUploadingAttachments // ignore: cast_nullable_to_non_nullable
+as bool,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
+as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
+as int,totalTickets: null == totalTickets ? _self.totalTickets : totalTickets // ignore: cast_nullable_to_non_nullable
+as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,isRefreshingList: null == isRefreshingList ? _self.isRefreshingList : isRefreshingList // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }
@@ -864,10 +889,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  List<TicketModel> allTickets,  List<TicketModel> filteredTickets,  TicketStatus? selectedFilter,  int totalCount,  int openCount,  int inProgressCount,  int resolvedCount,  int closedCount,  String title,  String description,  ProjectModel? selectedProject,  String clientNote,  List<ProjectModel> projects,  bool isTicketCreated)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  List<TicketModel> allTickets,  List<TicketModel> filteredTickets,  HelpdeskTicketStatusModel? selectedFilter,  int totalCount,  int openCount,  int inProgressCount,  int resolvedCount,  int closedCount,  String title,  String description,  String clientNote,  List<HelpdeskTicketStatusModel> statuses,  bool isTicketCreated,  bool isUploadingAttachments,  int currentPage,  int pageSize,  int totalTickets,  bool hasMore,  bool isLoadingMore,  bool isRefreshingList)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TicketState() when $default != null:
-return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.selectedFilter,_that.totalCount,_that.openCount,_that.inProgressCount,_that.resolvedCount,_that.closedCount,_that.title,_that.description,_that.selectedProject,_that.clientNote,_that.projects,_that.isTicketCreated);case _:
+return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.selectedFilter,_that.totalCount,_that.openCount,_that.inProgressCount,_that.resolvedCount,_that.closedCount,_that.title,_that.description,_that.clientNote,_that.statuses,_that.isTicketCreated,_that.isUploadingAttachments,_that.currentPage,_that.pageSize,_that.totalTickets,_that.hasMore,_that.isLoadingMore,_that.isRefreshingList);case _:
   return orElse();
 
 }
@@ -885,10 +910,10 @@ return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  List<TicketModel> allTickets,  List<TicketModel> filteredTickets,  TicketStatus? selectedFilter,  int totalCount,  int openCount,  int inProgressCount,  int resolvedCount,  int closedCount,  String title,  String description,  ProjectModel? selectedProject,  String clientNote,  List<ProjectModel> projects,  bool isTicketCreated)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  List<TicketModel> allTickets,  List<TicketModel> filteredTickets,  HelpdeskTicketStatusModel? selectedFilter,  int totalCount,  int openCount,  int inProgressCount,  int resolvedCount,  int closedCount,  String title,  String description,  String clientNote,  List<HelpdeskTicketStatusModel> statuses,  bool isTicketCreated,  bool isUploadingAttachments,  int currentPage,  int pageSize,  int totalTickets,  bool hasMore,  bool isLoadingMore,  bool isRefreshingList)  $default,) {final _that = this;
 switch (_that) {
 case _TicketState():
-return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.selectedFilter,_that.totalCount,_that.openCount,_that.inProgressCount,_that.resolvedCount,_that.closedCount,_that.title,_that.description,_that.selectedProject,_that.clientNote,_that.projects,_that.isTicketCreated);case _:
+return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.selectedFilter,_that.totalCount,_that.openCount,_that.inProgressCount,_that.resolvedCount,_that.closedCount,_that.title,_that.description,_that.clientNote,_that.statuses,_that.isTicketCreated,_that.isUploadingAttachments,_that.currentPage,_that.pageSize,_that.totalTickets,_that.hasMore,_that.isLoadingMore,_that.isRefreshingList);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -905,10 +930,10 @@ return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( CommonScreenState loadingState,  List<TicketModel> allTickets,  List<TicketModel> filteredTickets,  TicketStatus? selectedFilter,  int totalCount,  int openCount,  int inProgressCount,  int resolvedCount,  int closedCount,  String title,  String description,  ProjectModel? selectedProject,  String clientNote,  List<ProjectModel> projects,  bool isTicketCreated)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( CommonScreenState loadingState,  List<TicketModel> allTickets,  List<TicketModel> filteredTickets,  HelpdeskTicketStatusModel? selectedFilter,  int totalCount,  int openCount,  int inProgressCount,  int resolvedCount,  int closedCount,  String title,  String description,  String clientNote,  List<HelpdeskTicketStatusModel> statuses,  bool isTicketCreated,  bool isUploadingAttachments,  int currentPage,  int pageSize,  int totalTickets,  bool hasMore,  bool isLoadingMore,  bool isRefreshingList)?  $default,) {final _that = this;
 switch (_that) {
 case _TicketState() when $default != null:
-return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.selectedFilter,_that.totalCount,_that.openCount,_that.inProgressCount,_that.resolvedCount,_that.closedCount,_that.title,_that.description,_that.selectedProject,_that.clientNote,_that.projects,_that.isTicketCreated);case _:
+return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.selectedFilter,_that.totalCount,_that.openCount,_that.inProgressCount,_that.resolvedCount,_that.closedCount,_that.title,_that.description,_that.clientNote,_that.statuses,_that.isTicketCreated,_that.isUploadingAttachments,_that.currentPage,_that.pageSize,_that.totalTickets,_that.hasMore,_that.isLoadingMore,_that.isRefreshingList);case _:
   return null;
 
 }
@@ -920,7 +945,7 @@ return $default(_that.loadingState,_that.allTickets,_that.filteredTickets,_that.
 
 
 class _TicketState implements TicketState {
-  const _TicketState({required this.loadingState, required final  List<TicketModel> allTickets, required final  List<TicketModel> filteredTickets, required this.selectedFilter, required this.totalCount, required this.openCount, required this.inProgressCount, required this.resolvedCount, required this.closedCount, required this.title, required this.description, required this.selectedProject, required this.clientNote, required final  List<ProjectModel> projects, required this.isTicketCreated}): _allTickets = allTickets,_filteredTickets = filteredTickets,_projects = projects;
+  const _TicketState({required this.loadingState, required final  List<TicketModel> allTickets, required final  List<TicketModel> filteredTickets, required this.selectedFilter, required this.totalCount, required this.openCount, required this.inProgressCount, required this.resolvedCount, required this.closedCount, required this.title, required this.description, required this.clientNote, required final  List<HelpdeskTicketStatusModel> statuses, required this.isTicketCreated, required this.isUploadingAttachments, required this.currentPage, required this.pageSize, required this.totalTickets, required this.hasMore, required this.isLoadingMore, required this.isRefreshingList}): _allTickets = allTickets,_filteredTickets = filteredTickets,_statuses = statuses;
   
 
 @override final  CommonScreenState loadingState;
@@ -938,7 +963,7 @@ class _TicketState implements TicketState {
   return EqualUnmodifiableListView(_filteredTickets);
 }
 
-@override final  TicketStatus? selectedFilter;
+@override final  HelpdeskTicketStatusModel? selectedFilter;
 @override final  int totalCount;
 @override final  int openCount;
 @override final  int inProgressCount;
@@ -946,16 +971,30 @@ class _TicketState implements TicketState {
 @override final  int closedCount;
 @override final  String title;
 @override final  String description;
-@override final  ProjectModel? selectedProject;
 @override final  String clientNote;
- final  List<ProjectModel> _projects;
-@override List<ProjectModel> get projects {
-  if (_projects is EqualUnmodifiableListView) return _projects;
+/// Dynamic ticket statuses fetched from the API. Used for filter
+/// dropdowns / create forms — NOT for the dashboard count cards.
+ final  List<HelpdeskTicketStatusModel> _statuses;
+/// Dynamic ticket statuses fetched from the API. Used for filter
+/// dropdowns / create forms — NOT for the dashboard count cards.
+@override List<HelpdeskTicketStatusModel> get statuses {
+  if (_statuses is EqualUnmodifiableListView) return _statuses;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_projects);
+  return EqualUnmodifiableListView(_statuses);
 }
 
 @override final  bool isTicketCreated;
+@override final  bool isUploadingAttachments;
+// ── Pagination (GetMyHelpdeskTickets) ──────────────────────────
+@override final  int currentPage;
+@override final  int pageSize;
+@override final  int totalTickets;
+@override final  bool hasMore;
+@override final  bool isLoadingMore;
+/// True while the list-only refresh (filter change / inline reload)
+/// is running — drives a small spinner inside the list without
+/// replacing the whole dashboard with the shimmer.
+@override final  bool isRefreshingList;
 
 /// Create a copy of TicketState
 /// with the given fields replaced by the non-null parameter values.
@@ -967,16 +1006,16 @@ _$TicketStateCopyWith<_TicketState> get copyWith => __$TicketStateCopyWithImpl<_
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TicketState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&const DeepCollectionEquality().equals(other._allTickets, _allTickets)&&const DeepCollectionEquality().equals(other._filteredTickets, _filteredTickets)&&(identical(other.selectedFilter, selectedFilter) || other.selectedFilter == selectedFilter)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.openCount, openCount) || other.openCount == openCount)&&(identical(other.inProgressCount, inProgressCount) || other.inProgressCount == inProgressCount)&&(identical(other.resolvedCount, resolvedCount) || other.resolvedCount == resolvedCount)&&(identical(other.closedCount, closedCount) || other.closedCount == closedCount)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.selectedProject, selectedProject) || other.selectedProject == selectedProject)&&(identical(other.clientNote, clientNote) || other.clientNote == clientNote)&&const DeepCollectionEquality().equals(other._projects, _projects)&&(identical(other.isTicketCreated, isTicketCreated) || other.isTicketCreated == isTicketCreated));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TicketState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&const DeepCollectionEquality().equals(other._allTickets, _allTickets)&&const DeepCollectionEquality().equals(other._filteredTickets, _filteredTickets)&&(identical(other.selectedFilter, selectedFilter) || other.selectedFilter == selectedFilter)&&(identical(other.totalCount, totalCount) || other.totalCount == totalCount)&&(identical(other.openCount, openCount) || other.openCount == openCount)&&(identical(other.inProgressCount, inProgressCount) || other.inProgressCount == inProgressCount)&&(identical(other.resolvedCount, resolvedCount) || other.resolvedCount == resolvedCount)&&(identical(other.closedCount, closedCount) || other.closedCount == closedCount)&&(identical(other.title, title) || other.title == title)&&(identical(other.description, description) || other.description == description)&&(identical(other.clientNote, clientNote) || other.clientNote == clientNote)&&const DeepCollectionEquality().equals(other._statuses, _statuses)&&(identical(other.isTicketCreated, isTicketCreated) || other.isTicketCreated == isTicketCreated)&&(identical(other.isUploadingAttachments, isUploadingAttachments) || other.isUploadingAttachments == isUploadingAttachments)&&(identical(other.currentPage, currentPage) || other.currentPage == currentPage)&&(identical(other.pageSize, pageSize) || other.pageSize == pageSize)&&(identical(other.totalTickets, totalTickets) || other.totalTickets == totalTickets)&&(identical(other.hasMore, hasMore) || other.hasMore == hasMore)&&(identical(other.isLoadingMore, isLoadingMore) || other.isLoadingMore == isLoadingMore)&&(identical(other.isRefreshingList, isRefreshingList) || other.isRefreshingList == isRefreshingList));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,loadingState,const DeepCollectionEquality().hash(_allTickets),const DeepCollectionEquality().hash(_filteredTickets),selectedFilter,totalCount,openCount,inProgressCount,resolvedCount,closedCount,title,description,selectedProject,clientNote,const DeepCollectionEquality().hash(_projects),isTicketCreated);
+int get hashCode => Object.hashAll([runtimeType,loadingState,const DeepCollectionEquality().hash(_allTickets),const DeepCollectionEquality().hash(_filteredTickets),selectedFilter,totalCount,openCount,inProgressCount,resolvedCount,closedCount,title,description,clientNote,const DeepCollectionEquality().hash(_statuses),isTicketCreated,isUploadingAttachments,currentPage,pageSize,totalTickets,hasMore,isLoadingMore,isRefreshingList]);
 
 @override
 String toString() {
-  return 'TicketState(loadingState: $loadingState, allTickets: $allTickets, filteredTickets: $filteredTickets, selectedFilter: $selectedFilter, totalCount: $totalCount, openCount: $openCount, inProgressCount: $inProgressCount, resolvedCount: $resolvedCount, closedCount: $closedCount, title: $title, description: $description, selectedProject: $selectedProject, clientNote: $clientNote, projects: $projects, isTicketCreated: $isTicketCreated)';
+  return 'TicketState(loadingState: $loadingState, allTickets: $allTickets, filteredTickets: $filteredTickets, selectedFilter: $selectedFilter, totalCount: $totalCount, openCount: $openCount, inProgressCount: $inProgressCount, resolvedCount: $resolvedCount, closedCount: $closedCount, title: $title, description: $description, clientNote: $clientNote, statuses: $statuses, isTicketCreated: $isTicketCreated, isUploadingAttachments: $isUploadingAttachments, currentPage: $currentPage, pageSize: $pageSize, totalTickets: $totalTickets, hasMore: $hasMore, isLoadingMore: $isLoadingMore, isRefreshingList: $isRefreshingList)';
 }
 
 
@@ -987,7 +1026,7 @@ abstract mixin class _$TicketStateCopyWith<$Res> implements $TicketStateCopyWith
   factory _$TicketStateCopyWith(_TicketState value, $Res Function(_TicketState) _then) = __$TicketStateCopyWithImpl;
 @override @useResult
 $Res call({
- CommonScreenState loadingState, List<TicketModel> allTickets, List<TicketModel> filteredTickets, TicketStatus? selectedFilter, int totalCount, int openCount, int inProgressCount, int resolvedCount, int closedCount, String title, String description, ProjectModel? selectedProject, String clientNote, List<ProjectModel> projects, bool isTicketCreated
+ CommonScreenState loadingState, List<TicketModel> allTickets, List<TicketModel> filteredTickets, HelpdeskTicketStatusModel? selectedFilter, int totalCount, int openCount, int inProgressCount, int resolvedCount, int closedCount, String title, String description, String clientNote, List<HelpdeskTicketStatusModel> statuses, bool isTicketCreated, bool isUploadingAttachments, int currentPage, int pageSize, int totalTickets, bool hasMore, bool isLoadingMore, bool isRefreshingList
 });
 
 
@@ -1004,23 +1043,29 @@ class __$TicketStateCopyWithImpl<$Res>
 
 /// Create a copy of TicketState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? loadingState = null,Object? allTickets = null,Object? filteredTickets = null,Object? selectedFilter = freezed,Object? totalCount = null,Object? openCount = null,Object? inProgressCount = null,Object? resolvedCount = null,Object? closedCount = null,Object? title = null,Object? description = null,Object? selectedProject = freezed,Object? clientNote = null,Object? projects = null,Object? isTicketCreated = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? loadingState = null,Object? allTickets = null,Object? filteredTickets = null,Object? selectedFilter = freezed,Object? totalCount = null,Object? openCount = null,Object? inProgressCount = null,Object? resolvedCount = null,Object? closedCount = null,Object? title = null,Object? description = null,Object? clientNote = null,Object? statuses = null,Object? isTicketCreated = null,Object? isUploadingAttachments = null,Object? currentPage = null,Object? pageSize = null,Object? totalTickets = null,Object? hasMore = null,Object? isLoadingMore = null,Object? isRefreshingList = null,}) {
   return _then(_TicketState(
 loadingState: null == loadingState ? _self.loadingState : loadingState // ignore: cast_nullable_to_non_nullable
 as CommonScreenState,allTickets: null == allTickets ? _self._allTickets : allTickets // ignore: cast_nullable_to_non_nullable
 as List<TicketModel>,filteredTickets: null == filteredTickets ? _self._filteredTickets : filteredTickets // ignore: cast_nullable_to_non_nullable
 as List<TicketModel>,selectedFilter: freezed == selectedFilter ? _self.selectedFilter : selectedFilter // ignore: cast_nullable_to_non_nullable
-as TicketStatus?,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
+as HelpdeskTicketStatusModel?,totalCount: null == totalCount ? _self.totalCount : totalCount // ignore: cast_nullable_to_non_nullable
 as int,openCount: null == openCount ? _self.openCount : openCount // ignore: cast_nullable_to_non_nullable
 as int,inProgressCount: null == inProgressCount ? _self.inProgressCount : inProgressCount // ignore: cast_nullable_to_non_nullable
 as int,resolvedCount: null == resolvedCount ? _self.resolvedCount : resolvedCount // ignore: cast_nullable_to_non_nullable
 as int,closedCount: null == closedCount ? _self.closedCount : closedCount // ignore: cast_nullable_to_non_nullable
 as int,title: null == title ? _self.title : title // ignore: cast_nullable_to_non_nullable
 as String,description: null == description ? _self.description : description // ignore: cast_nullable_to_non_nullable
-as String,selectedProject: freezed == selectedProject ? _self.selectedProject : selectedProject // ignore: cast_nullable_to_non_nullable
-as ProjectModel?,clientNote: null == clientNote ? _self.clientNote : clientNote // ignore: cast_nullable_to_non_nullable
-as String,projects: null == projects ? _self._projects : projects // ignore: cast_nullable_to_non_nullable
-as List<ProjectModel>,isTicketCreated: null == isTicketCreated ? _self.isTicketCreated : isTicketCreated // ignore: cast_nullable_to_non_nullable
+as String,clientNote: null == clientNote ? _self.clientNote : clientNote // ignore: cast_nullable_to_non_nullable
+as String,statuses: null == statuses ? _self._statuses : statuses // ignore: cast_nullable_to_non_nullable
+as List<HelpdeskTicketStatusModel>,isTicketCreated: null == isTicketCreated ? _self.isTicketCreated : isTicketCreated // ignore: cast_nullable_to_non_nullable
+as bool,isUploadingAttachments: null == isUploadingAttachments ? _self.isUploadingAttachments : isUploadingAttachments // ignore: cast_nullable_to_non_nullable
+as bool,currentPage: null == currentPage ? _self.currentPage : currentPage // ignore: cast_nullable_to_non_nullable
+as int,pageSize: null == pageSize ? _self.pageSize : pageSize // ignore: cast_nullable_to_non_nullable
+as int,totalTickets: null == totalTickets ? _self.totalTickets : totalTickets // ignore: cast_nullable_to_non_nullable
+as int,hasMore: null == hasMore ? _self.hasMore : hasMore // ignore: cast_nullable_to_non_nullable
+as bool,isLoadingMore: null == isLoadingMore ? _self.isLoadingMore : isLoadingMore // ignore: cast_nullable_to_non_nullable
+as bool,isRefreshingList: null == isRefreshingList ? _self.isRefreshingList : isRefreshingList // ignore: cast_nullable_to_non_nullable
 as bool,
   ));
 }

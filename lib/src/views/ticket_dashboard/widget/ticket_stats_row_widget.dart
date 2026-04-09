@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cdp_team_support_sdk/src/bloc/ticket/ticket_bloc.dart';
 import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
-import 'package:cdp_team_support_sdk/src/views/tickets/widgets/ticket_stat_card_widget.dart';
+import 'package:cdp_team_support_sdk/src/views/ticket_dashboard/widget/ticket_stat_card_widget.dart';
 
 class TicketStatsRow extends StatelessWidget {
   const TicketStatsRow({super.key});

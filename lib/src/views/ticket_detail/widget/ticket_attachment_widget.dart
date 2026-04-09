@@ -1,10 +1,14 @@
 import 'dart:io';
 
-import 'package:flutter/material.dart';
 import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
+import 'package:cdp_team_support_sdk/src/data/api/either.dart';
+import 'package:cdp_team_support_sdk/src/data/errors/failure.dart';
+import 'package:cdp_team_support_sdk/src/data/repository/attachment_repo.dart';
 import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_colors.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_fonts.dart';
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TicketAttachmentWidget extends StatelessWidget {
   final List<TicketAttachment> attachments;
@@ -34,12 +38,64 @@ class TicketAttachmentWidget extends StatelessWidget {
             children: attachments
                 .map((final TicketAttachment a) => _AttachmentCard(
                       attachment: a,
-                      onTap: () => _showFilePreview(context, a),
+                      onTap: () => _handleAttachmentTap(context, a),
                     ))
                 .toList(),
           ),
         ),
       ],
+    );
+  }
+
+  Future<void> _handleAttachmentTap(
+    final BuildContext context,
+    final TicketAttachment attachment,
+  ) async {
+    // Images can be rendered inline in the existing dialog.
+    if (attachment.isImage) {
+      _showFilePreview(context, attachment);
+      return;
+    }
+
+    // For PDFs / docs / etc. fetch a viewable URL from the API and
+    // launch it in the system's default handler.
+    final ScaffoldMessengerState messenger = ScaffoldMessenger.of(context);
+    messenger.showSnackBar(
+      const SnackBar(
+        duration: Duration(seconds: 1),
+        content: Text('Opening file…'),
+      ),
+    );
+
+    final Either<Failure, String> result = await AttachmentRepoImp()
+        .getAttachmentViewUrl(attachmentId: attachment.id);
+
+    if (!context.mounted) return;
+
+    await result.fold(
+      (final Failure error) async {
+        messenger.showSnackBar(
+          SnackBar(
+            content: Text('Failed to open: ${error.message ?? 'unknown'}'),
+            backgroundColor: SdkColors.colorError500,
+          ),
+        );
+      },
+      (final String url) async {
+        final Uri uri = Uri.tryParse(url) ?? Uri();
+        final bool ok = await launchUrl(
+          uri,
+          mode: LaunchMode.externalApplication,
+        );
+        if (!ok && context.mounted) {
+          messenger.showSnackBar(
+            const SnackBar(
+              content: Text('No application available to open this file'),
+              backgroundColor: SdkColors.colorError500,
+            ),
+          );
+        }
+      },
     );
   }
 
@@ -148,7 +204,34 @@ class TicketAttachmentWidget extends StatelessWidget {
                               fit: BoxFit.contain,
                             ),
                           )
-                        : Column(
+                        : attachment.isImage && attachment.remoteUrl != null
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(12),
+                                child: Image.network(
+                                  attachment.remoteUrl!,
+                                  fit: BoxFit.contain,
+                                  headers: _authHeaders(),
+                                  loadingBuilder: (
+                                    final BuildContext _,
+                                    final Widget child,
+                                    final ImageChunkEvent? progress,
+                                  ) {
+                                    if (progress == null) return child;
+                                    return const Center(
+                                      child: CircularProgressIndicator(
+                                        color: SdkColors.splashDeep,
+                                      ),
+                                    );
+                                  },
+                                  errorBuilder: (
+                                    final BuildContext _,
+                                    final Object __,
+                                    final StackTrace? ___,
+                                  ) =>
+                                      _buildFallback(context, attachment),
+                                ),
+                              )
+                            : Column(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
                               Container(
@@ -229,6 +312,43 @@ class TicketAttachmentWidget extends StatelessWidget {
         return Icons.insert_drive_file_outlined;
     }
   }
+
+  Widget _buildFallback(
+    final BuildContext context,
+    final TicketAttachment attachment,
+  ) {
+    final bool isTab = SupportSdkConfig.instance.isTablet;
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: <Widget>[
+        Container(
+          width: 80,
+          height: 80,
+          decoration: BoxDecoration(
+            color: SdkColors.splashDeep.withValues(alpha: 0.06),
+            shape: BoxShape.circle,
+          ),
+          child: Icon(
+            _getFileIcon(attachment.fileExtension),
+            color: SdkColors.splashDeep,
+            size: 40,
+          ),
+        ),
+        const SizedBox(height: 16),
+        Text('Failed to load preview',
+            style: sdkRubikW500(isTablet: isTab)
+                .copyWith(fontSize: 13, color: SdkColors.homeSubtext)),
+      ],
+    );
+  }
+}
+
+/// Builds the Bearer auth header required by the attachment endpoints.
+/// Returns an empty map if no token is configured.
+Map<String, String> _authHeaders() {
+  final String token = SupportSdkConfig.instance.authToken;
+  if (token.isEmpty) return const <String, String>{};
+  return <String, String>{'Authorization': 'Bearer $token'};
 }
 
 class _AttachmentCard extends StatelessWidget {
@@ -283,6 +403,32 @@ class _AttachmentCard extends StatelessWidget {
                         width: double.infinity,
                         height: double.infinity,
                         fit: BoxFit.cover,
+                      ),
+                    )
+                  else if (attachment.isImage && attachment.remoteUrl != null)
+                    ClipRRect(
+                      borderRadius: const BorderRadius.only(
+                        topLeft: Radius.circular(12),
+                        topRight: Radius.circular(12),
+                      ),
+                      child: Image.network(
+                        attachment.remoteUrl!,
+                        width: double.infinity,
+                        height: double.infinity,
+                        fit: BoxFit.cover,
+                        headers: _authHeaders(),
+                        errorBuilder: (
+                          final BuildContext _,
+                          final Object __,
+                          final StackTrace? ___,
+                        ) =>
+                            Center(
+                          child: Icon(
+                            _getFileIcon(attachment.fileExtension),
+                            color: SdkColors.splashGlow.withValues(alpha: 0.5),
+                            size: 36,
+                          ),
+                        ),
                       ),
                     )
                   else

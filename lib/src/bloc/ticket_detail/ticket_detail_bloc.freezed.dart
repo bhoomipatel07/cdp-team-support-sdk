@@ -12,11 +12,17 @@ part of 'ticket_detail_bloc.dart';
 // dart format off
 T _$identity<T>(T value) => value;
 /// @nodoc
-mixin _$TicketDetailEvent {
+mixin _$TicketDetailEvent implements DiagnosticableTreeMixin {
 
 
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
@@ -28,7 +34,7 @@ bool operator ==(Object other) {
 int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TicketDetailEvent()';
 }
 
@@ -55,16 +61,17 @@ extension TicketDetailEventPatterns on TicketDetailEvent {
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( OnLoadDetail value)?  onLoadDetail,TResult Function( OnSendMessage value)?  onSendMessage,TResult Function( OnDeleteMessage value)?  onDeleteMessage,TResult Function( OnUpdateTicket value)?  onUpdateTicket,TResult Function( OnLikeMessage value)?  onLikeMessage,TResult Function( OnDislikeMessage value)?  onDislikeMessage,required TResult orElse(),}){
+@optionalTypeArgs TResult maybeMap<TResult extends Object?>({TResult Function( OnLoadDetail value)?  onLoadDetail,TResult Function( OnSendMessage value)?  onSendMessage,TResult Function( OnDeleteMessage value)?  onDeleteMessage,TResult Function( OnUpdateTicket value)?  onUpdateTicket,TResult Function( OnDeleteTicket value)?  onDeleteTicket,TResult Function( OnStartReply value)?  onStartReply,TResult Function( OnCancelReply value)?  onCancelReply,required TResult orElse(),}){
 final _that = this;
 switch (_that) {
 case OnLoadDetail() when onLoadDetail != null:
 return onLoadDetail(_that);case OnSendMessage() when onSendMessage != null:
 return onSendMessage(_that);case OnDeleteMessage() when onDeleteMessage != null:
 return onDeleteMessage(_that);case OnUpdateTicket() when onUpdateTicket != null:
-return onUpdateTicket(_that);case OnLikeMessage() when onLikeMessage != null:
-return onLikeMessage(_that);case OnDislikeMessage() when onDislikeMessage != null:
-return onDislikeMessage(_that);case _:
+return onUpdateTicket(_that);case OnDeleteTicket() when onDeleteTicket != null:
+return onDeleteTicket(_that);case OnStartReply() when onStartReply != null:
+return onStartReply(_that);case OnCancelReply() when onCancelReply != null:
+return onCancelReply(_that);case _:
   return orElse();
 
 }
@@ -82,16 +89,17 @@ return onDislikeMessage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( OnLoadDetail value)  onLoadDetail,required TResult Function( OnSendMessage value)  onSendMessage,required TResult Function( OnDeleteMessage value)  onDeleteMessage,required TResult Function( OnUpdateTicket value)  onUpdateTicket,required TResult Function( OnLikeMessage value)  onLikeMessage,required TResult Function( OnDislikeMessage value)  onDislikeMessage,}){
+@optionalTypeArgs TResult map<TResult extends Object?>({required TResult Function( OnLoadDetail value)  onLoadDetail,required TResult Function( OnSendMessage value)  onSendMessage,required TResult Function( OnDeleteMessage value)  onDeleteMessage,required TResult Function( OnUpdateTicket value)  onUpdateTicket,required TResult Function( OnDeleteTicket value)  onDeleteTicket,required TResult Function( OnStartReply value)  onStartReply,required TResult Function( OnCancelReply value)  onCancelReply,}){
 final _that = this;
 switch (_that) {
 case OnLoadDetail():
 return onLoadDetail(_that);case OnSendMessage():
 return onSendMessage(_that);case OnDeleteMessage():
 return onDeleteMessage(_that);case OnUpdateTicket():
-return onUpdateTicket(_that);case OnLikeMessage():
-return onLikeMessage(_that);case OnDislikeMessage():
-return onDislikeMessage(_that);case _:
+return onUpdateTicket(_that);case OnDeleteTicket():
+return onDeleteTicket(_that);case OnStartReply():
+return onStartReply(_that);case OnCancelReply():
+return onCancelReply(_that);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -108,16 +116,17 @@ return onDislikeMessage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( OnLoadDetail value)?  onLoadDetail,TResult? Function( OnSendMessage value)?  onSendMessage,TResult? Function( OnDeleteMessage value)?  onDeleteMessage,TResult? Function( OnUpdateTicket value)?  onUpdateTicket,TResult? Function( OnLikeMessage value)?  onLikeMessage,TResult? Function( OnDislikeMessage value)?  onDislikeMessage,}){
+@optionalTypeArgs TResult? mapOrNull<TResult extends Object?>({TResult? Function( OnLoadDetail value)?  onLoadDetail,TResult? Function( OnSendMessage value)?  onSendMessage,TResult? Function( OnDeleteMessage value)?  onDeleteMessage,TResult? Function( OnUpdateTicket value)?  onUpdateTicket,TResult? Function( OnDeleteTicket value)?  onDeleteTicket,TResult? Function( OnStartReply value)?  onStartReply,TResult? Function( OnCancelReply value)?  onCancelReply,}){
 final _that = this;
 switch (_that) {
 case OnLoadDetail() when onLoadDetail != null:
 return onLoadDetail(_that);case OnSendMessage() when onSendMessage != null:
 return onSendMessage(_that);case OnDeleteMessage() when onDeleteMessage != null:
 return onDeleteMessage(_that);case OnUpdateTicket() when onUpdateTicket != null:
-return onUpdateTicket(_that);case OnLikeMessage() when onLikeMessage != null:
-return onLikeMessage(_that);case OnDislikeMessage() when onDislikeMessage != null:
-return onDislikeMessage(_that);case _:
+return onUpdateTicket(_that);case OnDeleteTicket() when onDeleteTicket != null:
+return onDeleteTicket(_that);case OnStartReply() when onStartReply != null:
+return onStartReply(_that);case OnCancelReply() when onCancelReply != null:
+return onCancelReply(_that);case _:
   return null;
 
 }
@@ -134,15 +143,16 @@ return onDislikeMessage(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int ticketId)?  onLoadDetail,TResult Function( String message)?  onSendMessage,TResult Function( int messageId)?  onDeleteMessage,TResult Function( String title,  String description,  String? clientNote,  ProjectModel? project)?  onUpdateTicket,TResult Function( int messageId)?  onLikeMessage,TResult Function( int messageId)?  onDislikeMessage,required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>({TResult Function( int ticketId)?  onLoadDetail,TResult Function( String message)?  onSendMessage,TResult Function( int messageId)?  onDeleteMessage,TResult Function( String title,  String description,  String? clientNote,  ProjectModel? project)?  onUpdateTicket,TResult Function()?  onDeleteTicket,TResult Function( HelpdeskCommentModel comment)?  onStartReply,TResult Function()?  onCancelReply,required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case OnLoadDetail() when onLoadDetail != null:
 return onLoadDetail(_that.ticketId);case OnSendMessage() when onSendMessage != null:
 return onSendMessage(_that.message);case OnDeleteMessage() when onDeleteMessage != null:
 return onDeleteMessage(_that.messageId);case OnUpdateTicket() when onUpdateTicket != null:
-return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnLikeMessage() when onLikeMessage != null:
-return onLikeMessage(_that.messageId);case OnDislikeMessage() when onDislikeMessage != null:
-return onDislikeMessage(_that.messageId);case _:
+return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnDeleteTicket() when onDeleteTicket != null:
+return onDeleteTicket();case OnStartReply() when onStartReply != null:
+return onStartReply(_that.comment);case OnCancelReply() when onCancelReply != null:
+return onCancelReply();case _:
   return orElse();
 
 }
@@ -160,15 +170,16 @@ return onDislikeMessage(_that.messageId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int ticketId)  onLoadDetail,required TResult Function( String message)  onSendMessage,required TResult Function( int messageId)  onDeleteMessage,required TResult Function( String title,  String description,  String? clientNote,  ProjectModel? project)  onUpdateTicket,required TResult Function( int messageId)  onLikeMessage,required TResult Function( int messageId)  onDislikeMessage,}) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>({required TResult Function( int ticketId)  onLoadDetail,required TResult Function( String message)  onSendMessage,required TResult Function( int messageId)  onDeleteMessage,required TResult Function( String title,  String description,  String? clientNote,  ProjectModel? project)  onUpdateTicket,required TResult Function()  onDeleteTicket,required TResult Function( HelpdeskCommentModel comment)  onStartReply,required TResult Function()  onCancelReply,}) {final _that = this;
 switch (_that) {
 case OnLoadDetail():
 return onLoadDetail(_that.ticketId);case OnSendMessage():
 return onSendMessage(_that.message);case OnDeleteMessage():
 return onDeleteMessage(_that.messageId);case OnUpdateTicket():
-return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnLikeMessage():
-return onLikeMessage(_that.messageId);case OnDislikeMessage():
-return onDislikeMessage(_that.messageId);case _:
+return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnDeleteTicket():
+return onDeleteTicket();case OnStartReply():
+return onStartReply(_that.comment);case OnCancelReply():
+return onCancelReply();case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -185,15 +196,16 @@ return onDislikeMessage(_that.messageId);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int ticketId)?  onLoadDetail,TResult? Function( String message)?  onSendMessage,TResult? Function( int messageId)?  onDeleteMessage,TResult? Function( String title,  String description,  String? clientNote,  ProjectModel? project)?  onUpdateTicket,TResult? Function( int messageId)?  onLikeMessage,TResult? Function( int messageId)?  onDislikeMessage,}) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>({TResult? Function( int ticketId)?  onLoadDetail,TResult? Function( String message)?  onSendMessage,TResult? Function( int messageId)?  onDeleteMessage,TResult? Function( String title,  String description,  String? clientNote,  ProjectModel? project)?  onUpdateTicket,TResult? Function()?  onDeleteTicket,TResult? Function( HelpdeskCommentModel comment)?  onStartReply,TResult? Function()?  onCancelReply,}) {final _that = this;
 switch (_that) {
 case OnLoadDetail() when onLoadDetail != null:
 return onLoadDetail(_that.ticketId);case OnSendMessage() when onSendMessage != null:
 return onSendMessage(_that.message);case OnDeleteMessage() when onDeleteMessage != null:
 return onDeleteMessage(_that.messageId);case OnUpdateTicket() when onUpdateTicket != null:
-return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnLikeMessage() when onLikeMessage != null:
-return onLikeMessage(_that.messageId);case OnDislikeMessage() when onDislikeMessage != null:
-return onDislikeMessage(_that.messageId);case _:
+return onUpdateTicket(_that.title,_that.description,_that.clientNote,_that.project);case OnDeleteTicket() when onDeleteTicket != null:
+return onDeleteTicket();case OnStartReply() when onStartReply != null:
+return onStartReply(_that.comment);case OnCancelReply() when onCancelReply != null:
+return onCancelReply();case _:
   return null;
 
 }
@@ -204,7 +216,7 @@ return onDislikeMessage(_that.messageId);case _:
 /// @nodoc
 
 
-class OnLoadDetail implements TicketDetailEvent {
+class OnLoadDetail with DiagnosticableTreeMixin implements TicketDetailEvent {
   const OnLoadDetail({required this.ticketId});
   
 
@@ -217,6 +229,12 @@ class OnLoadDetail implements TicketDetailEvent {
 $OnLoadDetailCopyWith<OnLoadDetail> get copyWith => _$OnLoadDetailCopyWithImpl<OnLoadDetail>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent.onLoadDetail'))
+    ..add(DiagnosticsProperty('ticketId', ticketId));
+}
 
 @override
 bool operator ==(Object other) {
@@ -228,7 +246,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,ticketId);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TicketDetailEvent.onLoadDetail(ticketId: $ticketId)';
 }
 
@@ -270,7 +288,7 @@ as int,
 /// @nodoc
 
 
-class OnSendMessage implements TicketDetailEvent {
+class OnSendMessage with DiagnosticableTreeMixin implements TicketDetailEvent {
   const OnSendMessage({required this.message});
   
 
@@ -283,6 +301,12 @@ class OnSendMessage implements TicketDetailEvent {
 $OnSendMessageCopyWith<OnSendMessage> get copyWith => _$OnSendMessageCopyWithImpl<OnSendMessage>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent.onSendMessage'))
+    ..add(DiagnosticsProperty('message', message));
+}
 
 @override
 bool operator ==(Object other) {
@@ -294,7 +318,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,message);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TicketDetailEvent.onSendMessage(message: $message)';
 }
 
@@ -336,7 +360,7 @@ as String,
 /// @nodoc
 
 
-class OnDeleteMessage implements TicketDetailEvent {
+class OnDeleteMessage with DiagnosticableTreeMixin implements TicketDetailEvent {
   const OnDeleteMessage({required this.messageId});
   
 
@@ -349,6 +373,12 @@ class OnDeleteMessage implements TicketDetailEvent {
 $OnDeleteMessageCopyWith<OnDeleteMessage> get copyWith => _$OnDeleteMessageCopyWithImpl<OnDeleteMessage>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent.onDeleteMessage'))
+    ..add(DiagnosticsProperty('messageId', messageId));
+}
 
 @override
 bool operator ==(Object other) {
@@ -360,7 +390,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,messageId);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TicketDetailEvent.onDeleteMessage(messageId: $messageId)';
 }
 
@@ -402,7 +432,7 @@ as int,
 /// @nodoc
 
 
-class OnUpdateTicket implements TicketDetailEvent {
+class OnUpdateTicket with DiagnosticableTreeMixin implements TicketDetailEvent {
   const OnUpdateTicket({required this.title, required this.description, required this.clientNote, required this.project});
   
 
@@ -418,6 +448,12 @@ class OnUpdateTicket implements TicketDetailEvent {
 $OnUpdateTicketCopyWith<OnUpdateTicket> get copyWith => _$OnUpdateTicketCopyWithImpl<OnUpdateTicket>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent.onUpdateTicket'))
+    ..add(DiagnosticsProperty('title', title))..add(DiagnosticsProperty('description', description))..add(DiagnosticsProperty('clientNote', clientNote))..add(DiagnosticsProperty('project', project));
+}
 
 @override
 bool operator ==(Object other) {
@@ -429,7 +465,7 @@ bool operator ==(Object other) {
 int get hashCode => Object.hash(runtimeType,title,description,clientNote,project);
 
 @override
-String toString() {
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
   return 'TicketDetailEvent.onUpdateTicket(title: $title, description: $description, clientNote: $clientNote, project: $project)';
 }
 
@@ -474,43 +510,87 @@ as ProjectModel?,
 /// @nodoc
 
 
-class OnLikeMessage implements TicketDetailEvent {
-  const OnLikeMessage({required this.messageId});
+class OnDeleteTicket with DiagnosticableTreeMixin implements TicketDetailEvent {
+  const OnDeleteTicket();
   
 
- final  int messageId;
+
+
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent.onDeleteTicket'))
+    ;
+}
+
+@override
+bool operator ==(Object other) {
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnDeleteTicket);
+}
+
+
+@override
+int get hashCode => runtimeType.hashCode;
+
+@override
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'TicketDetailEvent.onDeleteTicket()';
+}
+
+
+}
+
+
+
+
+/// @nodoc
+
+
+class OnStartReply with DiagnosticableTreeMixin implements TicketDetailEvent {
+  const OnStartReply({required this.comment});
+  
+
+ final  HelpdeskCommentModel comment;
 
 /// Create a copy of TicketDetailEvent
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
 @pragma('vm:prefer-inline')
-$OnLikeMessageCopyWith<OnLikeMessage> get copyWith => _$OnLikeMessageCopyWithImpl<OnLikeMessage>(this, _$identity);
-
+$OnStartReplyCopyWith<OnStartReply> get copyWith => _$OnStartReplyCopyWithImpl<OnStartReply>(this, _$identity);
 
 
 @override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent.onStartReply'))
+    ..add(DiagnosticsProperty('comment', comment));
+}
+
+@override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnLikeMessage&&(identical(other.messageId, messageId) || other.messageId == messageId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnStartReply&&(identical(other.comment, comment) || other.comment == comment));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,messageId);
+int get hashCode => Object.hash(runtimeType,comment);
 
 @override
-String toString() {
-  return 'TicketDetailEvent.onLikeMessage(messageId: $messageId)';
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'TicketDetailEvent.onStartReply(comment: $comment)';
 }
 
 
 }
 
 /// @nodoc
-abstract mixin class $OnLikeMessageCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
-  factory $OnLikeMessageCopyWith(OnLikeMessage value, $Res Function(OnLikeMessage) _then) = _$OnLikeMessageCopyWithImpl;
+abstract mixin class $OnStartReplyCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
+  factory $OnStartReplyCopyWith(OnStartReply value, $Res Function(OnStartReply) _then) = _$OnStartReplyCopyWithImpl;
 @useResult
 $Res call({
- int messageId
+ HelpdeskCommentModel comment
 });
 
 
@@ -518,19 +598,19 @@ $Res call({
 
 }
 /// @nodoc
-class _$OnLikeMessageCopyWithImpl<$Res>
-    implements $OnLikeMessageCopyWith<$Res> {
-  _$OnLikeMessageCopyWithImpl(this._self, this._then);
+class _$OnStartReplyCopyWithImpl<$Res>
+    implements $OnStartReplyCopyWith<$Res> {
+  _$OnStartReplyCopyWithImpl(this._self, this._then);
 
-  final OnLikeMessage _self;
-  final $Res Function(OnLikeMessage) _then;
+  final OnStartReply _self;
+  final $Res Function(OnStartReply) _then;
 
 /// Create a copy of TicketDetailEvent
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? messageId = null,}) {
-  return _then(OnLikeMessage(
-messageId: null == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
-as int,
+@pragma('vm:prefer-inline') $Res call({Object? comment = null,}) {
+  return _then(OnStartReply(
+comment: null == comment ? _self.comment : comment // ignore: cast_nullable_to_non_nullable
+as HelpdeskCommentModel,
   ));
 }
 
@@ -540,73 +620,48 @@ as int,
 /// @nodoc
 
 
-class OnDislikeMessage implements TicketDetailEvent {
-  const OnDislikeMessage({required this.messageId});
+class OnCancelReply with DiagnosticableTreeMixin implements TicketDetailEvent {
+  const OnCancelReply();
   
 
- final  int messageId;
-
-/// Create a copy of TicketDetailEvent
-/// with the given fields replaced by the non-null parameter values.
-@JsonKey(includeFromJson: false, includeToJson: false)
-@pragma('vm:prefer-inline')
-$OnDislikeMessageCopyWith<OnDislikeMessage> get copyWith => _$OnDislikeMessageCopyWithImpl<OnDislikeMessage>(this, _$identity);
 
 
+
+
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailEvent.onCancelReply'))
+    ;
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnDislikeMessage&&(identical(other.messageId, messageId) || other.messageId == messageId));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is OnCancelReply);
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,messageId);
+int get hashCode => runtimeType.hashCode;
 
 @override
-String toString() {
-  return 'TicketDetailEvent.onDislikeMessage(messageId: $messageId)';
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'TicketDetailEvent.onCancelReply()';
 }
 
 
 }
+
+
+
 
 /// @nodoc
-abstract mixin class $OnDislikeMessageCopyWith<$Res> implements $TicketDetailEventCopyWith<$Res> {
-  factory $OnDislikeMessageCopyWith(OnDislikeMessage value, $Res Function(OnDislikeMessage) _then) = _$OnDislikeMessageCopyWithImpl;
-@useResult
-$Res call({
- int messageId
-});
+mixin _$TicketDetailState implements DiagnosticableTreeMixin {
 
-
-
-
-}
-/// @nodoc
-class _$OnDislikeMessageCopyWithImpl<$Res>
-    implements $OnDislikeMessageCopyWith<$Res> {
-  _$OnDislikeMessageCopyWithImpl(this._self, this._then);
-
-  final OnDislikeMessage _self;
-  final $Res Function(OnDislikeMessage) _then;
-
-/// Create a copy of TicketDetailEvent
-/// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') $Res call({Object? messageId = null,}) {
-  return _then(OnDislikeMessage(
-messageId: null == messageId ? _self.messageId : messageId // ignore: cast_nullable_to_non_nullable
-as int,
-  ));
-}
-
-
-}
-
-/// @nodoc
-mixin _$TicketDetailState {
-
- CommonScreenState get loadingState; TicketModel? get ticket; List<ConversationMessage> get conversations;
+ CommonScreenState get loadingState; HelpdeskTicketDetailModel? get detail; List<HelpdeskCommentModel> get comments; bool get isSendingComment; bool get isDeleting; bool get isDeleted;/// Comment the user has tapped "Reply" on. When non-null the
+/// message input shows a reply banner and the send handler prefixes
+/// the message with the replied-to user's name.
+ HelpdeskCommentModel? get replyingTo;
 /// Create a copy of TicketDetailState
 /// with the given fields replaced by the non-null parameter values.
 @JsonKey(includeFromJson: false, includeToJson: false)
@@ -614,19 +669,25 @@ mixin _$TicketDetailState {
 $TicketDetailStateCopyWith<TicketDetailState> get copyWith => _$TicketDetailStateCopyWithImpl<TicketDetailState>(this as TicketDetailState, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailState'))
+    ..add(DiagnosticsProperty('loadingState', loadingState))..add(DiagnosticsProperty('detail', detail))..add(DiagnosticsProperty('comments', comments))..add(DiagnosticsProperty('isSendingComment', isSendingComment))..add(DiagnosticsProperty('isDeleting', isDeleting))..add(DiagnosticsProperty('isDeleted', isDeleted))..add(DiagnosticsProperty('replyingTo', replyingTo));
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketDetailState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other.conversations, conversations));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is TicketDetailState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&(identical(other.detail, detail) || other.detail == detail)&&const DeepCollectionEquality().equals(other.comments, comments)&&(identical(other.isSendingComment, isSendingComment) || other.isSendingComment == isSendingComment)&&(identical(other.isDeleting, isDeleting) || other.isDeleting == isDeleting)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.replyingTo, replyingTo) || other.replyingTo == replyingTo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,loadingState,ticket,const DeepCollectionEquality().hash(conversations));
+int get hashCode => Object.hash(runtimeType,loadingState,detail,const DeepCollectionEquality().hash(comments),isSendingComment,isDeleting,isDeleted,replyingTo);
 
 @override
-String toString() {
-  return 'TicketDetailState(loadingState: $loadingState, ticket: $ticket, conversations: $conversations)';
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'TicketDetailState(loadingState: $loadingState, detail: $detail, comments: $comments, isSendingComment: $isSendingComment, isDeleting: $isDeleting, isDeleted: $isDeleted, replyingTo: $replyingTo)';
 }
 
 
@@ -637,7 +698,7 @@ abstract mixin class $TicketDetailStateCopyWith<$Res>  {
   factory $TicketDetailStateCopyWith(TicketDetailState value, $Res Function(TicketDetailState) _then) = _$TicketDetailStateCopyWithImpl;
 @useResult
 $Res call({
- CommonScreenState loadingState, TicketModel? ticket, List<ConversationMessage> conversations
+ CommonScreenState loadingState, HelpdeskTicketDetailModel? detail, List<HelpdeskCommentModel> comments, bool isSendingComment, bool isDeleting, bool isDeleted, HelpdeskCommentModel? replyingTo
 });
 
 
@@ -654,12 +715,16 @@ class _$TicketDetailStateCopyWithImpl<$Res>
 
 /// Create a copy of TicketDetailState
 /// with the given fields replaced by the non-null parameter values.
-@pragma('vm:prefer-inline') @override $Res call({Object? loadingState = null,Object? ticket = freezed,Object? conversations = null,}) {
+@pragma('vm:prefer-inline') @override $Res call({Object? loadingState = null,Object? detail = freezed,Object? comments = null,Object? isSendingComment = null,Object? isDeleting = null,Object? isDeleted = null,Object? replyingTo = freezed,}) {
   return _then(_self.copyWith(
 loadingState: null == loadingState ? _self.loadingState : loadingState // ignore: cast_nullable_to_non_nullable
-as CommonScreenState,ticket: freezed == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
-as TicketModel?,conversations: null == conversations ? _self.conversations : conversations // ignore: cast_nullable_to_non_nullable
-as List<ConversationMessage>,
+as CommonScreenState,detail: freezed == detail ? _self.detail : detail // ignore: cast_nullable_to_non_nullable
+as HelpdeskTicketDetailModel?,comments: null == comments ? _self.comments : comments // ignore: cast_nullable_to_non_nullable
+as List<HelpdeskCommentModel>,isSendingComment: null == isSendingComment ? _self.isSendingComment : isSendingComment // ignore: cast_nullable_to_non_nullable
+as bool,isDeleting: null == isDeleting ? _self.isDeleting : isDeleting // ignore: cast_nullable_to_non_nullable
+as bool,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as bool,replyingTo: freezed == replyingTo ? _self.replyingTo : replyingTo // ignore: cast_nullable_to_non_nullable
+as HelpdeskCommentModel?,
   ));
 }
 
@@ -744,10 +809,10 @@ return $default(_that);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  TicketModel? ticket,  List<ConversationMessage> conversations)?  $default,{required TResult orElse(),}) {final _that = this;
+@optionalTypeArgs TResult maybeWhen<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  HelpdeskTicketDetailModel? detail,  List<HelpdeskCommentModel> comments,  bool isSendingComment,  bool isDeleting,  bool isDeleted,  HelpdeskCommentModel? replyingTo)?  $default,{required TResult orElse(),}) {final _that = this;
 switch (_that) {
 case _TicketDetailState() when $default != null:
-return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
+return $default(_that.loadingState,_that.detail,_that.comments,_that.isSendingComment,_that.isDeleting,_that.isDeleted,_that.replyingTo);case _:
   return orElse();
 
 }
@@ -765,10 +830,10 @@ return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  TicketModel? ticket,  List<ConversationMessage> conversations)  $default,) {final _that = this;
+@optionalTypeArgs TResult when<TResult extends Object?>(TResult Function( CommonScreenState loadingState,  HelpdeskTicketDetailModel? detail,  List<HelpdeskCommentModel> comments,  bool isSendingComment,  bool isDeleting,  bool isDeleted,  HelpdeskCommentModel? replyingTo)  $default,) {final _that = this;
 switch (_that) {
 case _TicketDetailState():
-return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
+return $default(_that.loadingState,_that.detail,_that.comments,_that.isSendingComment,_that.isDeleting,_that.isDeleted,_that.replyingTo);case _:
   throw StateError('Unexpected subclass');
 
 }
@@ -785,10 +850,10 @@ return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
 /// }
 /// ```
 
-@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( CommonScreenState loadingState,  TicketModel? ticket,  List<ConversationMessage> conversations)?  $default,) {final _that = this;
+@optionalTypeArgs TResult? whenOrNull<TResult extends Object?>(TResult? Function( CommonScreenState loadingState,  HelpdeskTicketDetailModel? detail,  List<HelpdeskCommentModel> comments,  bool isSendingComment,  bool isDeleting,  bool isDeleted,  HelpdeskCommentModel? replyingTo)?  $default,) {final _that = this;
 switch (_that) {
 case _TicketDetailState() when $default != null:
-return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
+return $default(_that.loadingState,_that.detail,_that.comments,_that.isSendingComment,_that.isDeleting,_that.isDeleted,_that.replyingTo);case _:
   return null;
 
 }
@@ -799,19 +864,26 @@ return $default(_that.loadingState,_that.ticket,_that.conversations);case _:
 /// @nodoc
 
 
-class _TicketDetailState implements TicketDetailState {
-  const _TicketDetailState({required this.loadingState, required this.ticket, required final  List<ConversationMessage> conversations}): _conversations = conversations;
+class _TicketDetailState with DiagnosticableTreeMixin implements TicketDetailState {
+  const _TicketDetailState({required this.loadingState, required this.detail, required final  List<HelpdeskCommentModel> comments, required this.isSendingComment, required this.isDeleting, required this.isDeleted, required this.replyingTo}): _comments = comments;
   
 
 @override final  CommonScreenState loadingState;
-@override final  TicketModel? ticket;
- final  List<ConversationMessage> _conversations;
-@override List<ConversationMessage> get conversations {
-  if (_conversations is EqualUnmodifiableListView) return _conversations;
+@override final  HelpdeskTicketDetailModel? detail;
+ final  List<HelpdeskCommentModel> _comments;
+@override List<HelpdeskCommentModel> get comments {
+  if (_comments is EqualUnmodifiableListView) return _comments;
   // ignore: implicit_dynamic_type
-  return EqualUnmodifiableListView(_conversations);
+  return EqualUnmodifiableListView(_comments);
 }
 
+@override final  bool isSendingComment;
+@override final  bool isDeleting;
+@override final  bool isDeleted;
+/// Comment the user has tapped "Reply" on. When non-null the
+/// message input shows a reply banner and the send handler prefixes
+/// the message with the replied-to user's name.
+@override final  HelpdeskCommentModel? replyingTo;
 
 /// Create a copy of TicketDetailState
 /// with the given fields replaced by the non-null parameter values.
@@ -820,19 +892,25 @@ class _TicketDetailState implements TicketDetailState {
 _$TicketDetailStateCopyWith<_TicketDetailState> get copyWith => __$TicketDetailStateCopyWithImpl<_TicketDetailState>(this, _$identity);
 
 
+@override
+void debugFillProperties(DiagnosticPropertiesBuilder properties) {
+  properties
+    ..add(DiagnosticsProperty('type', 'TicketDetailState'))
+    ..add(DiagnosticsProperty('loadingState', loadingState))..add(DiagnosticsProperty('detail', detail))..add(DiagnosticsProperty('comments', comments))..add(DiagnosticsProperty('isSendingComment', isSendingComment))..add(DiagnosticsProperty('isDeleting', isDeleting))..add(DiagnosticsProperty('isDeleted', isDeleted))..add(DiagnosticsProperty('replyingTo', replyingTo));
+}
 
 @override
 bool operator ==(Object other) {
-  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TicketDetailState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&(identical(other.ticket, ticket) || other.ticket == ticket)&&const DeepCollectionEquality().equals(other._conversations, _conversations));
+  return identical(this, other) || (other.runtimeType == runtimeType&&other is _TicketDetailState&&(identical(other.loadingState, loadingState) || other.loadingState == loadingState)&&(identical(other.detail, detail) || other.detail == detail)&&const DeepCollectionEquality().equals(other._comments, _comments)&&(identical(other.isSendingComment, isSendingComment) || other.isSendingComment == isSendingComment)&&(identical(other.isDeleting, isDeleting) || other.isDeleting == isDeleting)&&(identical(other.isDeleted, isDeleted) || other.isDeleted == isDeleted)&&(identical(other.replyingTo, replyingTo) || other.replyingTo == replyingTo));
 }
 
 
 @override
-int get hashCode => Object.hash(runtimeType,loadingState,ticket,const DeepCollectionEquality().hash(_conversations));
+int get hashCode => Object.hash(runtimeType,loadingState,detail,const DeepCollectionEquality().hash(_comments),isSendingComment,isDeleting,isDeleted,replyingTo);
 
 @override
-String toString() {
-  return 'TicketDetailState(loadingState: $loadingState, ticket: $ticket, conversations: $conversations)';
+String toString({ DiagnosticLevel minLevel = DiagnosticLevel.info }) {
+  return 'TicketDetailState(loadingState: $loadingState, detail: $detail, comments: $comments, isSendingComment: $isSendingComment, isDeleting: $isDeleting, isDeleted: $isDeleted, replyingTo: $replyingTo)';
 }
 
 
@@ -843,7 +921,7 @@ abstract mixin class _$TicketDetailStateCopyWith<$Res> implements $TicketDetailS
   factory _$TicketDetailStateCopyWith(_TicketDetailState value, $Res Function(_TicketDetailState) _then) = __$TicketDetailStateCopyWithImpl;
 @override @useResult
 $Res call({
- CommonScreenState loadingState, TicketModel? ticket, List<ConversationMessage> conversations
+ CommonScreenState loadingState, HelpdeskTicketDetailModel? detail, List<HelpdeskCommentModel> comments, bool isSendingComment, bool isDeleting, bool isDeleted, HelpdeskCommentModel? replyingTo
 });
 
 
@@ -860,12 +938,16 @@ class __$TicketDetailStateCopyWithImpl<$Res>
 
 /// Create a copy of TicketDetailState
 /// with the given fields replaced by the non-null parameter values.
-@override @pragma('vm:prefer-inline') $Res call({Object? loadingState = null,Object? ticket = freezed,Object? conversations = null,}) {
+@override @pragma('vm:prefer-inline') $Res call({Object? loadingState = null,Object? detail = freezed,Object? comments = null,Object? isSendingComment = null,Object? isDeleting = null,Object? isDeleted = null,Object? replyingTo = freezed,}) {
   return _then(_TicketDetailState(
 loadingState: null == loadingState ? _self.loadingState : loadingState // ignore: cast_nullable_to_non_nullable
-as CommonScreenState,ticket: freezed == ticket ? _self.ticket : ticket // ignore: cast_nullable_to_non_nullable
-as TicketModel?,conversations: null == conversations ? _self._conversations : conversations // ignore: cast_nullable_to_non_nullable
-as List<ConversationMessage>,
+as CommonScreenState,detail: freezed == detail ? _self.detail : detail // ignore: cast_nullable_to_non_nullable
+as HelpdeskTicketDetailModel?,comments: null == comments ? _self._comments : comments // ignore: cast_nullable_to_non_nullable
+as List<HelpdeskCommentModel>,isSendingComment: null == isSendingComment ? _self.isSendingComment : isSendingComment // ignore: cast_nullable_to_non_nullable
+as bool,isDeleting: null == isDeleting ? _self.isDeleting : isDeleting // ignore: cast_nullable_to_non_nullable
+as bool,isDeleted: null == isDeleted ? _self.isDeleted : isDeleted // ignore: cast_nullable_to_non_nullable
+as bool,replyingTo: freezed == replyingTo ? _self.replyingTo : replyingTo // ignore: cast_nullable_to_non_nullable
+as HelpdeskCommentModel?,
   ));
 }
 
