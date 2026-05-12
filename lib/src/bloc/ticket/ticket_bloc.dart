@@ -58,7 +58,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
       ticketRepo.getMyTickets(
         pageNumber: 1,
         pageSize: state.pageSize,
-        statusCode: state.selectedFilter?.statusCode,
+        statusName: state.selectedFilter?.statusName,
       ),
     ]);
 
@@ -132,7 +132,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
         await ticketRepo.getMyTickets(
       pageNumber: nextPage,
       pageSize: state.pageSize,
-      statusCode: state.selectedFilter?.statusCode,
+      statusName: state.selectedFilter?.statusName,
     );
 
     result.fold(
@@ -174,7 +174,7 @@ class TicketBloc extends Bloc<TicketEvent, TicketState> {
         await ticketRepo.getMyTickets(
       pageNumber: 1,
       pageSize: state.pageSize,
-      statusCode: event.status?.statusCode,
+      statusName: event.status?.statusName,
     );
 
     result.fold(

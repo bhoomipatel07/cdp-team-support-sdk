@@ -60,8 +60,6 @@ class SupportEndpoints {
     required final int pageSize,
     final String? status,
     final String? search,
-    final String? sortBy,
-    final String? sortOrder,
   }) {
     final StringBuffer buf = StringBuffer(
       'HelpdeskTicket/GetMyHelpdeskTickets?PageNumber=$pageNumber&PageSize=$pageSize',
@@ -70,13 +68,7 @@ class SupportEndpoints {
       buf.write('&Status=${Uri.encodeQueryComponent(status)}');
     }
     if (search != null && search.isNotEmpty) {
-      buf.write('&Search=${Uri.encodeQueryComponent(search)}');
-    }
-    if (sortBy != null && sortBy.isNotEmpty) {
-      buf.write('&SortBy=${Uri.encodeQueryComponent(sortBy)}');
-    }
-    if (sortOrder != null && sortOrder.isNotEmpty) {
-      buf.write('&SortOrder=${Uri.encodeQueryComponent(sortOrder)}');
+      buf.write('&SearchText=${Uri.encodeQueryComponent(search)}');
     }
     return buf.toString();
   }

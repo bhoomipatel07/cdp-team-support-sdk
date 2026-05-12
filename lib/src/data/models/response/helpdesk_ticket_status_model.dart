@@ -3,8 +3,7 @@
 ///
 /// Example:
 /// ```json
-/// { "helpdeskStatusId": 2, "statusCode": "InProgress",
-///   "statusName": "In Progress", "sortOrder": 2, "isActive": true }
+/// { "helpdeskStatusId": 2, "statusName": "In Progress", "isActive": true }
 /// ```
 ///
 /// NOTE: this model is **not** used by the dashboard count UI — that is
@@ -12,22 +11,16 @@
 class HelpdeskTicketStatusModel {
   const HelpdeskTicketStatusModel({
     required this.id,
-    required this.statusCode,
     required this.statusName,
-    this.sortOrder,
     this.isActive = true,
   });
 
   final int id;
 
-  /// Machine-readable code (e.g. `Open`, `InProgress`). This is what the
-  /// `GetMyHelpdeskTickets` `Status` query param expects.
-  final String statusCode;
-
-  /// Human-readable label (e.g. `In Progress`).
+  /// Human-readable label (e.g. `In Progress`). This is what the
+  /// `GetMyHelpdeskTickets` `Status` query param now expects.
   final String statusName;
 
-  final int? sortOrder;
   final bool isActive;
 
   /// Back-compat alias used in older UI code that expected `.name`.
@@ -43,12 +36,6 @@ class HelpdeskTicketStatusModel {
         'id',
         'Id',
       ]),
-      statusCode: _readString(json, const <String>[
-        'statusCode',
-        'StatusCode',
-        'code',
-        'Code',
-      ]),
       statusName: _readString(json, const <String>[
         'statusName',
         'StatusName',
@@ -56,14 +43,6 @@ class HelpdeskTicketStatusModel {
         'Name',
         'title',
         'Title',
-      ]),
-      sortOrder: _readIntOrNull(json, const <String>[
-        'sortOrder',
-        'SortOrder',
-        'displayOrder',
-        'DisplayOrder',
-        'order',
-        'Order',
       ]),
       isActive: _readBool(json, const <String>['isActive', 'IsActive']) ?? true,
     );
@@ -85,7 +64,7 @@ class HelpdeskTicketStatusModel {
         .toList()
       ..sort((final HelpdeskTicketStatusModel a,
               final HelpdeskTicketStatusModel b) =>
-          (a.sortOrder ?? a.id).compareTo(b.sortOrder ?? b.id));
+          a.id.compareTo(b.id));
   }
 
   @override

@@ -13,8 +13,6 @@ class ConversationMessage {
   final MessageUserRole senderRole;
   final String message;
   final DateTime timestamp;
-  final int likeCount;
-  final int dislikeCount;
   final bool isOwnMessage;
   final bool isEdited;
 
@@ -25,8 +23,6 @@ class ConversationMessage {
     required this.senderRole,
     required this.message,
     required this.timestamp,
-    this.likeCount = 0,
-    this.dislikeCount = 0,
     this.isOwnMessage = false,
     this.isEdited = false,
   });
@@ -38,8 +34,6 @@ class ConversationMessage {
     final MessageUserRole? senderRole,
     final String? message,
     final DateTime? timestamp,
-    final int? likeCount,
-    final int? dislikeCount,
     final bool? isOwnMessage,
     final bool? isEdited,
   }) {
@@ -50,8 +44,6 @@ class ConversationMessage {
       senderRole: senderRole ?? this.senderRole,
       message: message ?? this.message,
       timestamp: timestamp ?? this.timestamp,
-      likeCount: likeCount ?? this.likeCount,
-      dislikeCount: dislikeCount ?? this.dislikeCount,
       isOwnMessage: isOwnMessage ?? this.isOwnMessage,
       isEdited: isEdited ?? this.isEdited,
     );

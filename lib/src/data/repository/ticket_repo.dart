@@ -19,7 +19,7 @@ abstract class TicketRepo {
   ResultFuture<HelpdeskTicketListResponseModel> getMyTickets({
     required final int pageNumber,
     required final int pageSize,
-    final String? statusCode,
+    final String? statusName,
     final String? search,
   });
 
@@ -101,7 +101,7 @@ class TicketRepoImp implements TicketRepo {
   ResultFuture<HelpdeskTicketListResponseModel> getMyTickets({
     required final int pageNumber,
     required final int pageSize,
-    final String? statusCode,
+    final String? statusName,
     final String? search,
   }) async {
     try {
@@ -109,7 +109,7 @@ class TicketRepoImp implements TicketRepo {
         SupportEndpoints.getMyHelpdeskTickets(
           pageNumber: pageNumber,
           pageSize: pageSize,
-          status: statusCode,
+          status: statusName,
           search: search,
         ),
       );
