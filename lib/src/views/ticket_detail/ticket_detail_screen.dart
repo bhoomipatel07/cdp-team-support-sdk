@@ -113,16 +113,12 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
       },
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
-        child: BlocConsumer<TicketDetailBloc, TicketDetailState>(
-          listenWhen:
-              (final TicketDetailState prev, final TicketDetailState curr) =>
-                  !prev.isDeleted && curr.isDeleted,
-          listener:
-              (final BuildContext context, final TicketDetailState state) {
-                // Delete succeeded — pop back to the list with `true` so
-                // the list refreshes regardless of any prior edit state.
-                Navigator.of(context).pop(true);
-              },
+        // No outer `isDeleted` listener here on purpose. The delete
+        // confirmation dialog owns the post-delete navigation (pop the
+        // dialog and then pop this screen with `true`) so we avoid a
+        // race with two listeners that both call `Navigator.pop` and
+        // end up popping the wrong route off the topmost stack.
+        child: BlocBuilder<TicketDetailBloc, TicketDetailState>(
           builder: (final BuildContext context, final TicketDetailState state) {
             if (state.loadingState == CommonScreenState.loading ||
                 state.loadingState == CommonScreenState.initial) {
@@ -432,7 +428,13 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                     final TicketDetailState curr,
                   ) => !prev.isDeleted && curr.isDeleted,
               listener: (final BuildContext ctx, final TicketDetailState _) {
+                // Pop the dialog first, then pop the detail screen with
+                // `true` so the list refreshes. Order matters: each
+                // Navigator.pop pops the topmost route, so popping the
+                // dialog first leaves the detail as the topmost route
+                // for the second pop to target.
                 Navigator.pop(dialogContext);
+                Navigator.of(context).pop(true);
               },
               builder: (final BuildContext ctx, final TicketDetailState state) {
                 final bool isDeleting = state.isDeleting;
