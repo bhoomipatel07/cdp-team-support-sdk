@@ -440,163 +440,163 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   insetPadding: EdgeInsets.symmetric(
-                    horizontal: isTab ? 120 : 40,
-                    vertical: 24,
+                    horizontal: isTab ? 100 : 30,
                   ),
                   child: ConstrainedBox(
                     constraints: BoxConstraints(maxWidth: isTab ? 380 : 320),
-                  child: Container(
-                    padding: EdgeInsets.all(isTab ? 24 : 20),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: SdkColors.splashDeep.withValues(alpha: 0.1),
+                    child: Container(
+                      padding: EdgeInsets.all(isTab ? 24 : 20),
+                      decoration: BoxDecoration(
+                        color: Colors.white,
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: SdkColors.splashDeep.withValues(alpha: 0.1),
+                        ),
+                        boxShadow: <BoxShadow>[
+                          BoxShadow(
+                            color: SdkColors.splashDeep.withValues(alpha: 0.15),
+                            blurRadius: 40,
+                            offset: const Offset(0, 12),
+                          ),
+                        ],
                       ),
-                      boxShadow: <BoxShadow>[
-                        BoxShadow(
-                          color: SdkColors.splashDeep.withValues(alpha: 0.15),
-                          blurRadius: 40,
-                          offset: const Offset(0, 12),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisSize: MainAxisSize.min,
-                      children: <Widget>[
-                        Container(
-                          width: isTab ? 72 : 60,
-                          height: isTab ? 72 : 60,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            color: SdkColors.colorError500.withValues(
-                              alpha: 0.06,
-                            ),
-                            border: Border.all(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: <Widget>[
+                          Container(
+                            width: isTab ? 72 : 60,
+                            height: isTab ? 72 : 60,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
                               color: SdkColors.colorError500.withValues(
-                                alpha: 0.15,
+                                alpha: 0.06,
                               ),
-                              width: 1.5,
+                              border: Border.all(
+                                color: SdkColors.colorError500.withValues(
+                                  alpha: 0.15,
+                                ),
+                                width: 1.5,
+                              ),
+                            ),
+                            child: Icon(
+                              Icons.delete_outline_rounded,
+                              color: SdkColors.colorError500,
+                              size: isTab ? 36 : 28,
                             ),
                           ),
-                          child: Icon(
-                            Icons.delete_outline_rounded,
-                            color: SdkColors.colorError500,
-                            size: isTab ? 36 : 28,
+                          SizedBox(height: isTab ? 18 : 14),
+                          Container(
+                            width: 40,
+                            height: 3,
+                            decoration: BoxDecoration(
+                              color: SdkColors.splashGold,
+                              borderRadius: BorderRadius.circular(2),
+                            ),
                           ),
-                        ),
-                        SizedBox(height: isTab ? 18 : 14),
-                        Container(
-                          width: 40,
-                          height: 3,
-                          decoration: BoxDecoration(
-                            color: SdkColors.splashGold,
-                            borderRadius: BorderRadius.circular(2),
+                          SizedBox(height: isTab ? 16 : 12),
+                          Text(
+                            'Delete Ticket?',
+                            style: sdkRubikW700(isTablet: isTab).copyWith(
+                              fontSize: isTab ? 22 : 18,
+                              color: SdkColors.splashDeep,
+                            ),
                           ),
-                        ),
-                        SizedBox(height: isTab ? 16 : 12),
-                        Text(
-                          'Delete Ticket?',
-                          style: sdkRubikW700(isTablet: isTab).copyWith(
-                            fontSize: isTab ? 22 : 18,
-                            color: SdkColors.splashDeep,
+                          const SizedBox(height: 8),
+                          Text(
+                            'This action cannot be undone. The ticket and all its data will be permanently removed.',
+                            textAlign: TextAlign.center,
+                            style: sdkRubikW400(isTablet: isTab).copyWith(
+                              fontSize: isTab ? 14 : 12,
+                              color: SdkColors.homeSubtext,
+                              height: 1.4,
+                            ),
                           ),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          'This action cannot be undone. The ticket and all its data will be permanently removed.',
-                          textAlign: TextAlign.center,
-                          style: sdkRubikW400(isTablet: isTab).copyWith(
-                            fontSize: isTab ? 14 : 12,
-                            color: SdkColors.homeSubtext,
-                            height: 1.4,
-                          ),
-                        ),
-                        SizedBox(height: isTab ? 28 : 22),
-                        Row(
-                          children: <Widget>[
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: isDeleting
-                                    ? null
-                                    : () => Navigator.pop(dialogContext),
-                                child: Opacity(
-                                  opacity: isDeleting ? 0.5 : 1,
-                                  child: Container(
-                                    height: isTab ? 48 : 44,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(
-                                        color: SdkColors.splashDeep.withValues(
-                                          alpha: 0.2,
+                          SizedBox(height: isTab ? 28 : 22),
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: isDeleting
+                                      ? null
+                                      : () => Navigator.pop(dialogContext),
+                                  child: Opacity(
+                                    opacity: isDeleting ? 0.5 : 1,
+                                    child: Container(
+                                      height: isTab ? 48 : 44,
+                                      decoration: BoxDecoration(
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(
+                                          color: SdkColors.splashDeep
+                                              .withValues(alpha: 0.2),
+                                        ),
+                                      ),
+                                      child: Center(
+                                        child: Text(
+                                          'Cancel',
+                                          style: sdkRubikW600(isTablet: isTab)
+                                              .copyWith(
+                                                fontSize: isTab ? 15 : 13,
+                                                color: SdkColors.splashDeep,
+                                              ),
                                         ),
                                       ),
                                     ),
+                                  ),
+                                ),
+                              ),
+                              SizedBox(width: isTab ? 14 : 10),
+                              Expanded(
+                                child: GestureDetector(
+                                  onTap: isDeleting
+                                      ? null
+                                      : () {
+                                          ctx.read<TicketDetailBloc>().add(
+                                            const TicketDetailEvent.onDeleteTicket(),
+                                          );
+                                        },
+                                  child: Container(
+                                    height: isTab ? 48 : 44,
+                                    decoration: BoxDecoration(
+                                      color: SdkColors.colorError500,
+                                      borderRadius: BorderRadius.circular(12),
+                                      boxShadow: <BoxShadow>[
+                                        BoxShadow(
+                                          color: SdkColors.colorError500
+                                              .withValues(alpha: 0.3),
+                                          blurRadius: 12,
+                                          offset: const Offset(0, 4),
+                                        ),
+                                      ],
+                                    ),
                                     child: Center(
-                                      child: Text(
-                                        'Cancel',
-                                        style: sdkRubikW600(isTablet: isTab)
-                                            .copyWith(
-                                              fontSize: isTab ? 15 : 13,
-                                              color: SdkColors.splashDeep,
+                                      child: isDeleting
+                                          ? const SizedBox(
+                                              width: 18,
+                                              height: 18,
+                                              child: CircularProgressIndicator(
+                                                strokeWidth: 2,
+                                                color: Colors.white,
+                                              ),
+                                            )
+                                          : Text(
+                                              'Delete',
+                                              style:
+                                                  sdkRubikW600(
+                                                    isTablet: isTab,
+                                                  ).copyWith(
+                                                    fontSize: isTab ? 15 : 13,
+                                                    color: Colors.white,
+                                                  ),
                                             ),
-                                      ),
                                     ),
                                   ),
                                 ),
                               ),
-                            ),
-                            SizedBox(width: isTab ? 14 : 10),
-                            Expanded(
-                              child: GestureDetector(
-                                onTap: isDeleting
-                                    ? null
-                                    : () {
-                                        ctx.read<TicketDetailBloc>().add(
-                                          const TicketDetailEvent.onDeleteTicket(),
-                                        );
-                                      },
-                                child: Container(
-                                  height: isTab ? 48 : 44,
-                                  decoration: BoxDecoration(
-                                    color: SdkColors.colorError500,
-                                    borderRadius: BorderRadius.circular(12),
-                                    boxShadow: <BoxShadow>[
-                                      BoxShadow(
-                                        color: SdkColors.colorError500
-                                            .withValues(alpha: 0.3),
-                                        blurRadius: 12,
-                                        offset: const Offset(0, 4),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Center(
-                                    child: isDeleting
-                                        ? const SizedBox(
-                                            width: 18,
-                                            height: 18,
-                                            child: CircularProgressIndicator(
-                                              strokeWidth: 2,
-                                              color: Colors.white,
-                                            ),
-                                          )
-                                        : Text(
-                                            'Delete',
-                                            style: sdkRubikW600(isTablet: isTab)
-                                                .copyWith(
-                                                  fontSize: isTab ? 15 : 13,
-                                                  color: Colors.white,
-                                                ),
-                                          ),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ),
                   ),
                 );
               },
