@@ -1,10 +1,7 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cdp_team_support_sdk/src/bloc/ticket/ticket_bloc.dart';
+import 'package:cdp_team_support_sdk/src/components/sdk_app_bar.dart';
 import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
 import 'package:cdp_team_support_sdk/src/data/api/either.dart';
 import 'package:cdp_team_support_sdk/src/data/errors/failure.dart';
@@ -15,7 +12,10 @@ import 'package:cdp_team_support_sdk/src/models/common_enums.dart';
 import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_colors.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_fonts.dart';
-import 'package:cdp_team_support_sdk/src/components/sdk_app_bar.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class CreateTicketScreen extends StatelessWidget {
   final bool isEditMode;
@@ -30,16 +30,11 @@ class CreateTicketScreen extends StatelessWidget {
   @override
   Widget build(final BuildContext context) {
     return BlocProvider<TicketBloc>(
-      create: (final BuildContext context) =>
-      TicketBloc(
+      create: (final BuildContext context) => TicketBloc(
         ticketRepo: TicketRepoImp(),
         attachmentRepo: AttachmentRepoImp(),
-      )
-        ..add(const TicketEvent.onLoadTickets()),
-      child: _CreateTicketBody(
-        isEditMode: isEditMode,
-        ticketData: ticketData,
-      ),
+      )..add(const TicketEvent.onLoadTickets()),
+      child: _CreateTicketBody(isEditMode: isEditMode, ticketData: ticketData),
     );
   }
 }
@@ -48,10 +43,7 @@ class _CreateTicketBody extends StatefulWidget {
   final bool isEditMode;
   final TicketModel? ticketData;
 
-  const _CreateTicketBody({
-    required this.isEditMode,
-    this.ticketData,
-  });
+  const _CreateTicketBody({required this.isEditMode, this.ticketData});
 
   @override
   State<_CreateTicketBody> createState() => _CreateTicketBodyState();
@@ -68,12 +60,15 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
   @override
   void initState() {
     super.initState();
-    _titleController =
-        TextEditingController(text: widget.ticketData?.title ?? '');
-    _descController =
-        TextEditingController(text: widget.ticketData?.description ?? '');
-    _noteController =
-        TextEditingController(text: widget.ticketData?.clientNote ?? '');
+    _titleController = TextEditingController(
+      text: widget.ticketData?.title ?? '',
+    );
+    _descController = TextEditingController(
+      text: widget.ticketData?.description ?? '',
+    );
+    _noteController = TextEditingController(
+      text: widget.ticketData?.clientNote ?? '',
+    );
     _existingAttachments = <TicketAttachment>[
       ...?widget.ticketData?.attachments,
     ];
@@ -108,8 +103,18 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
       allowMultiple: true,
       type: FileType.custom,
       allowedExtensions: <String>[
-        'jpg', 'jpeg', 'png', 'gif', 'pdf', 'doc', 'docx',
-        'xls', 'xlsx', 'txt', 'zip', 'csv',
+        'jpg',
+        'jpeg',
+        'png',
+        'gif',
+        'pdf',
+        'doc',
+        'docx',
+        'xls',
+        'xlsx',
+        'txt',
+        'zip',
+        'csv',
       ],
     );
     if (result != null && mounted) {
@@ -140,7 +145,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               color: Colors.white,
               borderRadius: BorderRadius.circular(20),
               border: Border.all(
-                  color: SdkColors.splashDeep.withValues(alpha: 0.1)),
+                color: SdkColors.splashDeep.withValues(alpha: 0.1),
+              ),
               boxShadow: <BoxShadow>[
                 BoxShadow(
                   color: SdkColors.splashDeep.withValues(alpha: 0.15),
@@ -163,14 +169,18 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                   ),
                   child: Row(
                     children: <Widget>[
-                      const Icon(Icons.preview_outlined,
-                          color: Colors.white, size: 22),
+                      const Icon(
+                        Icons.preview_outlined,
+                        color: Colors.white,
+                        size: 22,
+                      ),
                       const SizedBox(width: 10),
                       Expanded(
                         child: Text(
                           'Preview Files (${files.length})',
-                          style: sdkRubikW700(isTablet: isTab).copyWith(
-                              fontSize: 16, color: Colors.white),
+                          style: sdkRubikW700(
+                            isTablet: isTab,
+                          ).copyWith(fontSize: 16, color: Colors.white),
                         ),
                       ),
                       GestureDetector(
@@ -182,8 +192,11 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                             color: Colors.white.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Icon(Icons.close_rounded,
-                              color: Colors.white, size: 18),
+                          child: const Icon(
+                            Icons.close_rounded,
+                            color: Colors.white,
+                            size: 18,
+                          ),
                         ),
                       ),
                     ],
@@ -196,12 +209,14 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     padding: const EdgeInsets.all(16),
                     itemCount: files.length,
                     separatorBuilder: (final BuildContext _, final int __) =>
-                    const SizedBox(height: 10),
-                    itemBuilder:
-                        (final BuildContext context, final int index) {
+                        const SizedBox(height: 10),
+                    itemBuilder: (final BuildContext context, final int index) {
                       final PlatformFile file = files[index];
                       final bool isImage = <String>[
-                        'jpg', 'jpeg', 'png', 'gif'
+                        'jpg',
+                        'jpeg',
+                        'png',
+                        'gif',
                       ].contains(file.extension?.toLowerCase());
                       return Container(
                         padding: const EdgeInsets.all(12),
@@ -209,7 +224,9 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                           color: SdkColors.bgColor,
                           borderRadius: BorderRadius.circular(12),
                           border: Border.all(
-                              color: SdkColors.homeBorder, width: 1),
+                            color: SdkColors.homeBorder,
+                            width: 1,
+                          ),
                         ),
                         child: Row(
                           children: <Widget>[
@@ -220,32 +237,36 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(10),
                                 border: Border.all(
-                                    color: SdkColors.homeBorder, width: 1),
+                                  color: SdkColors.homeBorder,
+                                  width: 1,
+                                ),
                               ),
                               child: ClipRRect(
                                 borderRadius: BorderRadius.circular(10),
                                 child: isImage && file.path != null
-                                    ? Image.file(File(file.path!),
-                                    fit: BoxFit.cover)
+                                    ? Image.file(
+                                        File(file.path!),
+                                        fit: BoxFit.cover,
+                                      )
                                     : Icon(
-                                    _getFileIcon(
-                                        file.extension ?? 'file'),
-                                    color: SdkColors.splashGlow,
-                                    size: 28),
+                                        _getFileIcon(file.extension ?? 'file'),
+                                        color: SdkColors.splashGlow,
+                                        size: 28,
+                                      ),
                               ),
                             ),
                             const SizedBox(width: 12),
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: <Widget>[
                                   Text(
                                     file.name,
                                     style: sdkRubikW500(isTablet: isTab)
                                         .copyWith(
-                                        fontSize: 13,
-                                        color: SdkColors.splashDeep),
+                                          fontSize: 13,
+                                          color: SdkColors.splashDeep,
+                                        ),
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                   ),
@@ -254,14 +275,18 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                                     _formatSize(file.size),
                                     style: sdkRubikW400(isTablet: isTab)
                                         .copyWith(
-                                        fontSize: 11,
-                                        color: SdkColors.homeSubtext),
+                                          fontSize: 11,
+                                          color: SdkColors.homeSubtext,
+                                        ),
                                   ),
                                 ],
                               ),
                             ),
-                            const Icon(Icons.check_circle_rounded,
-                                color: Color(0xFF22C55E), size: 22),
+                            const Icon(
+                              Icons.check_circle_rounded,
+                              color: Color(0xFF22C55E),
+                              size: 22,
+                            ),
                           ],
                         ),
                       );
@@ -274,22 +299,25 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     children: <Widget>[
                       Expanded(
                         child: GestureDetector(
-                          onTap: () =>
-                              Navigator.pop(dialogContext, false),
+                          onTap: () => Navigator.pop(dialogContext, false),
                           child: Container(
                             height: 44,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(10),
                               border: Border.all(
-                                  color: SdkColors.splashDeep
-                                      .withValues(alpha: 0.25)),
+                                color: SdkColors.splashDeep.withValues(
+                                  alpha: 0.25,
+                                ),
+                              ),
                             ),
                             child: Center(
-                              child: Text('Cancel',
-                                  style: sdkRubikW600(isTablet: isTab)
-                                      .copyWith(
-                                      fontSize: 14,
-                                      color: SdkColors.splashDeep)),
+                              child: Text(
+                                'Cancel',
+                                style: sdkRubikW600(isTablet: isTab).copyWith(
+                                  fontSize: 14,
+                                  color: SdkColors.splashDeep,
+                                ),
+                              ),
                             ),
                           ),
                         ),
@@ -297,8 +325,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                       const SizedBox(width: 12),
                       Expanded(
                         child: GestureDetector(
-                          onTap: () =>
-                              Navigator.pop(dialogContext, true),
+                          onTap: () => Navigator.pop(dialogContext, true),
                           child: Container(
                             height: 44,
                             decoration: BoxDecoration(
@@ -306,11 +333,12 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Center(
-                              child: Text('Confirm',
-                                  style: sdkRubikW600(isTablet: isTab)
-                                      .copyWith(
-                                      fontSize: 14,
-                                      color: Colors.white)),
+                              child: Text(
+                                'Confirm',
+                                style: sdkRubikW600(
+                                  isTablet: isTab,
+                                ).copyWith(fontSize: 14, color: Colors.white),
+                              ),
                             ),
                           ),
                         ),
@@ -363,23 +391,15 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
           return Scaffold(
             backgroundColor: SdkColors.bgColor,
             appBar: SdkAppBar(
-              title:
-              widget.isEditMode ? 'Edit Ticket' : 'Create New Ticket',
+              title: widget.isEditMode ? 'Edit Ticket' : 'Create New Ticket',
             ),
             body: SingleChildScrollView(
               padding: EdgeInsets.symmetric(
-                horizontal: isTab
-                    ? MediaQuery
-                    .of(context)
-                    .size
-                    .width / 6
-                    : 16,
+                horizontal: isTab ? MediaQuery.of(context).size.width / 6 : 16,
                 vertical: 20,
               ),
               child: Form(
-                key: context
-                    .read<TicketBloc>()
-                    .formKey,
+                key: context.read<TicketBloc>().formKey,
                 child: _buildFormCard(context, state),
               ),
             ),
@@ -413,8 +433,9 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
             widget.isEditMode
                 ? 'Update your ticket details'
                 : 'Submit a support request to our team',
-            style: sdkRubikW400(isTablet: isTab)
-                .copyWith(fontSize: 13, color: SdkColors.homeSubtext),
+            style: sdkRubikW400(
+              isTablet: isTab,
+            ).copyWith(fontSize: 13, color: SdkColors.homeSubtext),
           ),
           const SizedBox(height: 20),
 
@@ -423,46 +444,57 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
           const SizedBox(height: 8),
           TextFormField(
             controller: _titleController,
-            style: sdkRubikW500(isTablet: isTab)
-                .copyWith(fontSize: 14, color: SdkColors.splashDeep),
+            style: sdkRubikW500(
+              isTablet: isTab,
+            ).copyWith(fontSize: 14, color: SdkColors.splashDeep),
             cursorColor: SdkColors.splashDeep,
             decoration: InputDecoration(
               hintText: 'Brief description of the issue',
-              hintStyle: sdkRubikW400(isTablet: isTab)
-                  .copyWith(fontSize: 13, color: SdkColors.homeSubtext),
+              hintStyle: sdkRubikW400(
+                isTablet: isTab,
+              ).copyWith(fontSize: 13, color: SdkColors.homeSubtext),
               filled: true,
               fillColor: SdkColors.bgColor,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.homeBorder, width: 1),
+                borderSide: const BorderSide(
+                  color: SdkColors.homeBorder,
+                  width: 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.splashDeep, width: 1.5),
+                borderSide: const BorderSide(
+                  color: SdkColors.splashDeep,
+                  width: 1.5,
+                ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.colorError500, width: 1),
+                borderSide: const BorderSide(
+                  color: SdkColors.colorError500,
+                  width: 1,
+                ),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(
-                    color: SdkColors.colorError500, width: 1.5),
+                  color: SdkColors.colorError500,
+                  width: 1.5,
+                ),
               ),
-              contentPadding:
-              const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                horizontal: 14,
+                vertical: 12,
+              ),
             ),
             onChanged: (final String value) {
               context.read<TicketBloc>().add(
-                  TicketEvent.onChangeTitle(title: value));
+                TicketEvent.onChangeTitle(title: value),
+              );
             },
             validator: (final String? value) {
-              if (value == null || value
-                  .trim()
-                  .isEmpty) {
+              if (value == null || value.trim().isEmpty) {
                 return 'Title is required';
               }
               return null;
@@ -477,48 +509,57 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
             controller: _descController,
             maxLines: 5,
             maxLength: 200,
-            style: sdkRubikW500(isTablet: isTab)
-                .copyWith(fontSize: 14, color: SdkColors.splashDeep),
+            style: sdkRubikW500(
+              isTablet: isTab,
+            ).copyWith(fontSize: 14, color: SdkColors.splashDeep),
             cursorColor: SdkColors.splashDeep,
             decoration: InputDecoration(
               hintText: 'Detailed description of the issue',
-              hintStyle: sdkRubikW400(isTablet: isTab)
-                  .copyWith(fontSize: 13, color: SdkColors.homeSubtext),
+              hintStyle: sdkRubikW400(
+                isTablet: isTab,
+              ).copyWith(fontSize: 13, color: SdkColors.homeSubtext),
               filled: true,
               fillColor: SdkColors.bgColor,
-              counterStyle: sdkRubikW400(isTablet: isTab)
-                  .copyWith(fontSize: 11, color: SdkColors.homeSubtext),
+              counterStyle: sdkRubikW400(
+                isTablet: isTab,
+              ).copyWith(fontSize: 11, color: SdkColors.homeSubtext),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.homeBorder, width: 1),
+                borderSide: const BorderSide(
+                  color: SdkColors.homeBorder,
+                  width: 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.splashDeep, width: 1.5),
+                borderSide: const BorderSide(
+                  color: SdkColors.splashDeep,
+                  width: 1.5,
+                ),
               ),
               errorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.colorError500, width: 1),
+                borderSide: const BorderSide(
+                  color: SdkColors.colorError500,
+                  width: 1,
+                ),
               ),
               focusedErrorBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
                 borderSide: const BorderSide(
-                    color: SdkColors.colorError500, width: 1.5),
+                  color: SdkColors.colorError500,
+                  width: 1.5,
+                ),
               ),
               contentPadding: const EdgeInsets.all(14),
             ),
             onChanged: (final String value) {
-              context
-                  .read<TicketBloc>()
-                  .add(TicketEvent.onChangeDescription(description: value));
+              context.read<TicketBloc>().add(
+                TicketEvent.onChangeDescription(description: value),
+              );
             },
             validator: (final String? value) {
-              if (value == null || value
-                  .trim()
-                  .isEmpty) {
+              if (value == null || value.trim().isEmpty) {
                 return 'Description is required';
               }
               return null;
@@ -529,40 +570,41 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
           // Project is fixed per host app (SupportSdkConfig.project);
           // shown read-only so the user knows which project they are
           // filing against but cannot change it.
-          _buildLabel('PROJECT'),
-          const SizedBox(height: 8),
-          Container(
-            width: double.infinity,
-            padding:
-                const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-            decoration: BoxDecoration(
-              color: SdkColors.bgColor,
-              borderRadius: BorderRadius.circular(10),
-              border: Border.all(color: SdkColors.homeBorder, width: 1),
-            ),
-            child: Row(
-              children: <Widget>[
-                const Icon(Icons.folder_outlined,
-                    size: 18, color: SdkColors.splashGlow),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: Text(
-                    SupportSdkConfig.instance.project.displayName,
-                    style: sdkRubikW600(isTablet: isTab).copyWith(
-                      fontSize: 14,
-                      color: SdkColors.splashDeep,
-                    ),
-                  ),
-                ),
-                Icon(
-                  Icons.lock_outline_rounded,
-                  size: 14,
-                  color: SdkColors.homeSubtext.withValues(alpha: 0.6),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 20),
+          // FixME: uncomment if need to show project name
+          // _buildLabel('PROJECT'),
+          // const SizedBox(height: 8),
+          // Container(
+          //   width: double.infinity,
+          //   padding:
+          //       const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
+          //   decoration: BoxDecoration(
+          //     color: SdkColors.bgColor,
+          //     borderRadius: BorderRadius.circular(10),
+          //     border: Border.all(color: SdkColors.homeBorder, width: 1),
+          //   ),
+          //   child: Row(
+          //     children: <Widget>[
+          //       const Icon(Icons.folder_outlined,
+          //           size: 18, color: SdkColors.splashGlow),
+          //       const SizedBox(width: 10),
+          //       Expanded(
+          //         child: Text(
+          //           SupportSdkConfig.instance.project.displayName,
+          //           style: sdkRubikW600(isTablet: isTab).copyWith(
+          //             fontSize: 14,
+          //             color: SdkColors.splashDeep,
+          //           ),
+          //         ),
+          //       ),
+          //       Icon(
+          //         Icons.lock_outline_rounded,
+          //         size: 14,
+          //         color: SdkColors.homeSubtext.withValues(alpha: 0.6),
+          //       ),
+          //     ],
+          //   ),
+          // ),
+          // const SizedBox(height: 20),
 
           // Client Note
           _buildLabel('CLIENT NOTE'),
@@ -570,30 +612,37 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
           TextFormField(
             controller: _noteController,
             maxLines: 3,
-            style: sdkRubikW500(isTablet: isTab)
-                .copyWith(fontSize: 14, color: SdkColors.splashDeep),
+            style: sdkRubikW500(
+              isTablet: isTab,
+            ).copyWith(fontSize: 14, color: SdkColors.splashDeep),
             cursorColor: SdkColors.splashDeep,
             decoration: InputDecoration(
               hintText: 'Additional notes for the support team (optional)',
-              hintStyle: sdkRubikW400(isTablet: isTab)
-                  .copyWith(fontSize: 13, color: SdkColors.homeSubtext),
+              hintStyle: sdkRubikW400(
+                isTablet: isTab,
+              ).copyWith(fontSize: 13, color: SdkColors.homeSubtext),
               filled: true,
               fillColor: SdkColors.bgColor,
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.homeBorder, width: 1),
+                borderSide: const BorderSide(
+                  color: SdkColors.homeBorder,
+                  width: 1,
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(10),
-                borderSide:
-                const BorderSide(color: SdkColors.splashDeep, width: 1.5),
+                borderSide: const BorderSide(
+                  color: SdkColors.splashDeep,
+                  width: 1.5,
+                ),
               ),
               contentPadding: const EdgeInsets.all(14),
             ),
             onChanged: (final String value) {
               context.read<TicketBloc>().add(
-                  TicketEvent.onChangeNote(note: value));
+                TicketEvent.onChangeNote(note: value),
+              );
             },
           ),
           const SizedBox(height: 24),
@@ -606,7 +655,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
               widget.ticketData != null &&
               _existingAttachments.isNotEmpty) ...<Widget>[
             ..._existingAttachments.map(
-                    (final TicketAttachment a) => _buildExistingAttachment(a)),
+              (final TicketAttachment a) => _buildExistingAttachment(a),
+            ),
             const SizedBox(height: 8),
           ],
 
@@ -614,11 +664,8 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
 
           if (_pickedFiles.isNotEmpty) ...<Widget>[
             const SizedBox(height: 12),
-            ..._pickedFiles
-                .asMap()
-                .entries
-                .map(
-                  (final MapEntry<int, PlatformFile> entry) =>
+            ..._pickedFiles.asMap().entries.map(
+              (final MapEntry<int, PlatformFile> entry) =>
                   _buildPickedFileChip(entry.key, entry.value),
             ),
           ],
@@ -635,14 +682,17 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
                       border: Border.all(
-                          color:
-                          SdkColors.splashDeep.withValues(alpha: 0.25)),
+                        color: SdkColors.splashDeep.withValues(alpha: 0.25),
+                      ),
                     ),
                     child: Center(
-                      child: Text('Cancel',
-                          style: sdkRubikW600(isTablet: isTab).copyWith(
-                              fontSize: isTab ? 15 : 14,
-                              color: SdkColors.splashDeep)),
+                      child: Text(
+                        'Cancel',
+                        style: sdkRubikW600(isTablet: isTab).copyWith(
+                          fontSize: isTab ? 15 : 14,
+                          color: SdkColors.splashDeep,
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -654,9 +704,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                   onTap: () {
                     if (state.loadingState != CommonScreenState.loading) {
                       final List<String> paths = _pickedFiles
-                          .where(
-                            (final PlatformFile f) => f.path != null,
-                      )
+                          .where((final PlatformFile f) => f.path != null)
                           .map((final PlatformFile f) => f.path!)
                           .toList();
                       context.read<TicketBloc>().add(
@@ -676,8 +724,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                       borderRadius: BorderRadius.circular(10),
                       boxShadow: <BoxShadow>[
                         BoxShadow(
-                          color:
-                          SdkColors.splashDeep.withValues(alpha: 0.25),
+                          color: SdkColors.splashDeep.withValues(alpha: 0.25),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -686,35 +733,37 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                     child: Center(
                       child: state.loadingState == CommonScreenState.loading
                           ? const SizedBox(
-                        width: 22,
-                        height: 22,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(
-                              Colors.white),
-                        ),
-                      )
+                              width: 22,
+                              height: 22,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  Colors.white,
+                                ),
+                              ),
+                            )
                           : Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: <Widget>[
-                          Icon(
-                              widget.isEditMode
-                                  ? Icons.save_rounded
-                                  : Icons.check_rounded,
-                              color: Colors.white,
-                              size: 20),
-                          const SizedBox(width: 6),
-                          Text(
-                            widget.isEditMode
-                                ? 'Save Changes'
-                                : 'Create Ticket',
-                            style: sdkRubikW600(isTablet: isTab)
-                                .copyWith(
-                                fontSize: isTab ? 15 : 14,
-                                color: Colors.white),
-                          ),
-                        ],
-                      ),
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: <Widget>[
+                                Icon(
+                                  widget.isEditMode
+                                      ? Icons.save_rounded
+                                      : Icons.check_rounded,
+                                  color: Colors.white,
+                                  size: 20,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  widget.isEditMode
+                                      ? 'Save Changes'
+                                      : 'Create Ticket',
+                                  style: sdkRubikW600(isTablet: isTab).copyWith(
+                                    fontSize: isTab ? 15 : 14,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ],
+                            ),
                     ),
                   ),
                 ),
@@ -732,13 +781,17 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
       text: TextSpan(
         text: text,
         style: sdkRubikW600(isTablet: isTab).copyWith(
-            fontSize: 12, color: SdkColors.homeSubtext, letterSpacing: 0.6),
+          fontSize: 12,
+          color: SdkColors.homeSubtext,
+          letterSpacing: 0.6,
+        ),
         children: <TextSpan>[
           if (isRequired)
             TextSpan(
               text: ' *',
-              style: sdkRubikW600(isTablet: isTab).copyWith(
-                  fontSize: 12, color: SdkColors.colorError500),
+              style: sdkRubikW600(
+                isTablet: isTab,
+              ).copyWith(fontSize: 12, color: SdkColors.colorError500),
             ),
         ],
       ),
@@ -766,31 +819,39 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                 color: SdkColors.splashDeep.withValues(alpha: 0.06),
                 shape: BoxShape.circle,
               ),
-              child: const Icon(Icons.cloud_upload_outlined,
-                  color: SdkColors.homeSubtext, size: 24),
+              child: const Icon(
+                Icons.cloud_upload_outlined,
+                color: SdkColors.homeSubtext,
+                size: 24,
+              ),
             ),
             const SizedBox(height: 10),
-            Text('Drag & drop files here or',
-                style: sdkRubikW400(isTablet: isTab)
-                    .copyWith(fontSize: 13, color: SdkColors.homeSubtext)),
+            Text(
+              'Drag & drop files here or',
+              style: sdkRubikW400(
+                isTablet: isTab,
+              ).copyWith(fontSize: 13, color: SdkColors.homeSubtext),
+            ),
             const SizedBox(height: 8),
             Container(
-              padding:
-              const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(8),
-                border:
-                Border.all(color: SdkColors.splashDeep, width: 1),
+                border: Border.all(color: SdkColors.splashDeep, width: 1),
               ),
-              child: Text('Browse Files',
-                  style: sdkRubikW500(isTablet: isTab)
-                      .copyWith(fontSize: 13, color: SdkColors.splashDeep)),
+              child: Text(
+                'Browse Files',
+                style: sdkRubikW500(
+                  isTablet: isTab,
+                ).copyWith(fontSize: 13, color: SdkColors.splashDeep),
+              ),
             ),
             const SizedBox(height: 8),
             Text(
               'Max 10MB per file. Allowed: images, pdf, doc, xls, txt, zip, csv',
-              style: sdkRubikW400(isTablet: isTab)
-                  .copyWith(fontSize: 10, color: SdkColors.homeSubtext),
+              style: sdkRubikW400(
+                isTablet: isTab,
+              ).copyWith(fontSize: 10, color: SdkColors.homeSubtext),
             ),
           ],
         ),
@@ -811,24 +872,30 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
       ),
       child: Row(
         children: <Widget>[
-          const Icon(Icons.insert_drive_file_outlined,
-              size: 20, color: SdkColors.splashGlow),
+          const Icon(
+            Icons.insert_drive_file_outlined,
+            size: 20,
+            color: SdkColors.splashGlow,
+          ),
           const SizedBox(width: 10),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Text(
-                  '${attachment.fileName}.${attachment.fileExtension
-                      .toLowerCase()}',
-                  style: sdkRubikW500(isTablet: isTab)
-                      .copyWith(fontSize: 12, color: SdkColors.splashDeep),
+                  '${attachment.fileName}.${attachment.fileExtension.toLowerCase()}',
+                  style: sdkRubikW500(
+                    isTablet: isTab,
+                  ).copyWith(fontSize: 12, color: SdkColors.splashDeep),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                 ),
-                Text(attachment.formattedSize,
-                    style: sdkRubikW400(isTablet: isTab)
-                        .copyWith(fontSize: 10, color: SdkColors.homeSubtext)),
+                Text(
+                  attachment.formattedSize,
+                  style: sdkRubikW400(
+                    isTablet: isTab,
+                  ).copyWith(fontSize: 10, color: SdkColors.homeSubtext),
+                ),
               ],
             ),
           ),
@@ -861,8 +928,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
     setState(() => _deletingAttachmentIds.add(attachment.id));
 
     final Either<Failure, CommonResponseModel> result =
-        await AttachmentRepoImp()
-            .deleteAttachment(attachmentId: attachment.id);
+        await AttachmentRepoImp().deleteAttachment(attachmentId: attachment.id);
 
     if (!mounted) return;
 
@@ -889,8 +955,12 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
 
   Widget _buildPickedFileChip(final int index, final PlatformFile file) {
     final bool isTab = SupportSdkConfig.instance.isTablet;
-    final bool isImage = <String>['jpg', 'jpeg', 'png', 'gif']
-        .contains(file.extension?.toLowerCase());
+    final bool isImage = <String>[
+      'jpg',
+      'jpeg',
+      'png',
+      'gif',
+    ].contains(file.extension?.toLowerCase());
     return Container(
       margin: const EdgeInsets.only(bottom: 8),
       padding: const EdgeInsets.all(10),
@@ -907,15 +977,17 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
             decoration: BoxDecoration(
               color: Colors.white,
               borderRadius: BorderRadius.circular(8),
-              border:
-              Border.all(color: SdkColors.homeBorder, width: 0.5),
+              border: Border.all(color: SdkColors.homeBorder, width: 0.5),
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(8),
               child: isImage && file.path != null
                   ? Image.file(File(file.path!), fit: BoxFit.cover)
-                  : Icon(_getFileIcon(file.extension ?? 'file'),
-                  color: SdkColors.splashGlow, size: 20),
+                  : Icon(
+                      _getFileIcon(file.extension ?? 'file'),
+                      color: SdkColors.splashGlow,
+                      size: 20,
+                    ),
             ),
           ),
           const SizedBox(width: 10),
@@ -923,14 +995,20 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
-                Text(file.name,
-                    style: sdkRubikW500(isTablet: isTab).copyWith(
-                        fontSize: 12, color: SdkColors.splashDeep),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis),
-                Text(_formatSize(file.size),
-                    style: sdkRubikW400(isTablet: isTab).copyWith(
-                        fontSize: 10, color: SdkColors.homeSubtext)),
+                Text(
+                  file.name,
+                  style: sdkRubikW500(
+                    isTablet: isTab,
+                  ).copyWith(fontSize: 12, color: SdkColors.splashDeep),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                Text(
+                  _formatSize(file.size),
+                  style: sdkRubikW400(
+                    isTablet: isTab,
+                  ).copyWith(fontSize: 10, color: SdkColors.homeSubtext),
+                ),
               ],
             ),
           ),
@@ -943,8 +1021,11 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
                 color: SdkColors.colorError500.withValues(alpha: 0.08),
                 borderRadius: BorderRadius.circular(6),
               ),
-              child: const Icon(Icons.close_rounded,
-                  size: 16, color: SdkColors.colorError500),
+              child: const Icon(
+                Icons.close_rounded,
+                size: 16,
+                color: SdkColors.colorError500,
+              ),
             ),
           ),
         ],

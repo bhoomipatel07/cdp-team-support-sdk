@@ -34,7 +34,7 @@ class TicketDetailScreen extends StatelessWidget {
         ticketRepo: TicketRepoImp(),
         commentRepo: CommentRepoImp(),
       )..add(TicketDetailEvent.onLoadDetail(ticketId: ticketId)),
-      child: const _TicketDetailBody(),
+      child: _TicketDetailBody(ticketId: ticketId),
     );
   }
 }
@@ -82,91 +82,127 @@ TicketModel _detailToTicketModel(final HelpdeskTicketDetailModel d) {
   );
 }
 
-class _TicketDetailBody extends StatelessWidget {
-  const _TicketDetailBody();
+class _TicketDetailBody extends StatefulWidget {
+  final int ticketId;
+
+  const _TicketDetailBody({required this.ticketId});
+
+  @override
+  State<_TicketDetailBody> createState() => _TicketDetailBodyState();
+}
+
+class _TicketDetailBodyState extends State<_TicketDetailBody> {
+  /// True after a successful edit (or any state change that the list
+  /// would want to reflect). Forwarded as the result when the screen
+  /// pops, so the parent list can decide whether to refetch.
+  bool _didChange = false;
+
+  void _popWithResult() {
+    Navigator.of(context).pop(_didChange);
+  }
 
   @override
   Widget build(final BuildContext context) {
     final bool isTab = SupportSdkConfig.instance.isTablet;
-    return AnnotatedRegion<SystemUiOverlayStyle>(
-      value: SystemUiOverlayStyle.dark,
-      child: BlocConsumer<TicketDetailBloc, TicketDetailState>(
-        listenWhen: (final TicketDetailState prev,
-                final TicketDetailState curr) =>
-            !prev.isDeleted && curr.isDeleted,
-        listener: (final BuildContext context, final TicketDetailState state) {
-          Navigator.of(context).pop(true);
-        },
-        builder: (final BuildContext context, final TicketDetailState state) {
-          if (state.loadingState == CommonScreenState.loading ||
-              state.loadingState == CommonScreenState.initial) {
+    return PopScope<Object?>(
+      canPop: false,
+      onPopInvokedWithResult:
+          (final bool didPop, final Object? result) {
+        if (didPop) return;
+        _popWithResult();
+      },
+      child: AnnotatedRegion<SystemUiOverlayStyle>(
+        value: SystemUiOverlayStyle.dark,
+        child: BlocConsumer<TicketDetailBloc, TicketDetailState>(
+          listenWhen: (final TicketDetailState prev,
+                  final TicketDetailState curr) =>
+              !prev.isDeleted && curr.isDeleted,
+          listener:
+              (final BuildContext context, final TicketDetailState state) {
+            // Delete succeeded — pop back to the list with `true` so
+            // the list refreshes regardless of any prior edit state.
+            Navigator.of(context).pop(true);
+          },
+          builder:
+              (final BuildContext context, final TicketDetailState state) {
+            if (state.loadingState == CommonScreenState.loading ||
+                state.loadingState == CommonScreenState.initial) {
+              return Scaffold(
+                backgroundColor: SdkColors.bgColor,
+                appBar: SdkAppBar(
+                  title: 'Ticket Details',
+                  onBack: _popWithResult,
+                ),
+                body: const Center(
+                  child:
+                      CircularProgressIndicator(color: SdkColors.splashDeep),
+                ),
+              );
+            }
+            if (state.detail == null) {
+              return Scaffold(
+                backgroundColor: SdkColors.bgColor,
+                appBar: SdkAppBar(
+                  title: 'Ticket Details',
+                  onBack: _popWithResult,
+                ),
+                body: Center(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: <Widget>[
+                      const Icon(Icons.error_outline_rounded,
+                          color: SdkColors.homeSubtext, size: 48),
+                      const SizedBox(height: 12),
+                      Text('Ticket not found',
+                          style: sdkRubikW600(isTablet: isTab).copyWith(
+                              fontSize: 16, color: SdkColors.splashDeep)),
+                    ],
+                  ),
+                ),
+              );
+            }
+
+            final TicketModel ticket = _detailToTicketModel(state.detail!);
+            final bool canEdit = ticket.status == TicketStatus.open;
+
             return Scaffold(
               backgroundColor: SdkColors.bgColor,
-              appBar: const SdkAppBar(title: 'Ticket Details'),
-              body: const Center(
-                child:
-                    CircularProgressIndicator(color: SdkColors.splashDeep),
+              appBar: SdkAppBar(
+                title: ticket.ticketNumber,
+                onBack: _popWithResult,
+                actionWidget: canEdit
+                    ? GestureDetector(
+                        onTap: () => _showActionsSheet(context, ticket),
+                        child: Container(
+                          width: isTab ? 40 : 34,
+                          height: isTab ? 40 : 34,
+                          decoration: BoxDecoration(
+                            color:
+                                SdkColors.splashDeep.withValues(alpha: 0.06),
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: Icon(
+                            Icons.more_vert_rounded,
+                            size: isTab ? 22 : 18,
+                            color: SdkColors.splashDeep,
+                          ),
+                        ),
+                      )
+                    : SizedBox(width: isTab ? 48 : 42),
+              ),
+              body: Column(
+                children: <Widget>[
+                  Expanded(
+                    child: isTab
+                        ? _buildTabletLayout(context, state)
+                        : _buildMobileLayout(context, state),
+                  ),
+                  const MessageInputWidget(),
+                ],
               ),
             );
-          }
-          if (state.detail == null) {
-            return Scaffold(
-              backgroundColor: SdkColors.bgColor,
-              appBar: const SdkAppBar(title: 'Ticket Details'),
-              body: Center(
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: <Widget>[
-                    const Icon(Icons.error_outline_rounded,
-                        color: SdkColors.homeSubtext, size: 48),
-                    const SizedBox(height: 12),
-                    Text('Ticket not found',
-                        style: sdkRubikW600(isTablet: isTab).copyWith(
-                            fontSize: 16, color: SdkColors.splashDeep)),
-                  ],
-                ),
-              ),
-            );
-          }
-
-          final TicketModel ticket = _detailToTicketModel(state.detail!);
-          final bool canEdit = ticket.status == TicketStatus.open;
-
-          return Scaffold(
-            backgroundColor: SdkColors.bgColor,
-            appBar: SdkAppBar(
-              title: ticket.ticketNumber,
-              actionWidget: canEdit
-                  ? GestureDetector(
-                      onTap: () => _showActionsSheet(context, ticket),
-                      child: Container(
-                        width: isTab ? 40 : 34,
-                        height: isTab ? 40 : 34,
-                        decoration: BoxDecoration(
-                          color: SdkColors.splashDeep.withValues(alpha: 0.06),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: Icon(
-                          Icons.more_vert_rounded,
-                          size: isTab ? 22 : 18,
-                          color: SdkColors.splashDeep,
-                        ),
-                      ),
-                    )
-                  : SizedBox(width: isTab ? 48 : 42),
-            ),
-            body: Column(
-              children: <Widget>[
-                Expanded(
-                  child: isTab
-                      ? _buildTabletLayout(context, state)
-                      : _buildMobileLayout(context, state),
-                ),
-                const MessageInputWidget(),
-              ],
-            ),
-          );
-        },
+          },
+        ),
       ),
     );
   }
@@ -258,17 +294,33 @@ class _TicketDetailBody extends StatelessWidget {
                   subtitle: 'Update title, description, or attachments',
                   iconBgColor: SdkColors.splashGlow.withValues(alpha: 0.08),
                   iconColor: SdkColors.splashGlow,
-                  onTap: () {
+                  onTap: () async {
                     Navigator.pop(sheetContext);
-                    Navigator.push(
+                    // Capture the bloc before the await so we don't use
+                    // `context` across an async gap. CreateTicketScreen
+                    // pops `true` on a successful submit; when that
+                    // happens, reload the detail to pick up server
+                    // changes and remember that the list will need to
+                    // refresh too when this screen is popped.
+                    final TicketDetailBloc detailBloc =
+                        context.read<TicketDetailBloc>();
+                    final bool? updated = await Navigator.push<bool>(
                       context,
-                      MaterialPageRoute<void>(
+                      MaterialPageRoute<bool>(
                         builder: (final BuildContext _) => CreateTicketScreen(
                           isEditMode: true,
                           ticketData: ticket,
                         ),
                       ),
                     );
+                    if (updated == true && mounted) {
+                      setState(() => _didChange = true);
+                      detailBloc.add(
+                        TicketDetailEvent.onLoadDetail(
+                          ticketId: widget.ticketId,
+                        ),
+                      );
+                    }
                   },
                 ),
                 Container(

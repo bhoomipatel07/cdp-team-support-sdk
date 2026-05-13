@@ -7,7 +7,18 @@ class SdkAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
   final Widget? actionWidget;
 
-  const SdkAppBar({super.key, required this.title, this.actionWidget});
+  /// Optional override for the back button. When null the back button
+  /// performs a plain `Navigator.pop(context)`. Screens that need to
+  /// return a result (e.g. "ticket changed" → refresh the list) can
+  /// supply their own callback.
+  final VoidCallback? onBack;
+
+  const SdkAppBar({
+    super.key,
+    required this.title,
+    this.actionWidget,
+    this.onBack,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -51,7 +62,7 @@ class SdkAppBar extends StatelessWidget implements PreferredSizeWidget {
                 children: <Widget>[
                   const SizedBox(width: 8),
                   InkWell(
-                    onTap: () => Navigator.pop(context),
+                    onTap: onBack ?? () => Navigator.pop(context),
                     borderRadius: BorderRadius.circular(10),
                     child: Container(
                       width: isTablet ? 40 : 34,

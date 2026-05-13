@@ -29,11 +29,11 @@ class TicketInfoHeader extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
-          // Project + status sit in the same compact card — project name
+          // Title + status sit in the same compact card — ticket title
           // on the left, status pill on the right.
           _InfoCard(
-            label: 'PROJECT',
-            value: ticket.project?.name ?? 'Unassigned',
+            label: 'TITLE',
+            value: ticket.title.isNotEmpty ? ticket.title : 'Untitled',
             accentColor: const Color(0xFF14B8A6),
             maxLines: 2,
             trailingStatus: ticket.status,
