@@ -439,13 +439,17 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                 return Dialog(
                   backgroundColor: Colors.transparent,
                   elevation: 0,
+                  insetPadding: EdgeInsets.symmetric(
+                    horizontal: isTab ? 120 : 40,
+                    vertical: 24,
+                  ),
+                  child: ConstrainedBox(
+                    constraints: BoxConstraints(maxWidth: isTab ? 380 : 320),
                   child: Container(
-                    padding: EdgeInsets.all(
-                      isTab ? MediaQuery.widthOf(context) / 2 : 24,
-                    ),
+                    padding: EdgeInsets.all(isTab ? 24 : 20),
                     decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(24),
+                      borderRadius: BorderRadius.circular(20),
                       border: Border.all(
                         color: SdkColors.splashDeep.withValues(alpha: 0.1),
                       ),
@@ -592,6 +596,7 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                         ),
                       ],
                     ),
+                  ),
                   ),
                 );
               },
