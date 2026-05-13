@@ -1,9 +1,7 @@
 import 'dart:ui';
 
-import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:cdp_team_support_sdk/src/bloc/ticket_detail/ticket_detail_bloc.dart';
+import 'package:cdp_team_support_sdk/src/components/sdk_app_bar.dart';
 import 'package:cdp_team_support_sdk/src/config/support_sdk_config.dart';
 import 'package:cdp_team_support_sdk/src/data/api/endpoints.dart';
 import 'package:cdp_team_support_sdk/src/data/models/response/helpdesk_attachment_model.dart';
@@ -14,13 +12,15 @@ import 'package:cdp_team_support_sdk/src/models/common_enums.dart';
 import 'package:cdp_team_support_sdk/src/models/ticket_model.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_colors.dart';
 import 'package:cdp_team_support_sdk/src/theme/sdk_fonts.dart';
-import 'package:cdp_team_support_sdk/src/components/sdk_app_bar.dart';
 import 'package:cdp_team_support_sdk/src/views/create_ticket/create_ticket_screen.dart';
 import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/conversation_widget.dart';
 import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/message_input_widget.dart';
 import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/ticket_attachment_widget.dart';
 import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/ticket_info_header_widget.dart';
 import 'package:cdp_team_support_sdk/src/views/ticket_detail/widget/ticket_timeline_widget.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class TicketDetailScreen extends StatelessWidget {
   final int ticketId;
@@ -64,7 +64,8 @@ TicketModel _detailToTicketModel(final HelpdeskTicketDetailModel d) {
             fileSizeBytes: a.fileSizeBytes,
             // Prefer a URL returned inline by the API; otherwise build
             // one against the preview endpoint so the UI can stream it.
-            remoteUrl: a.url ??
+            remoteUrl:
+                a.url ??
                 '${SupportSdkConfig.instance.baseUrl}'
                     '${SupportEndpoints.previewHelpdeskAttachment(attachmentId: a.id)}',
           ),
@@ -106,25 +107,23 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
     final bool isTab = SupportSdkConfig.instance.isTablet;
     return PopScope<Object?>(
       canPop: false,
-      onPopInvokedWithResult:
-          (final bool didPop, final Object? result) {
+      onPopInvokedWithResult: (final bool didPop, final Object? result) {
         if (didPop) return;
         _popWithResult();
       },
       child: AnnotatedRegion<SystemUiOverlayStyle>(
         value: SystemUiOverlayStyle.dark,
         child: BlocConsumer<TicketDetailBloc, TicketDetailState>(
-          listenWhen: (final TicketDetailState prev,
-                  final TicketDetailState curr) =>
-              !prev.isDeleted && curr.isDeleted,
+          listenWhen:
+              (final TicketDetailState prev, final TicketDetailState curr) =>
+                  !prev.isDeleted && curr.isDeleted,
           listener:
               (final BuildContext context, final TicketDetailState state) {
-            // Delete succeeded — pop back to the list with `true` so
-            // the list refreshes regardless of any prior edit state.
-            Navigator.of(context).pop(true);
-          },
-          builder:
-              (final BuildContext context, final TicketDetailState state) {
+                // Delete succeeded — pop back to the list with `true` so
+                // the list refreshes regardless of any prior edit state.
+                Navigator.of(context).pop(true);
+              },
+          builder: (final BuildContext context, final TicketDetailState state) {
             if (state.loadingState == CommonScreenState.loading ||
                 state.loadingState == CommonScreenState.initial) {
               return Scaffold(
@@ -134,8 +133,7 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                   onBack: _popWithResult,
                 ),
                 body: const Center(
-                  child:
-                      CircularProgressIndicator(color: SdkColors.splashDeep),
+                  child: CircularProgressIndicator(color: SdkColors.splashDeep),
                 ),
               );
             }
@@ -150,12 +148,18 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: <Widget>[
-                      const Icon(Icons.error_outline_rounded,
-                          color: SdkColors.homeSubtext, size: 48),
+                      const Icon(
+                        Icons.error_outline_rounded,
+                        color: SdkColors.homeSubtext,
+                        size: 48,
+                      ),
                       const SizedBox(height: 12),
-                      Text('Ticket not found',
-                          style: sdkRubikW600(isTablet: isTab).copyWith(
-                              fontSize: 16, color: SdkColors.splashDeep)),
+                      Text(
+                        'Ticket not found',
+                        style: sdkRubikW600(
+                          isTablet: isTab,
+                        ).copyWith(fontSize: 16, color: SdkColors.splashDeep),
+                      ),
                     ],
                   ),
                 ),
@@ -177,8 +181,7 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                           width: isTab ? 40 : 34,
                           height: isTab ? 40 : 34,
                           decoration: BoxDecoration(
-                            color:
-                                SdkColors.splashDeep.withValues(alpha: 0.06),
+                            color: SdkColors.splashDeep.withValues(alpha: 0.06),
                             borderRadius: BorderRadius.circular(10),
                           ),
                           child: Icon(
@@ -207,8 +210,7 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
     );
   }
 
-  void _showActionsSheet(
-      final BuildContext context, final TicketModel ticket) {
+  void _showActionsSheet(final BuildContext context, final TicketModel ticket) {
     final bool isTab = SupportSdkConfig.instance.isTablet;
     showModalBottomSheet<void>(
       context: context,
@@ -279,10 +281,9 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                     alignment: Alignment.centerLeft,
                     child: Text(
                       ticket.ticketNumber,
-                      style: sdkRubikW400(isTablet: isTab).copyWith(
-                        fontSize: 12,
-                        color: SdkColors.homeSubtext,
-                      ),
+                      style: sdkRubikW400(
+                        isTablet: isTab,
+                      ).copyWith(fontSize: 12, color: SdkColors.homeSubtext),
                     ),
                   ),
                 ),
@@ -302,8 +303,8 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                     // happens, reload the detail to pick up server
                     // changes and remember that the list will need to
                     // refresh too when this screen is popped.
-                    final TicketDetailBloc detailBloc =
-                        context.read<TicketDetailBloc>();
+                    final TicketDetailBloc detailBloc = context
+                        .read<TicketDetailBloc>();
                     final bool? updated = await Navigator.push<bool>(
                       context,
                       MaterialPageRoute<bool>(
@@ -332,8 +333,7 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                   icon: Icons.delete_outline_rounded,
                   label: 'Delete Ticket',
                   subtitle: 'Permanently remove this ticket',
-                  iconBgColor:
-                      SdkColors.colorError500.withValues(alpha: 0.06),
+                  iconBgColor: SdkColors.colorError500.withValues(alpha: 0.06),
                   iconColor: SdkColors.colorError500,
                   labelColor: SdkColors.colorError500,
                   onTap: () {
@@ -341,8 +341,7 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                     _showDeleteConfirmation(context, ticket);
                   },
                 ),
-                SizedBox(
-                    height: MediaQuery.of(sheetContext).padding.bottom),
+                SizedBox(height: MediaQuery.of(sheetContext).padding.bottom),
               ],
             ),
           ),
@@ -391,16 +390,18 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                   const SizedBox(height: 2),
                   Text(
                     subtitle,
-                    style: sdkRubikW400(isTablet: isTab).copyWith(
-                      fontSize: 12,
-                      color: SdkColors.homeSubtext,
-                    ),
+                    style: sdkRubikW400(
+                      isTablet: isTab,
+                    ).copyWith(fontSize: 12, color: SdkColors.homeSubtext),
                   ),
                 ],
               ),
             ),
-            const Icon(Icons.chevron_right_rounded,
-                size: 20, color: SdkColors.homeSubtext),
+            const Icon(
+              Icons.chevron_right_rounded,
+              size: 20,
+              color: SdkColors.homeSubtext,
+            ),
           ],
         ),
       ),
@@ -408,7 +409,9 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
   }
 
   void _showDeleteConfirmation(
-      final BuildContext context, final TicketModel ticket) {
+    final BuildContext context,
+    final TicketModel ticket,
+  ) {
     final bool isTab = SupportSdkConfig.instance.isTablet;
     // Grab the bloc from the outer context so the dialog (which is
     // built outside the BlocProvider subtree) can still read it.
@@ -423,9 +426,11 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
           child: BlocProvider<TicketDetailBloc>.value(
             value: bloc,
             child: BlocConsumer<TicketDetailBloc, TicketDetailState>(
-              listenWhen: (final TicketDetailState prev,
-                      final TicketDetailState curr) =>
-                  !prev.isDeleted && curr.isDeleted,
+              listenWhen:
+                  (
+                    final TicketDetailState prev,
+                    final TicketDetailState curr,
+                  ) => !prev.isDeleted && curr.isDeleted,
               listener: (final BuildContext ctx, final TicketDetailState _) {
                 Navigator.pop(dialogContext);
               },
@@ -435,151 +440,159 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
                   backgroundColor: Colors.transparent,
                   elevation: 0,
                   child: Container(
-              padding: EdgeInsets.all(isTab ? 32 : 24),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(
-                  color: SdkColors.splashDeep.withValues(alpha: 0.1),
-                ),
-                boxShadow: <BoxShadow>[
-                  BoxShadow(
-                    color: SdkColors.splashDeep.withValues(alpha: 0.15),
-                    blurRadius: 40,
-                    offset: const Offset(0, 12),
-                  ),
-                ],
-              ),
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: <Widget>[
-                  Container(
-                    width: isTab ? 72 : 60,
-                    height: isTab ? 72 : 60,
+                    padding: EdgeInsets.all(
+                      isTab ? MediaQuery.widthOf(context) / 2 : 24,
+                    ),
                     decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color:
-                          SdkColors.colorError500.withValues(alpha: 0.06),
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(24),
                       border: Border.all(
-                        color: SdkColors.colorError500
-                            .withValues(alpha: 0.15),
-                        width: 1.5,
+                        color: SdkColors.splashDeep.withValues(alpha: 0.1),
                       ),
+                      boxShadow: <BoxShadow>[
+                        BoxShadow(
+                          color: SdkColors.splashDeep.withValues(alpha: 0.15),
+                          blurRadius: 40,
+                          offset: const Offset(0, 12),
+                        ),
+                      ],
                     ),
-                    child: Icon(
-                      Icons.delete_outline_rounded,
-                      color: SdkColors.colorError500,
-                      size: isTab ? 36 : 28,
-                    ),
-                  ),
-                  SizedBox(height: isTab ? 18 : 14),
-                  Container(
-                    width: 40,
-                    height: 3,
-                    decoration: BoxDecoration(
-                      color: SdkColors.splashGold,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  SizedBox(height: isTab ? 16 : 12),
-                  Text(
-                    'Delete Ticket?',
-                    style: sdkRubikW700(isTablet: isTab).copyWith(
-                      fontSize: isTab ? 22 : 18,
-                      color: SdkColors.splashDeep,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    'This action cannot be undone. The ticket and all its data will be permanently removed.',
-                    textAlign: TextAlign.center,
-                    style: sdkRubikW400(isTablet: isTab).copyWith(
-                      fontSize: isTab ? 14 : 12,
-                      color: SdkColors.homeSubtext,
-                      height: 1.4,
-                    ),
-                  ),
-                  SizedBox(height: isTab ? 28 : 22),
-                  Row(
-                    children: <Widget>[
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: isDeleting
-                              ? null
-                              : () => Navigator.pop(dialogContext),
-                          child: Opacity(
-                            opacity: isDeleting ? 0.5 : 1,
-                            child: Container(
-                              height: isTab ? 48 : 44,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(12),
-                                border: Border.all(
-                                  color: SdkColors.splashDeep
-                                      .withValues(alpha: 0.2),
-                                ),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: <Widget>[
+                        Container(
+                          width: isTab ? 72 : 60,
+                          height: isTab ? 72 : 60,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: SdkColors.colorError500.withValues(
+                              alpha: 0.06,
+                            ),
+                            border: Border.all(
+                              color: SdkColors.colorError500.withValues(
+                                alpha: 0.15,
                               ),
-                              child: Center(
-                                child: Text('Cancel',
-                                    style: sdkRubikW600(isTablet: isTab)
-                                        .copyWith(
-                                            fontSize: isTab ? 15 : 13,
-                                            color: SdkColors.splashDeep)),
-                              ),
+                              width: 1.5,
                             ),
                           ),
+                          child: Icon(
+                            Icons.delete_outline_rounded,
+                            color: SdkColors.colorError500,
+                            size: isTab ? 36 : 28,
+                          ),
                         ),
-                      ),
-                      SizedBox(width: isTab ? 14 : 10),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: isDeleting
-                              ? null
-                              : () {
-                                  ctx.read<TicketDetailBloc>().add(
-                                        const TicketDetailEvent.onDeleteTicket(),
-                                      );
-                                },
-                          child: Container(
-                            height: isTab ? 48 : 44,
-                            decoration: BoxDecoration(
-                              color: SdkColors.colorError500,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: <BoxShadow>[
-                                BoxShadow(
-                                  color: SdkColors.colorError500
-                                      .withValues(alpha: 0.3),
-                                  blurRadius: 12,
-                                  offset: const Offset(0, 4),
-                                ),
-                              ],
-                            ),
-                            child: Center(
-                              child: isDeleting
-                                  ? const SizedBox(
-                                      width: 18,
-                                      height: 18,
-                                      child: CircularProgressIndicator(
-                                        strokeWidth: 2,
-                                        color: Colors.white,
-                                      ),
-                                    )
-                                  : Text(
-                                      'Delete',
-                                      style: sdkRubikW600(isTablet: isTab)
-                                          .copyWith(
-                                        fontSize: isTab ? 15 : 13,
-                                        color: Colors.white,
+                        SizedBox(height: isTab ? 18 : 14),
+                        Container(
+                          width: 40,
+                          height: 3,
+                          decoration: BoxDecoration(
+                            color: SdkColors.splashGold,
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                        SizedBox(height: isTab ? 16 : 12),
+                        Text(
+                          'Delete Ticket?',
+                          style: sdkRubikW700(isTablet: isTab).copyWith(
+                            fontSize: isTab ? 22 : 18,
+                            color: SdkColors.splashDeep,
+                          ),
+                        ),
+                        const SizedBox(height: 8),
+                        Text(
+                          'This action cannot be undone. The ticket and all its data will be permanently removed.',
+                          textAlign: TextAlign.center,
+                          style: sdkRubikW400(isTablet: isTab).copyWith(
+                            fontSize: isTab ? 14 : 12,
+                            color: SdkColors.homeSubtext,
+                            height: 1.4,
+                          ),
+                        ),
+                        SizedBox(height: isTab ? 28 : 22),
+                        Row(
+                          children: <Widget>[
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: isDeleting
+                                    ? null
+                                    : () => Navigator.pop(dialogContext),
+                                child: Opacity(
+                                  opacity: isDeleting ? 0.5 : 1,
+                                  child: Container(
+                                    height: isTab ? 48 : 44,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: SdkColors.splashDeep.withValues(
+                                          alpha: 0.2,
+                                        ),
                                       ),
                                     ),
+                                    child: Center(
+                                      child: Text(
+                                        'Cancel',
+                                        style: sdkRubikW600(isTablet: isTab)
+                                            .copyWith(
+                                              fontSize: isTab ? 15 : 13,
+                                              color: SdkColors.splashDeep,
+                                            ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
                             ),
-                          ),
+                            SizedBox(width: isTab ? 14 : 10),
+                            Expanded(
+                              child: GestureDetector(
+                                onTap: isDeleting
+                                    ? null
+                                    : () {
+                                        ctx.read<TicketDetailBloc>().add(
+                                          const TicketDetailEvent.onDeleteTicket(),
+                                        );
+                                      },
+                                child: Container(
+                                  height: isTab ? 48 : 44,
+                                  decoration: BoxDecoration(
+                                    color: SdkColors.colorError500,
+                                    borderRadius: BorderRadius.circular(12),
+                                    boxShadow: <BoxShadow>[
+                                      BoxShadow(
+                                        color: SdkColors.colorError500
+                                            .withValues(alpha: 0.3),
+                                        blurRadius: 12,
+                                        offset: const Offset(0, 4),
+                                      ),
+                                    ],
+                                  ),
+                                  child: Center(
+                                    child: isDeleting
+                                        ? const SizedBox(
+                                            width: 18,
+                                            height: 18,
+                                            child: CircularProgressIndicator(
+                                              strokeWidth: 2,
+                                              color: Colors.white,
+                                            ),
+                                          )
+                                        : Text(
+                                            'Delete',
+                                            style: sdkRubikW600(isTablet: isTab)
+                                                .copyWith(
+                                                  fontSize: isTab ? 15 : 13,
+                                                  color: Colors.white,
+                                                ),
+                                          ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                      ),
-                    ],
+                      ],
+                    ),
                   ),
-                ],
-              ),
-            ),
                 );
               },
             ),
@@ -590,7 +603,9 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
   }
 
   Widget _buildMobileLayout(
-      final BuildContext context, final TicketDetailState state) {
+    final BuildContext context,
+    final TicketDetailState state,
+  ) {
     final TicketModel ticket = _detailToTicketModel(state.detail!);
     return ListView(
       padding: const EdgeInsets.all(16),
@@ -617,7 +632,9 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
   }
 
   Widget _buildTabletLayout(
-      final BuildContext context, final TicketDetailState state) {
+    final BuildContext context,
+    final TicketDetailState state,
+  ) {
     final TicketModel ticket = _detailToTicketModel(state.detail!);
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -678,11 +695,14 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
-          Text('DESCRIPTION',
-              style: sdkRubikW600(isTablet: isTab).copyWith(
-                  fontSize: 11,
-                  color: SdkColors.homeSubtext,
-                  letterSpacing: 0.6)),
+          Text(
+            'DESCRIPTION',
+            style: sdkRubikW600(isTablet: isTab).copyWith(
+              fontSize: 11,
+              color: SdkColors.homeSubtext,
+              letterSpacing: 0.6,
+            ),
+          ),
           const SizedBox(height: 10),
           Text(
             ticket.description,
@@ -728,14 +748,20 @@ class _TicketDetailBodyState extends State<_TicketDetailBody> {
               children: <Widget>[
                 Row(
                   children: <Widget>[
-                    const Icon(Icons.sticky_note_2_outlined,
-                        size: 16, color: SdkColors.splashGold),
+                    const Icon(
+                      Icons.sticky_note_2_outlined,
+                      size: 16,
+                      color: SdkColors.splashGold,
+                    ),
                     const SizedBox(width: 6),
-                    Text('NOTE',
-                        style: sdkRubikW700(isTablet: isTab).copyWith(
-                            fontSize: 12,
-                            color: SdkColors.splashGold,
-                            letterSpacing: 0.5)),
+                    Text(
+                      'NOTE',
+                      style: sdkRubikW700(isTablet: isTab).copyWith(
+                        fontSize: 12,
+                        color: SdkColors.splashGold,
+                        letterSpacing: 0.5,
+                      ),
+                    ),
                   ],
                 ),
                 const SizedBox(height: 8),
