@@ -449,7 +449,7 @@ class _CreateTicketBodyState extends State<_CreateTicketBody> {
             ).copyWith(fontSize: 14, color: SdkColors.splashDeep),
             cursorColor: SdkColors.splashDeep,
             decoration: InputDecoration(
-              hintText: 'Brief description of the issue',
+              hintText: 'Title of the issue',
               hintStyle: sdkRubikW400(
                 isTablet: isTab,
               ).copyWith(fontSize: 13, color: SdkColors.homeSubtext),

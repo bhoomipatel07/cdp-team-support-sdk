@@ -141,9 +141,22 @@ class HelpdeskAttachmentModel {
       final dynamic v = src[k];
       if (v is String && v.isNotEmpty) {
         final DateTime? parsed = DateTime.tryParse(v);
-        if (parsed != null) return parsed;
+        if (parsed != null) return _asUtc(parsed).toLocal();
       }
     }
     return null;
   }
+
+  static DateTime _asUtc(final DateTime dt) => dt.isUtc
+      ? dt
+      : DateTime.utc(
+          dt.year,
+          dt.month,
+          dt.day,
+          dt.hour,
+          dt.minute,
+          dt.second,
+          dt.millisecond,
+          dt.microsecond,
+        );
 }

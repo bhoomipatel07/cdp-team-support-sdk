@@ -49,6 +49,7 @@ class SupportDioInterceptor extends InterceptorsWrapper {
       debugPrint(
         '[SupportSDK] ← ${response.statusCode} ${response.requestOptions.uri}',
       );
+      debugPrint('[SupportSDK Response] ← ${response.data} ');
     }
     super.onResponse(response, handler);
   }
@@ -75,8 +76,9 @@ class SupportDioInterceptor extends InterceptorsWrapper {
       }
 
       try {
-        final String? newAccessToken =
-            await _coordinatedRefresh(cfg.onUnauthorized!);
+        final String? newAccessToken = await _coordinatedRefresh(
+          cfg.onUnauthorized!,
+        );
 
         if (newAccessToken != null && newAccessToken.isNotEmpty) {
           // Cache the fresh token in the SDK singleton so subsequent
@@ -90,8 +92,9 @@ class SupportDioInterceptor extends InterceptorsWrapper {
           err.requestOptions.headers['Authorization'] =
               'Bearer $newAccessToken';
           final Dio retryDio = Dio();
-          final Response<dynamic> response =
-              await retryDio.fetch(err.requestOptions);
+          final Response<dynamic> response = await retryDio.fetch(
+            err.requestOptions,
+          );
           return handler.resolve(response);
         }
 

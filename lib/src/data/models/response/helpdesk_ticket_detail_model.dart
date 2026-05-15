@@ -103,11 +103,25 @@ class HelpdeskActivityLogModel {
     for (final String k in keys) {
       final dynamic v = src[k];
       if (v is String && v.isNotEmpty) {
-        return DateTime.tryParse(v);
+        final DateTime? parsed = DateTime.tryParse(v);
+        if (parsed != null) return _asUtc(parsed).toLocal();
       }
     }
     return null;
   }
+
+  static DateTime _asUtc(final DateTime dt) => dt.isUtc
+      ? dt
+      : DateTime.utc(
+          dt.year,
+          dt.month,
+          dt.day,
+          dt.hour,
+          dt.minute,
+          dt.second,
+          dt.millisecond,
+          dt.microsecond,
+        );
 }
 
 /// Full ticket detail returned by
@@ -281,9 +295,23 @@ class HelpdeskTicketDetailModel {
     for (final String k in keys) {
       final dynamic v = src[k];
       if (v is String && v.isNotEmpty) {
-        return DateTime.tryParse(v);
+        final DateTime? parsed = DateTime.tryParse(v);
+        if (parsed != null) return _asUtc(parsed).toLocal();
       }
     }
     return null;
   }
+
+  static DateTime _asUtc(final DateTime dt) => dt.isUtc
+      ? dt
+      : DateTime.utc(
+          dt.year,
+          dt.month,
+          dt.day,
+          dt.hour,
+          dt.minute,
+          dt.second,
+          dt.millisecond,
+          dt.microsecond,
+        );
 }
